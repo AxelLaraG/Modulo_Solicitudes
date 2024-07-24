@@ -6,7 +6,8 @@ import FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import exportToExcel from "../utils/exportToExcel"; // Asegúrate de tener la función exportToExcel en un archivo utils/exportToExcel.js
 import { useRouter } from "next/navigation";
-import "../../public/Styles/Styles.css";
+import "../../public/Styles/styles.css";
+import Link from "next/link";
 
 function SolicitudesPage() {
   const [solicitudesData, setSolicitudesData] = useState([]);
@@ -19,7 +20,7 @@ function SolicitudesPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/obtener_solicitudes");
+      const response = await fetch("/apobtener_solicitudesi/");
       const data = await response.json();
       setSolicitudesData(data);
 
@@ -199,13 +200,12 @@ function SolicitudesPage() {
       </div>
 
       <div className="fixed-button">
-        <button
-          id="botonCrear"
-          className="btn btn-primary"
-          onClick={() => router.push("/formulario")}
-        >
-          Crear Nuevo Registro
-        </button>
+        <Link href="./formulario">
+          <button id="botonCrear" className="btn btn-primary">
+            Crear Nuevo Registro
+          </button>
+        </Link>
+
         <button
           id="botonDescargar"
           className="btn btn-primary"
