@@ -1,0 +1,55 @@
+/* Contenedor principal del datepicker */
+.datepicker {
+  border-radius: 12px;
+  /* Esquinas más redondeadas */
+  box-shadow: 0 4px 8px rgba(29, 0, 0, 0.559);
+  /* Sombra más pronunciada */
+}
+
+/* Encabezado del datepicker (mes y año) */
+.datepicker-header {
+  background-color: #007bff;
+  /* Color de fondo azul (o el que prefieras) */
+  color: rgb(244, 117, 117);
+}
+
+/* Botones de navegación (anterior/siguiente) */
+.datepicker-header .prev,
+.datepicker-header .next {
+  background-color: #024c9b;
+  /* Color de fondo más oscuro para los botones */
+}
+
+/* Tabla de días */
+.datepicker-days table {
+  width: 60%;
+  /* Ajusta el ancho de la tabla */
+}
+
+/* Celdas de los días */
+.datepicker-days td {
+  padding: 10px;
+  /* Más espacio entre los días */
+  border-radius: 5px;
+  /* Esquinas redondeadas en las celdas */
+}
+
+/* Día actual */
+.datepicker-days td.today {
+  background-color: #e0f7fa;
+  /* Color de fondo para el día actual */
+}
+
+/* Día seleccionado */
+.datepicker-days td.active {
+  background-color: #007bff;
+  /* Color de fondo para el día seleccionado */
+  color: white;
+}
+
+/* Días de otros meses */
+.datepicker-days td.old,
+.datepicker-days td.new {
+  color: #999;
+  /* Color gris claro para los días de otros meses */
+}
