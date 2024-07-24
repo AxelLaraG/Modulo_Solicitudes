@@ -9,11 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-datepicker": "^1.10.0",
+    "bootstrap-icons": "^1.11.3",
     "dotenv": "^16.4.5",
+    "file-saver": "^2.0.5",
+    "flatpickr": "^4.6.13",
+    "jquery": "^3.7.1",
     "mongoose": "^8.5.1",
-    "next": "14.2.5",
+    "next": "^14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-bootstrap": "^2.10.4",
+    "react-dom": "^18",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "eslint": "^8",

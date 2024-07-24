@@ -1,17 +1,16 @@
+
+import Link from "next/link";
+import Principal from "@/components/Principal";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'flatpickr/dist/flatpickr.min.css';
 import dbConnect from "@/libs/mongodb";
 import solicitud from "@/models/solicitud";
 
-async function loadSolicitudes(){
-  await dbConnect()
-
-  const solicitudes = await solicitud.find()
-  return solicitudes
+export default function HomePage() {
+  return (
+    <>
+      <Principal/>
+    </>
+  );
 }
-
-async function HomePage() {
-  const solicitudes = await loadSolicitudes()
-  console.log(solicitudes)
-  return <h1>HolaMundo</h1>
-}
-
-export default HomePage
