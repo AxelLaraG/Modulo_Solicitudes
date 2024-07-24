@@ -1,5 +1,5 @@
-import dbConnect from "@/libs/mongodb";
-import solicitud from "@/models/solicitud";
+import dbConnect from "../../../libs/mongodb";
+import solicitud from "../../../models/solicitud";
 import { NextResponse } from "next/server";
 
 export async function GET() {
