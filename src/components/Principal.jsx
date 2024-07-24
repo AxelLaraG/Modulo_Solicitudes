@@ -6,7 +6,7 @@ import FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import exportToExcel from "../utils/exportToExcel"; // Asegúrate de tener la función exportToExcel en un archivo utils/exportToExcel.js
 import { useRouter } from "next/navigation";
-import "../../public/Styles/Styles.css";
+import "../../public/Styles/styles.css";
 import Link from "next/link";
 
 function SolicitudesPage() {
