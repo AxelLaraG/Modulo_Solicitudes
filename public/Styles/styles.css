@@ -1,0 +1,213 @@
+/* Estilos generales */
+body {
+  font-family: "Gotham", sans-serif;
+}
+
+.bg-primary {
+  background-color: #bd9615 !important;
+}
+
+#botonCrear {
+  margin-top: 20px; /* Ajusta el valor según la separación deseada */
+  margin-bottom: 15px;
+}
+
+#botonDescargar {
+  margin-top: 20px; /* Ajusta el valor según la separación deseada */
+  margin-bottom: 15px;
+}
+
+.text-white {
+  color: white !important;
+}
+
+.p-4 {
+  padding: 3rem !important;
+}
+
+h1,
+h2 {
+  font-weight: bold;
+}
+
+/* Estilos para el título colorido */
+h2.display-4 {
+  background: linear-gradient(to right, #ff7e5f, #4aa0ff, #1d60a8);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.display-5 {
+  color: white;
+}
+
+.container {
+  text-align: center;
+}
+
+/* Estilos generales para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#table-encabezado {
+  height: auto;
+}
+
+.table-container {
+  max-height: 300px;
+  overflow-y: auto; /* Habilitar scroll vertical si el contenido es demasiado alto */
+}
+
+th,
+td {
+  padding: 5px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Estilos específicos para cada columna */
+th:nth-child(1) {
+  /* ID */
+  width: 5%;
+  color: black; /* Agregar esta línea para establecer el color negro */
+  background-image: linear-gradient(to right, #e7f0c0, #ff9706);
+}
+
+th:nth-child(2) {
+  /* Responsable */
+  width: 20%;
+  background-image: linear-gradient(to right, #f69e96, #f66923);
+}
+
+th:nth-child(3) {
+  /* Fecha */
+  width: 15%;
+  background-image: linear-gradient(to right, #66ccff, #4444fc);
+}
+
+th:nth-child(4) {
+  /* Solicitante */
+  width: 25%;
+  background-image: linear-gradient(to right, #3ce875, #0435e3);
+}
+
+th:nth-child(5) {
+  /* Estatus */
+  width: 15%;
+  background-image: linear-gradient(to right, #f977b8, #87032f);
+}
+
+td:nth-child(1) {
+  /* ID */
+  width: 5%;
+}
+
+td:nth-child(2) {
+  /* Responsable */
+  width: 20%;
+}
+
+td:nth-child(3) {
+  /* Fecha */
+  width: 15%;
+}
+
+td:nth-child(4) {
+  /* Solicitante */
+  width: 25%;
+}
+
+td:nth-child(5) {
+  /* Estatus */
+  width: 15%;
+}
+
+.rendimiento-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.rendimiento-box {
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.rendimiento-general {
+  font-weight: bold;
+}
+
+.asuntos-resueltos {
+  color: green;
+}
+.asuntos-pendientes {
+  color: red;
+}
+
+/* Contenedor principal del datepicker */
+.datepicker {
+  border-radius: 12px;
+  width: 60%;
+  /* Esquinas más redondeadas */
+  box-shadow: 0 4px 8px rgba(29, 0, 0, 0.559);
+  /* Sombra más pronunciada */
+}
+
+/* Encabezado del datepicker (mes y año) */
+.datepicker-header {
+  background-color: #007bff;
+  /* Color de fondo azul (o el que prefieras) */
+  color: rgb(244, 117, 117);
+}
+
+/* Botones de navegación (anterior/siguiente) */
+.datepicker-header .prev,
+.datepicker-header .next {
+  background-color: #024c9b;
+  /* Color de fondo más oscuro para los botones */
+}
+
+/* Tabla de días */
+.datepicker-days table {
+  width: 60%;
+  /* Ajusta el ancho de la tabla */
+}
+
+/* Celdas de los días */
+.datepicker-days td {
+  padding: 10px;
+  /* Más espacio entre los días */
+  border-radius: 5px;
+  /* Esquinas redondeadas en las celdas */
+}
+
+/* Día actual */
+.datepicker-days td.today {
+  background-color: #e0f7fa;
+  /* Color de fondo para el día actual */
+}
+
+/* Día seleccionado */
+.datepicker-days td.active {
+  background-color: #007bff;
+  /* Color de fondo para el día seleccionado */
+  color: white;
+}
+
+/* Días de otros meses */
+.datepicker-days td.old,
+.datepicker-days td.new {
+  color: #999;
+  /* Color gris claro para los días de otros meses */
+}
