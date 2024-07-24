@@ -200,7 +200,7 @@ function SolicitudesPage() {
       </div>
 
       <div className="fixed-button">
-        <Link href="./formulario">
+        <Link href="/formulario">
           <button id="botonCrear" className="btn btn-primary">
             Crear Nuevo Registro
           </button>
@@ -210,10 +210,20 @@ function SolicitudesPage() {
           id="botonDescargar"
           className="btn btn-primary"
           onClick={() =>
-            exportToExcel(
-              filterData(solicitudesData, filtroCriterio, filtroValor),
-              "solicitudes.xlsx"
-            )
+            function () {
+              const criterio = filtroCriterio.val();
+              const valorFiltro = $("#filtroValor").val();
+              const datosFiltrados = filterData(
+                solicitudesData,
+                criterio,
+                valorFiltro
+              );
+              if (datosFiltrados.length > 0) {
+                exportToExcel(datosFiltrados, "solicitudes.xlsx");
+              } else {
+                alert("No hay datos para exportar.");
+              }
+            }
           }
         >
           Descargar Excel

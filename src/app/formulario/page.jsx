@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
+import Link from "next/link";
 
 function SolicitudModal() {
   const router = useRouter();
@@ -43,7 +44,9 @@ function SolicitudModal() {
           const selectedDate = selectedDates[0];
           setFormData((prevFormData) => ({
             ...prevFormData,
-            fechaVen: selectedDate ? selectedDate.toISOString().split('T')[0] : "",
+            fechaVen: selectedDate
+              ? selectedDate.toISOString().split("T")[0]
+              : "",
           }));
         },
       });
@@ -62,11 +65,11 @@ function SolicitudModal() {
       const response = await fetch(
         idSolicitud
           ? `/api/modificar_solicitud/${idSolicitud}`
-          : "/api/subir_solicitud",
+          : "/api/solicitudes",
         {
           method: idSolicitud ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formData), // Enviar los datos del formulario
         }
       );
 
@@ -140,7 +143,9 @@ function SolicitudModal() {
                   )}
                   <div className="col-md-12">
                     <div className="form-group">
-                      <label htmlFor="asunto" className="fw-bold">Asunto:</label>
+                      <label htmlFor="asunto" className="fw-bold">
+                        Asunto:
+                      </label>
                       <input
                         type="text"
                         className="form-control"
@@ -154,7 +159,9 @@ function SolicitudModal() {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="solicitante" className="fw-bold">Solicitante:</label>
+                        <label htmlFor="solicitante" className="fw-bold">
+                          Solicitante:
+                        </label>
                         <input
                           type="text"
                           className="form-control"
@@ -167,7 +174,9 @@ function SolicitudModal() {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="procedencia" className="fw-bold">Procedencia:</label>
+                        <label htmlFor="procedencia" className="fw-bold">
+                          Procedencia:
+                        </label>
                         <select
                           className="form-control"
                           id="procedencia"
@@ -183,7 +192,9 @@ function SolicitudModal() {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="fechaInput" className="fw-bold">Fecha de vencimiento:</label>
+                        <label htmlFor="fechaInput" className="fw-bold">
+                          Fecha de vencimiento:
+                        </label>
                         <input
                           type="text"
                           className="form-control"
@@ -193,12 +204,17 @@ function SolicitudModal() {
                           onChange={handleChange}
                           required
                         />
-                        <div id="date-error" className="invalid-feedback d-none"></div>
+                        <div
+                          id="date-error"
+                          className="invalid-feedback d-none"
+                        ></div>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="telefono" className="fw-bold">Teléfono:</label>
+                        <label htmlFor="telefono" className="fw-bold">
+                          Teléfono:
+                        </label>
                         <input
                           type="tel"
                           className="form-control"
@@ -212,7 +228,9 @@ function SolicitudModal() {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="correo" className="fw-bold">Correo:</label>
+                        <label htmlFor="correo" className="fw-bold">
+                          Correo:
+                        </label>
                         <input
                           type="email"
                           className="form-control"
@@ -224,7 +242,9 @@ function SolicitudModal() {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="responsable" className="fw-bold">Responsable:</label>
+                        <label htmlFor="responsable" className="fw-bold">
+                          Responsable:
+                        </label>
                         <select
                           className="form-control"
                           id="responsable"
@@ -262,13 +282,11 @@ function SolicitudModal() {
               </div>
             </div>
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleCloseModal}
-              >
-                Cerrar
-              </button>
+              <Link href="/">
+                <button type="button" className="btn btn-secondary">
+                  Cerrar
+                </button>
+              </Link>
               {idSolicitud ? (
                 <>
                   <button

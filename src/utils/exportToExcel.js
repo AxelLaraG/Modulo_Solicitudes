@@ -1,3 +1,5 @@
+'use client';
+
 function exportToExcel(data, filename) {
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
