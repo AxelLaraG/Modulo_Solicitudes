@@ -41,15 +41,18 @@ function SolicitudModal() {
         minDate: "today",
         onChange: (selectedDates) => {
           const selectedDate = selectedDates[0];
-          setFormData({ ...formData, fechaVen: selectedDate ? selectedDate.toISOString().split('T')[0] : "" });
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            fechaVen: selectedDate ? selectedDate.toISOString().split('T')[0] : "",
+          }));
         },
       });
     }
-  }, []);
+  }, [formData.fechaVen]);
 
   const handleChange = (event) => {
     const { id, value } = event.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData((prevFormData) => ({ ...prevFormData, [id]: value }));
   };
 
   const handleSubmit = async (event) => {
