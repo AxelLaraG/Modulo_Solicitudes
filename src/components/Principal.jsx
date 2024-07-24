@@ -1,15 +1,13 @@
-// app/page.js (o la ruta de tu componente principal)
-"use client"; // Habilita Client Components
+"use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import exportToExcel from "../utils/exportToExcel"; // Asegúrate de tener la función exportToExcel en un archivo utils/exportToExcel.js
+import { exportToExcel } from "../utils/exportToExcel";
 import { useRouter } from "next/navigation";
 import "../../public/Styles/styles.css";
 import Link from "next/link";
 
-function SolicitudesPage() {
+function Principal() {
   const [solicitudesData, setSolicitudesData] = useState([]);
   const [filtroCriterio, setFiltroCriterio] = useState("todos");
   const [filtroValor, setFiltroValor] = useState("");
@@ -209,22 +207,18 @@ function SolicitudesPage() {
         <button
           id="botonDescargar"
           className="btn btn-primary"
-          onClick={() =>
-            function () {
-              const criterio = filtroCriterio.val();
-              const valorFiltro = $("#filtroValor").val();
-              const datosFiltrados = filterData(
-                solicitudesData,
-                criterio,
-                valorFiltro
-              );
-              if (datosFiltrados.length > 0) {
-                exportToExcel(datosFiltrados, "solicitudes.xlsx");
-              } else {
-                alert("No hay datos para exportar.");
-              }
+          onClick={() => {
+            const datosFiltrados = filterData(
+              solicitudesData,
+              filtroCriterio,
+              filtroValor
+            );
+            if (datosFiltrados.length > 0) {
+              exportToExcel(datosFiltrados, "solicitudes.xlsx");
+            } else {
+              alert("No hay datos para exportar.");
             }
-          }
+          }}
         >
           Descargar Excel
         </button>
@@ -233,4 +227,4 @@ function SolicitudesPage() {
   );
 }
 
-export default SolicitudesPage;
+export default Principal;
