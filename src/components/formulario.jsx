@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
+import "flatpickr/dist/flatpickr.min.css";
 
 function SolicitudModal() {
   const router = useRouter();
@@ -14,7 +15,7 @@ function SolicitudModal() {
     solicitante: "",
     telefono: "",
     asunto: "",
-    procedencia: "",
+    procedencia: "Procedencia 1",
     correo: "",
     responsable: "Responsable 1",
     fechaVen: "",
@@ -124,135 +125,150 @@ function SolicitudModal() {
         aria-hidden={!showModal}
         style={{ display: showModal ? "block" : "none" }}
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-lg">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="solicitudModalLabel">
                 {idSolicitud ? "Modificar Solicitud" : "Nueva Solicitud"}
               </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={handleCloseModal}
-                aria-label="Close"
-              ></button>
+
             </div>
             <div className="modal-body">
               <div className="container mt-4">
                 <div className="header-container">
                   <h2 className="text-center">Solicitud</h2>
+                  <br />
                 </div>
 
                 <form id="formularioSolicitud" onSubmit={handleSubmit}>
                   {idSolicitud && (
                     <input type="hidden" id="idSolicitud" value={idSolicitud} />
                   )}
-
-                  <div className="form-group">
-                    <label htmlFor="solicitante">Solicitante:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="solicitante"
-                      value={formData.solicitante}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="asunto">Asunto:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="asunto"
-                      value={formData.asunto}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="procedencia">Procedencia:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="procedencia"
-                      value={formData.procedencia}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="fechaInput" className="form-label">
-                      Fecha de vencimiento:
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="fechaInput"
-                      ref={datePickerRef}
-                      value={formData.fechaVen}
-                      onChange={handleChange}
-                      required
-                    />
-                    <div
-                      id="date-error"
-                      className="invalid-feedback d-none"
-                    ></div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="telefono">Teléfono:</label>
-                    <input
-                      type="tel"
-                      className="form-control"
-                      id="telefono"
-                      pattern="[0-9]{10}"
-                      title="Debe contener 10 dígitos"
-                      value={formData.telefono}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="correo">Correo:</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="correo"
-                      value={formData.correo}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="responsable">Responsable:</label>
-                    <select
-                      className="form-control"
-                      id="responsable"
-                      value={formData.responsable}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="Responsable 1">Responsable 1</option>
-                      <option value="Responsable 2">Responsable 2</option>
-                      <option value="Responsable 3">Responsable 3</option>
-                      <option value="Responsable 4">Responsable 4</option>
-                      <option value="Responsable 5">Responsable 5</option>
-                    </select>
-                  </div>
-
-                  {idSolicitud && (
+                  <div className="col-md-12">
                     <div className="form-group">
-                      <label htmlFor="estatus">Estatus:</label>
-                      <select
+                      <label htmlFor="asunto" className="fw-bold">Asunto:</label>
+                      <input
+                        type="text"
                         className="form-control"
-                        id="estatus"
-                        value={formData.estatus}
+                        id="asunto"
+                        value={formData.asunto}
                         onChange={handleChange}
-                      >
-                        <option value="pendiente">Pendiente</option>
-                        <option value="realizado">Realizado</option>
-                        <option value="rechazado">Rechazado</option>
-                      </select>
+                        required
+                      />
                     </div>
-                  )}
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="solicitante" className="fw-bold" >Solicitante:</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="solicitante"
+                          value={formData.solicitante}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="procedencia" className="fw-bold" >Procedencia:</label>
+                        <select
+                          className="form-control"
+                          id="procedencia"
+                          value={formData.procedencia}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="Procedencia 1">Oficio</option>
+                          <option value="Procedencia 2">Correo</option>
+                          <option value="Procedencia 3">Teléfono</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="fechaInput" className="fw-bold">
+                          Fecha de vencimiento:
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="fechaInput"
+                          ref={datePickerRef}
+                          value={formData.fechaVen}
+                          onChange={handleChange}
+                          required
+                        />
+                        <div
+                          id="date-error"
+                          className="invalid-feedback d-none"
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="telefono" className="fw-bold" >Teléfono:</label>
+                        <input
+                          type="tel"
+                          className="form-control"
+                          id="telefono"
+                          pattern="[0-9]{10}"
+                          title="Debe contener 10 dígitos"
+                          value={formData.telefono}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="correo" className="fw-bold">Correo:</label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          id="correo"
+                          value={formData.correo}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="responsable" className="fw-bold">Responsable:</label>
+                        <select
+                          className="form-control"
+                          id="responsable"
+                          value={formData.responsable}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="Responsable 1">Responsable 1</option>
+                          <option value="Responsable 2">Responsable 2</option>
+                          <option value="Responsable 3">Responsable 3</option>
+                          <option value="Responsable 4">Responsable 4</option>
+                          <option value="Responsable 5">Responsable 5</option>
+                        </select>
+                      </div>
+                    </div>
+                    {idSolicitud && (
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="estatus">Estatus:</label>
+                          <select
+                            className="form-control"
+                            id="estatus"
+                            value={formData.estatus}
+                            onChange={handleChange}
+                          >
+                            <option value="pendiente">Pendiente</option>
+                            <option value="realizado">Realizado</option>
+                            <option value="rechazado">Rechazado</option>
+                          </select>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </form>
               </div>
             </div>
