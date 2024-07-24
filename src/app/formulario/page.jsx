@@ -5,9 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
-import Link from "next/link";
 
-function SolicitudModal() {
+function Solicitud() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const idSolicitud = searchParams.get("id");
@@ -22,7 +21,6 @@ function SolicitudModal() {
     fechaVen: "",
     estatus: "pendiente",
   });
-  const [showModal, setShowModal] = useState(true);
   const datePickerRef = useRef(null);
 
   useEffect(() => {
@@ -79,7 +77,16 @@ function SolicitudModal() {
             ? "Solicitud modificada exitosamente"
             : "Solicitud creada exitosamente"
         );
-        router.push("/");
+        setFormData({
+          solicitante: "",
+          telefono: "",
+          asunto: "",
+          procedencia: "Procedencia 1",
+          correo: "",
+          responsable: "Responsable 1",
+          fechaVen: "",
+          estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
+        });
       } else {
         alert("Error al enviar/modificar solicitud:", response.statusText);
       }
@@ -108,217 +115,181 @@ function SolicitudModal() {
     }
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    router.push("/"); // Redireccion :c
-  };
-
   return (
-    <>
-      <div
-        className={`modal fade ${showModal ? "show" : ""}`}
-        id="solicitudModal"
-        tabIndex="-1"
-        aria-labelledby="solicitudModalLabel"
-        aria-hidden={!showModal}
-        style={{ display: showModal ? "block" : "none" }}
-      >
-        <div className="modal-dialog modal-lg">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="solicitudModalLabel">
-                {idSolicitud ? "Modificar Solicitud" : "Nueva Solicitud"}
-              </h5>
-            </div>
-            <div className="modal-body">
-              <div className="container mt-4">
-                <div className="header-container">
-                  <h2 className="text-center">Solicitud</h2>
-                  <br />
-                </div>
+    <div className="container mt-4">
+      <div className="header-container">
+        <h2 className="text-center">Solicitud</h2>
+        <br />
+      </div>
 
-                <form id="formularioSolicitud" onSubmit={handleSubmit}>
-                  {idSolicitud && (
-                    <input type="hidden" id="idSolicitud" value={idSolicitud} />
-                  )}
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label htmlFor="asunto" className="fw-bold">
-                        Asunto:
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="asunto"
-                        value={formData.asunto}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="solicitante" className="fw-bold">
-                          Solicitante:
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="solicitante"
-                          value={formData.solicitante}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="procedencia" className="fw-bold">
-                          Procedencia:
-                        </label>
-                        <select
-                          className="form-control"
-                          id="procedencia"
-                          value={formData.procedencia}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="Procedencia 1">Oficio</option>
-                          <option value="Procedencia 2">Correo</option>
-                          <option value="Procedencia 3">Teléfono</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="fechaInput" className="fw-bold">
-                          Fecha de vencimiento:
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="fechaInput"
-                          ref={datePickerRef}
-                          value={formData.fechaVen}
-                          onChange={handleChange}
-                          required
-                        />
-                        <div
-                          id="date-error"
-                          className="invalid-feedback d-none"
-                        ></div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="telefono" className="fw-bold">
-                          Teléfono:
-                        </label>
-                        <input
-                          type="tel"
-                          className="form-control"
-                          id="telefono"
-                          pattern="[0-9]{10}"
-                          title="Debe contener 10 dígitos"
-                          value={formData.telefono}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="correo" className="fw-bold">
-                          Correo:
-                        </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="correo"
-                          value={formData.correo}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="responsable" className="fw-bold">
-                          Responsable:
-                        </label>
-                        <select
-                          className="form-control"
-                          id="responsable"
-                          value={formData.responsable}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="Responsable 1">Responsable 1</option>
-                          <option value="Responsable 2">Responsable 2</option>
-                          <option value="Responsable 3">Responsable 3</option>
-                          <option value="Responsable 4">Responsable 4</option>
-                          <option value="Responsable 5">Responsable 5</option>
-                        </select>
-                      </div>
-                    </div>
-                    {idSolicitud && (
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="estatus">Estatus:</label>
-                          <select
-                            className="form-control"
-                            id="estatus"
-                            value={formData.estatus}
-                            onChange={handleChange}
-                          >
-                            <option value="pendiente">Pendiente</option>
-                            <option value="realizado">Realizado</option>
-                            <option value="rechazado">Rechazado</option>
-                          </select>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <Link href="/">
-                <button type="button" className="btn btn-secondary">
-                  Cerrar
-                </button>
-              </Link>
-              {idSolicitud ? (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={handleDelete}
-                  >
-                    Eliminar
-                  </button>
-                  <button
-                    type="submit"
-                    form="formularioSolicitud"
-                    className="btn btn-primary"
-                  >
-                    Guardar Cambios
-                  </button>
-                </>
-              ) : (
-                <button
-                  type="submit"
-                  form="formularioSolicitud"
-                  className="btn btn-primary"
-                >
-                  Enviar Solicitud
-                </button>
-              )}
-            </div>
+      <form id="formularioSolicitud" onSubmit={handleSubmit}>
+        {idSolicitud && (
+          <input type="hidden" id="idSolicitud" value={idSolicitud} />
+        )}
+        <div className="col-md-12">
+          <div className="form-group">
+            <label htmlFor="asunto" className="fw-bold">
+              Asunto:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="asunto"
+              value={formData.asunto}
+              onChange={handleChange}
+              required
+            />
           </div>
         </div>
-      </div>
-    </>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="solicitante" className="fw-bold">
+                Solicitante:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="solicitante"
+                value={formData.solicitante}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="procedencia" className="fw-bold">
+                Procedencia:
+              </label>
+              <select
+                className="form-control"
+                id="procedencia"
+                value={formData.procedencia}
+                onChange={handleChange}
+                required
+              >
+                <option value="Procedencia 1">Oficio</option>
+                <option value="Procedencia 2">Correo</option>
+                <option value="Procedencia 3">Teléfono</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="fechaInput" className="fw-bold">
+                Fecha de vencimiento:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="fechaInput"
+                ref={datePickerRef}
+                value={formData.fechaVen}
+                onChange={handleChange}
+                required
+              />
+              <div id="date-error" className="invalid-feedback d-none"></div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="telefono" className="fw-bold">
+                Teléfono:
+              </label>
+              <input
+                type="tel"
+                className="form-control"
+                id="telefono"
+                pattern="[0-9]{10}"
+                title="Debe contener 10 dígitos"
+                value={formData.telefono}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="correo" className="fw-bold">
+                Correo:
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="correo"
+                value={formData.correo}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="responsable" className="fw-bold">
+                Responsable:
+              </label>
+              <select
+                className="form-control"
+                id="responsable"
+                value={formData.responsable}
+                onChange={handleChange}
+                required
+              >
+                <option value="Responsable 1">Responsable 1</option>
+                <option value="Responsable 2">Responsable 2</option>
+                <option value="Responsable 3">Responsable 3</option>
+                <option value="Responsable 4">Responsable 4</option>
+                <option value="Responsable 5">Responsable 5</option>
+              </select>
+            </div>
+          </div>
+          {idSolicitud && (
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="estatus">Estatus:</label>
+                <select
+                  className="form-control"
+                  id="estatus"
+                  value={formData.estatus}
+                  onChange={handleChange}
+                >
+                  <option value="pendiente">Pendiente</option>
+                  <option value="realizado">Realizado</option>
+                  <option value="rechazado">Rechazado</option>
+                </select>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="mt-3">
+          <button
+            type="button"
+            className="btn btn-secondary me-2"
+            onClick={() => router.back()}
+          >
+            Cerrar
+          </button>
+          {idSolicitud ? (
+            <>
+              <button
+                type="button"
+                className="btn btn-danger me-2"
+                onClick={handleDelete}
+              >
+                Eliminar
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Guardar Cambios
+              </button>
+            </>
+          ) : (
+            <button type="submit" className="btn btn-primary">
+              Enviar Solicitud
+            </button>
+          )}
+        </div>
+      </form>
+    </div>
   );
 }
 
-export default SolicitudModal;
+export default Solicitud;
