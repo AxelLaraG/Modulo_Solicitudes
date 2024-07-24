@@ -34,4 +34,5 @@ const schema = new mongoose.Schema({
     }
 })
 
-export default mongoose.models.Solicitudes || mongoose.model('Solicitudes',schema);
+
+export default mongoose.models.Solicitudes || mongoose.model('Solicitudes',schema)

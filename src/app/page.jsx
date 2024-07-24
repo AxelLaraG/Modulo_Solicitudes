@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Principal from "@/components/Principal";
 import 'bootstrap/dist/css/bootstrap.min.css';
