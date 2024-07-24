@@ -4,12 +4,13 @@ import Formulario from "@/components/formulario";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'flatpickr/dist/flatpickr.min.css';
-import "../../public/Styles/Styles.css";
+import dbConnect from "@/libs/mongodb";
+import solicitud from "@/models/solicitud";
 
 export default function HomePage() {
   return (
     <>
-      <Formulario/>
+      <Principal/>
     </>
   );
 }

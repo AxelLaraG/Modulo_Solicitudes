@@ -20,7 +20,7 @@ function SolicitudesPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/apobtener_solicitudesi/");
+      const response = await fetch("/api/solicitudes"); // Ruta de tu API Route
       const data = await response.json();
       setSolicitudesData(data);
 
