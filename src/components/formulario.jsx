@@ -41,15 +41,7 @@ function SolicitudModal() {
         minDate: "today",
         onChange: (selectedDates) => {
           const selectedDate = selectedDates[0];
-          const currentDate = new Date();
-          const dateError = document.getElementById("date-error");
-
-          if (selectedDate < currentDate) {
-            dateError.classList.remove("d-none");
-            dateError.textContent = "La fecha debe ser igual o posterior a hoy.";
-          } else {
-            dateError.classList.add("d-none");
-          }
+          setFormData({ ...formData, fechaVen: selectedDate ? selectedDate.toISOString().split('T')[0] : "" });
         },
       });
     }
@@ -131,7 +123,12 @@ function SolicitudModal() {
               <h5 className="modal-title" id="solicitudModalLabel">
                 {idSolicitud ? "Modificar Solicitud" : "Nueva Solicitud"}
               </h5>
-
+              <button
+                type="button"
+                className="btn-close"
+                onClick={handleCloseModal}
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div className="container mt-4">
@@ -160,7 +157,7 @@ function SolicitudModal() {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="solicitante" className="fw-bold" >Solicitante:</label>
+                        <label htmlFor="solicitante" className="fw-bold">Solicitante:</label>
                         <input
                           type="text"
                           className="form-control"
@@ -173,7 +170,7 @@ function SolicitudModal() {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="procedencia" className="fw-bold" >Procedencia:</label>
+                        <label htmlFor="procedencia" className="fw-bold">Procedencia:</label>
                         <select
                           className="form-control"
                           id="procedencia"
@@ -189,9 +186,7 @@ function SolicitudModal() {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="fechaInput" className="fw-bold">
-                          Fecha de vencimiento:
-                        </label>
+                        <label htmlFor="fechaInput" className="fw-bold">Fecha de vencimiento:</label>
                         <input
                           type="text"
                           className="form-control"
@@ -201,15 +196,12 @@ function SolicitudModal() {
                           onChange={handleChange}
                           required
                         />
-                        <div
-                          id="date-error"
-                          className="invalid-feedback d-none"
-                        ></div>
+                        <div id="date-error" className="invalid-feedback d-none"></div>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="telefono" className="fw-bold" >Teléfono:</label>
+                        <label htmlFor="telefono" className="fw-bold">Teléfono:</label>
                         <input
                           type="tel"
                           className="form-control"
