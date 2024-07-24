@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Script from "next/script";
-import $ from "jquery";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/l10n/es.js";
 
 function SolicitudModal() {
   const router = useRouter();
@@ -30,36 +30,29 @@ function SolicitudModal() {
         .then((solicitud) => setFormData(solicitud))
         .catch((error) => console.error("Error al cargar datos:", error));
     }
-
-    // Importar los estilos de Bootstrap Datepicker (una sola vez al montar el componente)
-    import("bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css");
   }, [idSolicitud]);
 
   useEffect(() => {
-    if (datePickerRef.current && typeof $ !== "undefined") {
-      $(datePickerRef.current).datepicker({
-        format: "yyyy-mm-dd",
-        autoclose: true,
-        todayHighlight: true,
-        startDate: new Date(),
-        language: "es",
-      });
+    if (datePickerRef.current) {
+      flatpickr(datePickerRef.current, {
+        locale: "es",
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        onChange: (selectedDates) => {
+          const selectedDate = selectedDates[0];
+          const currentDate = new Date();
+          const dateError = document.getElementById("date-error");
 
-      $(datePickerRef.current).on("changeDate", (e) => {
-        const selectedDate = new Date(e.date);
-        const currentDate = new Date();
-        const dateError = document.getElementById("date-error");
-
-        if (selectedDate.getTime() < currentDate.getTime()) {
-          dateError.classList.remove("d-none");
-          dateError.textContent = "La fecha debe ser igual o posterior a hoy.";
-        } else {
-          dateError.classList.add("d-none");
-        }
+          if (selectedDate < currentDate) {
+            dateError.classList.remove("d-none");
+            dateError.textContent = "La fecha debe ser igual o posterior a hoy.";
+          } else {
+            dateError.classList.add("d-none");
+          }
+        },
       });
     }
-  }, []); // Se ejecuta solo una vez al montar el componente
-
+  }, []);
 
   const handleChange = (event) => {
     const { id, value } = event.target;
@@ -123,12 +116,6 @@ function SolicitudModal() {
 
   return (
     <>
-      <Script src="https://code.jquery.com/jquery-3.6.0.min.js" />
-      <Script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
-        onLoad={() => console.log("bootstrap-datepicker cargado")}
-        onError={(e) => console.error("Error al cargar bootstrap-datepicker:", e)}
-      />
       <div
         className={`modal fade ${showModal ? "show" : ""}`}
         id="solicitudModal"
@@ -198,32 +185,19 @@ function SolicitudModal() {
                     <label htmlFor="fechaInput" className="form-label">
                       Fecha de vencimiento:
                     </label>
-                    <div
-                      className="input-group date"
-                      id="datepicker"
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="fechaInput"
                       ref={datePickerRef}
-                    >
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="fechaInput"
-                        data-bs-toggle="datepicker"
-                        data-bs-format="yyyy-mm-dd"
-                        value={formData.fechaVen}
-                        onChange={handleChange}
-                        required
-                        readOnly
-                      />
-                      <div className="input-group-append">
-                        <span className="input-group-text">
-                          <i className="bi bi-calendar"></i>
-                        </span>
-                      </div>
-                      <div
-                        id="date-error"
-                        className="invalid-feedback d-none"
-                      ></div>
-                    </div>
+                      value={formData.fechaVen}
+                      onChange={handleChange}
+                      required
+                    />
+                    <div
+                      id="date-error"
+                      className="invalid-feedback d-none"
+                    ></div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="telefono">Teléfono:</label>
