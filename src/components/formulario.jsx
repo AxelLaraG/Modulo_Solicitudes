@@ -107,7 +107,7 @@ function SolicitudModal() {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    router.push("/");
+    router.push("/"); // Redireccion :c
   };
 
   return (
@@ -126,12 +126,6 @@ function SolicitudModal() {
               <h5 className="modal-title" id="solicitudModalLabel">
                 {idSolicitud ? "Modificar Solicitud" : "Nueva Solicitud"}
               </h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={handleCloseModal}
-                aria-label="Close"
-              ></button>
             </div>
             <div className="modal-body">
               <div className="container mt-4">
