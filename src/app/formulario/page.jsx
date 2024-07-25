@@ -5,11 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "flatpickr/dist/flatpickr.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'flatpickr/dist/flatpickr.min.css';
 
 function Solicitud() {
+
   return (
     <div className="container mt-4">
       <div className="header-container">
@@ -18,14 +19,20 @@ function Solicitud() {
       </div>
 
       <form id="formularioSolicitud">
-        <input type="hidden" id="idSolicitud" />
-
+        
+          <input type="hidden" id="idSolicitud"/>
+        
         <div className="col-md-12">
           <div className="form-group">
             <label htmlFor="asunto" className="fw-bold">
               Asunto:
             </label>
-            <input type="text" className="form-control" id="asunto" required />
+            <input
+              type="text"
+              className="form-control"
+              id="asunto"
+              required
+            />
           </div>
         </div>
         <div className="row">
@@ -47,7 +54,11 @@ function Solicitud() {
               <label htmlFor="procedencia" className="fw-bold">
                 Procedencia:
               </label>
-              <select className="form-control" id="procedencia" required>
+              <select
+                className="form-control"
+                id="procedencia"
+                required
+              >
                 <option value="Procedencia 1">Oficio</option>
                 <option value="Procedencia 2">Correo</option>
                 <option value="Procedencia 3">Teléfono</option>
@@ -63,6 +74,7 @@ function Solicitud() {
                 type="text"
                 className="form-control"
                 id="fechaInput"
+                ref={flatpickr}
                 required
               />
               <div id="date-error" className="invalid-feedback d-none"></div>
@@ -87,7 +99,11 @@ function Solicitud() {
               <label htmlFor="correo" className="fw-bold">
                 Correo:
               </label>
-              <input type="email" className="form-control" id="correo" />
+              <input
+                type="email"
+                className="form-control"
+                id="correo"
+              />
             </div>
           </div>
           <div className="col-md-6">
@@ -95,7 +111,11 @@ function Solicitud() {
               <label htmlFor="responsable" className="fw-bold">
                 Responsable:
               </label>
-              <select className="form-control" id="responsable" required>
+              <select
+                className="form-control"
+                id="responsable"
+                required
+              >
                 <option value="Responsable 1">Responsable 1</option>
                 <option value="Responsable 2">Responsable 2</option>
                 <option value="Responsable 3">Responsable 3</option>
@@ -104,16 +124,19 @@ function Solicitud() {
               </select>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="estatus">Estatus:</label>
-              <select className="form-control" id="estatus">
-                <option value="pendiente">Pendiente</option>
-                <option value="realizado">Realizado</option>
-                <option value="rechazado">Rechazado</option>
-              </select>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="estatus">Estatus:</label>
+                <select
+                  className="form-control"
+                  id="estatus"
+                >
+                  <option value="pendiente">Pendiente</option>
+                  <option value="realizado">Realizado</option>
+                  <option value="rechazado">Rechazado</option>
+                </select>
+              </div>
             </div>
-          </div>
         </div>
         <div className="mt-3">
           <button

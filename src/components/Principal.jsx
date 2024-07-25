@@ -6,6 +6,9 @@ import { exportToExcel } from "../utils/exportToExcel";
 import { useRouter } from "next/navigation";
 import "../../public/Styles/styles.css";
 import Link from "next/link";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/l10n/es.js";
+import "flatpickr/dist/flatpickr.min.css";
 
 function Principal() {
   const [solicitudesData, setSolicitudesData] = useState([]);
@@ -166,6 +169,7 @@ function Principal() {
               type="date"
               className="form-control"
               id="filtroValor"
+              ref={flatpickr}
               value={filtroValor}
               onChange={handleFiltroValorChange}
             />

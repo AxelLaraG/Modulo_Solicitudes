@@ -11,7 +11,7 @@ import solicitud from "../models/solicitud";
 export default function HomePage() {
   return (
     <>
-      <Formulario/>
+      <Principal/>
     </>
   );
 }
