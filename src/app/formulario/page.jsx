@@ -123,11 +123,9 @@ function Solicitud() {
           >
             Cerrar
           </button>
-          (
           <button type="submit" className="btn btn-primary">
             Enviar Solicitud
           </button>
-          )
         </div>
       </form>
     </div>
