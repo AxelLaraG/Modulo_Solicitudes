@@ -7,7 +7,7 @@ import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
 import { Spanish } from "flatpickr/dist/l10n/es.js";
 
-export default function funciones() {
+export default function Funciones() {
     //funcion para limitar l afecha de vencimiento
     const flatpickrRef = useRef(null);
     const [fechaMin, setFechaMin] = useState(new Date());
