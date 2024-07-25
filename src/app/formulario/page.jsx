@@ -5,6 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'flatpickr/dist/flatpickr.min.css';
 
 function Solicitud() {
   const router = useRouter();
