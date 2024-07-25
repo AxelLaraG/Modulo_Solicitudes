@@ -24,15 +24,6 @@ function Solicitud() {
   const datePickerRef = useRef(null);
 
   useEffect(() => {
-    if (idSolicitud) {
-      fetch(`/api/obtener_solicitud/${idSolicitud}`)
-        .then((response) => response.json())
-        .then((solicitud) => setFormData(solicitud))
-        .catch((error) => console.error("Error al cargar datos:", error));
-    }
-  }, [idSolicitud]);
-
-  useEffect(() => {
     if (datePickerRef.current) {
       flatpickr(datePickerRef.current, {
         locale: "es",
@@ -60,23 +51,14 @@ function Solicitud() {
     event.preventDefault();
 
     try {
-      const response = await fetch(
-        idSolicitud
-          ? `/api/modificar_solicitud/${idSolicitud}`
-          : "/api/solicitudes",
-        {
-          method: idSolicitud ? "PUT" : "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData), // Enviar los datos del formulario
-        }
-      );
+      const response = await fetch("/api/solicitudes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData), // Enviar los datos del formulario
+      });
 
       if (response.ok) {
-        alert(
-          idSolicitud
-            ? "Solicitud modificada exitosamente"
-            : "Solicitud creada exitosamente"
-        );
+        alert("Solicitud creada exitosamente");
         setFormData({
           solicitante: "",
           telefono: "",
@@ -93,25 +75,6 @@ function Solicitud() {
     } catch (error) {
       console.error("Error:", error);
       alert("Error al enviar/modificar solicitud.");
-    }
-  };
-
-  const handleDelete = async () => {
-    if (confirm("¿Estás seguro de que deseas eliminar esta solicitud?")) {
-      try {
-        const response = await fetch(`/api/eliminar_solicitud/${idSolicitud}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          alert("Solicitud eliminada exitosamente");
-          router.push("/");
-        } else {
-          alert("Error al eliminar la solicitud");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error al eliminar solicitud.");
-      }
     }
   };
 
@@ -268,24 +231,11 @@ function Solicitud() {
           >
             Cerrar
           </button>
-          {idSolicitud ? (
-            <>
-              <button
-                type="button"
-                className="btn btn-danger me-2"
-                onClick={handleDelete}
-              >
-                Eliminar
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Guardar Cambios
-              </button>
-            </>
-          ) : (
-            <button type="submit" className="btn btn-primary">
-              Enviar Solicitud
-            </button>
-          )}
+          (
+          <button type="submit" className="btn btn-primary">
+            Enviar Solicitud
+          </button>
+          )
         </div>
       </form>
     </div>
