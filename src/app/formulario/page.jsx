@@ -5,12 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import 'flatpickr/dist/flatpickr.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "flatpickr/dist/flatpickr.min.css";
 
 function Solicitud() {
-
   return (
     <div className="container mt-4">
       <div className="header-container">
@@ -18,23 +17,15 @@ function Solicitud() {
         <br />
       </div>
 
-      <form id="formularioSolicitud" onSubmit={handleSubmit}>
-        {idSolicitud && (
-          <input type="hidden" id="idSolicitud" value={idSolicitud} />
-        )}
+      <form id="formularioSolicitud">
+        <input type="hidden" id="idSolicitud" />
+
         <div className="col-md-12">
           <div className="form-group">
             <label htmlFor="asunto" className="fw-bold">
               Asunto:
             </label>
-            <input
-              type="text"
-              className="form-control"
-              id="asunto"
-              value={formData.asunto}
-              onChange={handleChange}
-              required
-            />
+            <input type="text" className="form-control" id="asunto" required />
           </div>
         </div>
         <div className="row">
@@ -47,8 +38,6 @@ function Solicitud() {
                 type="text"
                 className="form-control"
                 id="solicitante"
-                value={formData.solicitante}
-                onChange={handleChange}
                 required
               />
             </div>
@@ -58,13 +47,7 @@ function Solicitud() {
               <label htmlFor="procedencia" className="fw-bold">
                 Procedencia:
               </label>
-              <select
-                className="form-control"
-                id="procedencia"
-                value={formData.procedencia}
-                onChange={handleChange}
-                required
-              >
+              <select className="form-control" id="procedencia" required>
                 <option value="Procedencia 1">Oficio</option>
                 <option value="Procedencia 2">Correo</option>
                 <option value="Procedencia 3">Teléfono</option>
@@ -80,9 +63,6 @@ function Solicitud() {
                 type="text"
                 className="form-control"
                 id="fechaInput"
-                ref={datePickerRef}
-                value={formData.fechaVen}
-                onChange={handleChange}
                 required
               />
               <div id="date-error" className="invalid-feedback d-none"></div>
@@ -99,8 +79,6 @@ function Solicitud() {
                 id="telefono"
                 pattern="[0-9]{10}"
                 title="Debe contener 10 dígitos"
-                value={formData.telefono}
-                onChange={handleChange}
               />
             </div>
           </div>
@@ -109,13 +87,7 @@ function Solicitud() {
               <label htmlFor="correo" className="fw-bold">
                 Correo:
               </label>
-              <input
-                type="email"
-                className="form-control"
-                id="correo"
-                value={formData.correo}
-                onChange={handleChange}
-              />
+              <input type="email" className="form-control" id="correo" />
             </div>
           </div>
           <div className="col-md-6">
@@ -123,13 +95,7 @@ function Solicitud() {
               <label htmlFor="responsable" className="fw-bold">
                 Responsable:
               </label>
-              <select
-                className="form-control"
-                id="responsable"
-                value={formData.responsable}
-                onChange={handleChange}
-                required
-              >
+              <select className="form-control" id="responsable" required>
                 <option value="Responsable 1">Responsable 1</option>
                 <option value="Responsable 2">Responsable 2</option>
                 <option value="Responsable 3">Responsable 3</option>
@@ -138,23 +104,16 @@ function Solicitud() {
               </select>
             </div>
           </div>
-          {idSolicitud && (
-            <div className="col-md-6">
-              <div className="form-group">
-                <label htmlFor="estatus">Estatus:</label>
-                <select
-                  className="form-control"
-                  id="estatus"
-                  value={formData.estatus}
-                  onChange={handleChange}
-                >
-                  <option value="pendiente">Pendiente</option>
-                  <option value="realizado">Realizado</option>
-                  <option value="rechazado">Rechazado</option>
-                </select>
-              </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="estatus">Estatus:</label>
+              <select className="form-control" id="estatus">
+                <option value="pendiente">Pendiente</option>
+                <option value="realizado">Realizado</option>
+                <option value="rechazado">Rechazado</option>
+              </select>
             </div>
-          )}
+          </div>
         </div>
         <div className="mt-3">
           <button
