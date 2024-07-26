@@ -19,7 +19,7 @@ export async function POST(request) {
     responsable: formData.responsable,
     fecha: fechaHoraServidor, // Usar la fecha y hora del servidor
     solicitante: formData.solicitante,
-    estatus: formData.estatus || "pendiente", // Valor por defecto si no se envía
+    estatus: formData.estatus, // Valor por defecto si no se envía
     correo: formData.correo,
     telefono: formData.telefono,
     asunto: formData.asunto,

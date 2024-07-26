@@ -23,7 +23,7 @@ export default function FormularioPlantilla() {
         correo: document.getElementById("correo").value,
         telefono: document.getElementById("telefono").value,
         asunto: document.getElementById("asunto").value,   
-
+        estatus: document.getElementById("estatus").value,
         fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
       };
 
