@@ -13,6 +13,7 @@ import Link from "next/link";
 export default function FormularioPlantilla() {
   const flatpickrRef = useRef(null);
   const [fechaMin, setFechaMin] = useState(new Date());
+  
   useEffect(() => {
     flatpickrRef.current = flatpickr("#fechaInput", {
       minDate: fechaMin,
