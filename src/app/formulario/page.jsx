@@ -1,15 +1,38 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
+import { Spanish } from "flatpickr/dist/l10n/es.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Calendario from "./calendario";
+import Link from "next/link";
 
 export default function FormularioPlantilla() {
+  const flatpickrRef = useRef(null);
+  const [fechaMin, setFechaMin] = useState(new Date());
+  
+  useEffect(() => {
+    flatpickrRef.current = flatpickr("#fechaInput", {
+      minDate: fechaMin,
+      dateFormat: "Y-m-d",
+      disableMobile: true,
+      onChange: function (selectedDates, dateStr, instance) {
+        const fechaSeleccionada = new Date(dateStr);
+        if (fechaSeleccionada < fechaMin) {
+          document.getElementById("date-error").textContent =
+            "La fecha no puede ser anterior a hoy.";
+          document.getElementById("date-error").classList.remove("d-none");
+        } else {
+          document.getElementById("date-error").classList.add("d-none");
+        }
+      },
+      locale: Spanish,
+    });
+  }, [fechaMin]); // Dependencia del useEffect
+
   return (
     <div className="container mt-4">
       <div className="header-container">
@@ -55,18 +78,11 @@ export default function FormularioPlantilla() {
             </div>
           </div>
           <div className="col-md-6">
-            <Calendario/>
             <div className="form-group">
               <label htmlFor="fechaInput" className="fw-bold">
                 Fecha de vencimiento:
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="fechaInput"
-                ref={flatpickr}
-                required
-              />
+              <input type="text" className="form-control" id="fechaInput" />
               <div id="date-error" className="invalid-feedback d-none"></div>
             </div>
           </div>
@@ -118,13 +134,11 @@ export default function FormularioPlantilla() {
           </div>
         </div>
         <div className="mt-3">
-          <button
-            type="button"
-            className="btn btn-secondary me-2"
-            onClick={() => router.back()}
-          >
-            Cerrar
-          </button>
+          <Link href="/">
+            <button type="button" className="btn btn-secondary me-2">
+              Cerrar
+            </button>
+          </Link>
           <button type="submit" className="btn btn-primary">
             Enviar Solicitud
           </button>
