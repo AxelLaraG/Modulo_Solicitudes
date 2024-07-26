@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useSearchParams } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
@@ -13,7 +12,41 @@ import Link from "next/link";
 export default function FormularioPlantilla() {
   const flatpickrRef = useRef(null);
   const [fechaMin, setFechaMin] = useState(new Date());
-  
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Evita el envío tradicional del formulario
+
+    try {
+      const formData = {
+        responsable: document.getElementById("responsable").value,
+        solicitante: document.getElementById("solicitante").value,
+        correo: document.getElementById("correo").value,
+        telefono: document.getElementById("telefono").value,
+        asunto: document.getElementById("asunto").value,   
+
+        fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
+      };
+
+      const response = await fetch("/api/solicitudes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Solicitud exitosa, puedes redirigir o hacer otra acción
+        alert("Solicitud enviada con éxito");
+        
+      } else {
+        alert("Error al enviar la solicitud");
+      }
+    } catch (error) {
+      console.error(error.message); // Manejar el error
+    } 
+  };
+
   useEffect(() => {
     flatpickrRef.current = flatpickr("#fechaInput", {
       minDate: fechaMin,
@@ -33,8 +66,10 @@ export default function FormularioPlantilla() {
     });
   }, [fechaMin]); // Dependencia del useEffect
 
+
+
   return (
-    <div className="container mt-4">
+    <div className="container mt-4" onSubmit={handleSubmit}>
       <div className="header-container">
         <h2 className="text-center">Solicitud</h2>
         <br />
