@@ -61,7 +61,7 @@ export default function Principal() {
     }
 
     fetchData();
-  }, []); // El array vacío asegura que esto solo se ejecute una vez al cargar el componente
+  }, []);
 
   useEffect(() => {
     const fechaInput = document.getElementById("filtroValor");
@@ -70,9 +70,9 @@ export default function Principal() {
         locale: "es",
         onChange: (selectedDates) => {
           if (selectedDates.length > 0) {
-            const fechaSeleccionada = selectedDates[0]; // Obtener la fecha seleccionada
-            setFiltroValor(fechaSeleccionada.toISOString().split('T')[0]); // Establecer el filtro con la fecha en formato ISO
-            cargarSolicitudes(); // Volver a cargar las solicitudes para aplicar el filtro inmediatamente
+            const fechaSeleccionada = selectedDates[0];
+            setFiltroValor(fechaSeleccionada.toISOString().split("T")[0]); 
+            cargarSolicitudes();
           }
         },
       });
@@ -125,7 +125,9 @@ export default function Principal() {
         const columns = [
           new Date(solicitud.fecha).toLocaleDateString(),
           solicitud.solicitante,
-          solicitud.asunto.length > 5 ? solicitud.asunto.slice(0, 5) + "..." : solicitud.asunto,
+          solicitud.asunto.length > 5
+            ? solicitud.asunto.slice(0, 5) + "..."
+            : solicitud.asunto,
           solicitud.responsable,
           solicitud.estatus === "realizado"
             ? '<i class="bi bi-check-circle-fill text-success"></i>'
@@ -138,7 +140,7 @@ export default function Principal() {
           const cell = document.createElement("td");
           cell.innerHTML = columnText;
           cell.addEventListener("click", () => {
-            router.push('/formulario/' + solicitud._id);
+            router.push("/formulario/" + solicitud._id);
           });
           row.appendChild(cell);
         });
@@ -172,27 +174,38 @@ export default function Principal() {
 
   function Flatpickr({ className, ...props }) {
     const inputRef = useRef(null);
-  
+
     useEffect(() => {
-      flatpickr.setDefaults({ dateFormat: "Y-m-d", locale: "es",minDate: "today"}); // Establecemos el formato por defecto
+      flatpickr.setDefaults({
+        dateFormat: "Y-m-d",
+        locale: "es",
+        minDate: "today",
+      }); // Establecemos el formato por defecto
       const fp = flatpickr(inputRef.current, {
         ...props,
         onClose: (selectedDates) => {
           if (selectedDates.length > 0) {
-            const fechaSeleccionada = selectedDates[0].toISOString().split("T")[0];
+            const fechaSeleccionada = selectedDates[0]
+              .toISOString()
+              .split("T")[0];
             inputRef.current.value = fechaSeleccionada; // Actualizamos el valor del input
           }
-        }
+        },
       });
-  
+
       return () => {
         fp.destroy(); // Destruimos la instancia al desmontar
       };
-    }, []); 
-  
+    }, []);
+
     return (
       <div>
-        <input ref={inputRef} className={className} type="text" value={filtroValor} /> 
+        <input
+          ref={inputRef}
+          className={className}
+          type="text"
+          value={filtroValor}
+        />
       </div>
     );
   }
@@ -299,4 +312,3 @@ export default function Principal() {
     </div>
   );
 }
-
