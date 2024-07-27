@@ -2,9 +2,8 @@ import dbConnect from "../../../libs/mongodb";
 import solicitud from "../../../models/solicitud";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request) {
   await dbConnect();
-
   const solicitudes = await solicitud.find();
   return NextResponse.json(solicitudes);
 }
