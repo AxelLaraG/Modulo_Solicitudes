@@ -61,7 +61,26 @@ export default function Principal() {
     }
 
     fetchData();
-  }, []); // El array vacío asegura que esto solo se ejecute una vez al cargar el componente
+  }, []);
+
+  useEffect(() => {
+    const fechaInput = document.getElementById("filtroValor");
+    if (filtroCriterio === "fecha" && fechaInput) {
+      flatpickr.current = flatpickr(fechaInput, {
+        locale: "es",
+        onChange: (selectedDates) => {
+          if (selectedDates.length > 0) {
+            const fechaSeleccionada = selectedDates[0];
+            setFiltroValor(fechaSeleccionada.toISOString().split("T")[0]); 
+            cargarSolicitudes();
+          }
+        },
+      });
+    } else if (flatpickr.current) {
+      flatpickr.current.destroy();
+      flatpickr.current = null;
+    }
+  }, [filtroCriterio]);
 
   const filterData = (data, criterio, valorFiltro) => {
     if (criterio === "todos" || valorFiltro === "") {
@@ -70,9 +89,17 @@ export default function Principal() {
       return data.filter((solicitud) => solicitud.estatus === valorFiltro);
     } else if (criterio === "fecha") {
       const fechaFiltro = new Date(valorFiltro);
+      fechaFiltro.setHours(23, 59, 59, 999); // Final del día seleccionado
+
+      const fechaActual = new Date();
+      fechaActual.setHours(0, 0, 0, 0); // Inicio del día actual
+
       return data.filter((solicitud) => {
-        const fechaSolicitud = new Date(solicitud.fecha);
-        return fechaSolicitud.toDateString() === fechaFiltro.toDateString();
+        const fechaSolicitud = new Date(solicitud.fechaVen);
+        return (
+          fechaSolicitud.getTime() >= fechaActual.getTime() &&
+          fechaSolicitud.getTime() <= fechaFiltro.getTime()
+        );
       });
     } else {
       const valorFiltroLower = valorFiltro.toLowerCase();
@@ -81,7 +108,6 @@ export default function Principal() {
       );
     }
   };
-
   const cargarSolicitudes = () => {
     const solicitudesAMostrar = filterData(
       solicitudesData,
@@ -99,7 +125,9 @@ export default function Principal() {
         const columns = [
           new Date(solicitud.fecha).toLocaleDateString(),
           solicitud.solicitante,
-          solicitud.asunto,
+          solicitud.asunto.length > 5
+            ? solicitud.asunto.slice(0, 5) + "..."
+            : solicitud.asunto,
           solicitud.responsable,
           solicitud.estatus === "realizado"
             ? '<i class="bi bi-check-circle-fill text-success"></i>'
@@ -112,7 +140,7 @@ export default function Principal() {
           const cell = document.createElement("td");
           cell.innerHTML = columnText;
           cell.addEventListener("click", () => {
-            router.push('/formulario/' + solicitud._id);
+            router.push("/formulario/" + solicitud._id);
           });
           row.appendChild(cell);
         });
@@ -136,6 +164,51 @@ export default function Principal() {
   const handleFiltroValorChange = (event) => {
     setFiltroValor(event.target.value);
   };
+
+  const handleFiltroValorChangeD = (selectedDates) => {
+    if (selectedDates.length > 0) {
+      const fechaSeleccionada = selectedDates[0];
+      setFiltroValor(fechaSeleccionada.toISOString().split("T")[0]);
+    }
+  };
+
+  function Flatpickr({ className, ...props }) {
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+      flatpickr.setDefaults({
+        dateFormat: "Y-m-d",
+        locale: "es",
+        minDate: "today",
+      }); // Establecemos el formato por defecto
+      const fp = flatpickr(inputRef.current, {
+        ...props,
+        onClose: (selectedDates) => {
+          if (selectedDates.length > 0) {
+            const fechaSeleccionada = selectedDates[0]
+              .toISOString()
+              .split("T")[0];
+            inputRef.current.value = fechaSeleccionada; // Actualizamos el valor del input
+          }
+        },
+      });
+
+      return () => {
+        fp.destroy(); // Destruimos la instancia al desmontar
+      };
+    }, []);
+
+    return (
+      <div>
+        <input
+          ref={inputRef}
+          className={className}
+          type="text"
+          value={filtroValor}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5">
@@ -176,13 +249,11 @@ export default function Principal() {
               <option value="rechazado">Rechazado</option>
             </select>
           ) : filtroCriterio === "fecha" ? (
-            <input
-              type="date"
+            <Flatpickr
               className="form-control"
               id="filtroValor"
-              ref={flatpickr}
               value={filtroValor}
-              onChange={handleFiltroValorChange}
+              onChange={handleFiltroValorChangeD}
             />
           ) : (
             <input
@@ -241,4 +312,3 @@ export default function Principal() {
     </div>
   );
 }
-
