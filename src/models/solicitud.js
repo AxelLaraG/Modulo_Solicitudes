@@ -13,6 +13,10 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    procedencia:{
+        type: String,
+        required: true
+    },
     estatus: {
         type: String,
         required: true
