@@ -33,6 +33,18 @@ export default function FormularioPlantilla() {
     });
   };
 
+  const handleClearDate = () => {
+    // Borrar la fecha en flatpickr
+    flatpickrRef.current?.clear();
+
+    // Borrar la fecha en el estado formData
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      fechaVen: "",
+    }));
+  };
+
+
   const handleDelete = async () => {
     if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
@@ -101,25 +113,24 @@ export default function FormularioPlantilla() {
 
   useEffect(() => {
     // Inicializar flatpickr una sola vez al montar el componente
-    flatpickrRef.current = flatpickr("#fechaInput", { 
+
+    flatpickrRef.current = flatpickr("#fechaInput", {
       minDate: fechaMin,
       dateFormat: "Y-m-d",
       disableMobile: true,
       // Configurar el manejador onChange para actualizar el estado
       onChange: function (selectedDates, dateStr, instance) {
-        setFormData(prevFormData => ({
+        setFormData((prevFormData) => ({
           ...prevFormData,
           fechaVen: dateStr,
         }));
       },
       locale: Spanish,
     });
-  
     // Si estamos editando, establecer la fecha inicial
-    if (params.id && formData.fechaVen) { 
-      flatpickrRef.current.setDate(formData.fechaVen.split('T')[0]);
+    if (params.id && formData.fechaVen) {
+      flatpickrRef.current.setDate(formData.fechaVen.split("T")[0]);
     }
-  
     return () => {
       flatpickrRef.current?.destroy(); // Limpiar al desmontar
     };
@@ -137,7 +148,9 @@ export default function FormularioPlantilla() {
           telefono: solicitudData.telefono,
           asunto: solicitudData.asunto,
           estatus: solicitudData.estatus,
-          fechaVen: solicitudData.fechaVen ? solicitudData.fechaVen.split("T")[0] : "",// Obtener la fecha sin la hora
+          fechaVen: solicitudData.fechaVen
+            ? solicitudData.fechaVen.split("T")[0]
+            : "", // Obtener la fecha sin la hora
           procedencia: solicitudData.procedencia,
         });
       } else {
@@ -310,6 +323,15 @@ export default function FormularioPlantilla() {
               onClick={handleDelete}
             >
               Borrar
+            </button>
+          )}
+          {params.id && formData.fechaVen && (
+            <button
+              type="button"
+              className="btn btn-primary me-2"
+              onClick={handleClearDate}
+            >
+              Borrar Fecha de Vencimiento
             </button>
           )}
           <button type="submit" className="btn btn-primary">
