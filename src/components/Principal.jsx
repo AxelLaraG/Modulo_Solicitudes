@@ -10,7 +10,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
 
-function Principal() {
+export default function Principal() {
   const [solicitudesData, setSolicitudesData] = useState([]);
   const [filtroCriterio, setFiltroCriterio] = useState("todos");
   const [filtroValor, setFiltroValor] = useState("");
@@ -90,24 +90,35 @@ function Principal() {
     );
 
     if (tablaSolicitudesRef.current) {
-      tablaSolicitudesRef.current.innerHTML = solicitudesAMostrar
-        .map(
-          (solicitud) =>
-            `<tr key={solicitud.id}> 
-                <td>${new Date(solicitud.fecha).toLocaleDateString()}</td>
-                <td>${solicitud.solicitante}</td>
-                <td>${solicitud.asunto}</td>
-                <td>${solicitud.responsable}</td>
-                <td>${
-                  solicitud.estatus === "realizado"
-                    ? '<i class="bi bi-check-circle-fill text-success"></i>'
-                    : solicitud.estatus === "pendiente"
-                    ? '<i class="bi bi-circle-fill text-warning"></i>'
-                    : '<i class="bi bi-x-circle-fill text-danger"></i>'
-                }</td>
-            </tr>`
-        )
-        .join(""); // Unimos las filas en un string
+      tablaSolicitudesRef.current.innerHTML = ""; // Limpiar la tabla antes de agregar nuevas filas
+
+      solicitudesAMostrar.forEach((solicitud) => {
+        const row = document.createElement("tr");
+        row.setAttribute("key", solicitud._id);
+
+        const columns = [
+          new Date(solicitud.fecha).toLocaleDateString(),
+          solicitud.solicitante,
+          solicitud.asunto,
+          solicitud.responsable,
+          solicitud.estatus === "realizado"
+            ? '<i class="bi bi-check-circle-fill text-success"></i>'
+            : solicitud.estatus === "pendiente"
+            ? '<i class="bi bi-circle-fill text-warning"></i>'
+            : '<i class="bi bi-x-circle-fill text-danger"></i>',
+        ];
+
+        columns.forEach((columnText) => {
+          const cell = document.createElement("td");
+          cell.innerHTML = columnText;
+          cell.addEventListener("click", () => {
+            router.push('/formulario/' + solicitud._id);
+          });
+          row.appendChild(cell);
+        });
+
+        tablaSolicitudesRef.current.appendChild(row);
+      });
     }
   };
 
@@ -203,14 +214,14 @@ function Principal() {
 
       <div className="fixed-button">
         <Link href="/formulario">
-          <button id="botonCrear" className="btn btn-primary">
+          <button id="botonCrear" className="btn btn-primary me-2">
             Crear Nuevo Registro
           </button>
         </Link>
 
         <button
           id="botonDescargar"
-          className="btn btn-primary"
+          className="btn btn-primary "
           onClick={() => {
             const datosFiltrados = filterData(
               solicitudesData,
@@ -231,4 +242,3 @@ function Principal() {
   );
 }
 
-export default Principal;

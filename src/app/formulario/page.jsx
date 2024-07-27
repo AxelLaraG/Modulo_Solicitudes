@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useParams,useRouter } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
@@ -11,7 +12,18 @@ import Link from "next/link";
 
 export default function FormularioPlantilla() {
   const flatpickrRef = useRef(null);
+  const params = useParams();
+  const router = useRouter();
   const [fechaMin, setFechaMin] = useState(new Date());
+
+  const handleDelete = async () => {
+    if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
+      const response = await fetch(`/api/solicitudes/${params.id}`, {
+        method: "DELETE",
+      });
+      router.push("/");
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Evita el envío tradicional del formulario
@@ -22,7 +34,7 @@ export default function FormularioPlantilla() {
         solicitante: document.getElementById("solicitante").value,
         correo: document.getElementById("correo").value,
         telefono: document.getElementById("telefono").value,
-        asunto: document.getElementById("asunto").value,   
+        asunto: document.getElementById("asunto").value,
         estatus: document.getElementById("estatus").value,
         fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
       };
@@ -38,13 +50,12 @@ export default function FormularioPlantilla() {
       if (response.ok) {
         // Solicitud exitosa, puedes redirigir o hacer otra acción
         alert("Solicitud enviada con éxito");
-        
       } else {
         alert("Error al enviar la solicitud");
       }
     } catch (error) {
       console.error(error.message); // Manejar el error
-    } 
+    }
   };
 
   useEffect(() => {
@@ -65,8 +76,6 @@ export default function FormularioPlantilla() {
       locale: Spanish,
     });
   }, [fechaMin]); // Dependencia del useEffect
-
-
 
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
@@ -174,8 +183,13 @@ export default function FormularioPlantilla() {
               Cerrar
             </button>
           </Link>
+          <button
+            type="button"
+            className="btn btn-primary me-2"
+            onClick={handleDelete}
+          >Borrar</button>
           <button type="submit" className="btn btn-primary">
-            Enviar Solicitud
+            {params.id ? "Actualizar Solicitud" : "Crear Solicitud"}
           </button>
         </div>
       </form>
