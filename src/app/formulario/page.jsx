@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useParams,useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
@@ -15,6 +15,23 @@ export default function FormularioPlantilla() {
   const params = useParams();
   const router = useRouter();
   const [fechaMin, setFechaMin] = useState(new Date());
+  const [formData, setFormData] = useState({
+    solicitante: "",
+    telefono: "",
+    asunto: "",
+    procedencia: "Procedencia 1",
+    correo: "",
+    responsable: "Responsable 1",
+    fechaVen: "",
+    estatus: "pendiente",
+  });
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.id]: event.target.value,
+    });
+  };
 
   const handleDelete = async () => {
     if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
@@ -29,7 +46,7 @@ export default function FormularioPlantilla() {
     event.preventDefault(); // Evita el envío tradicional del formulario
 
     try {
-      const formData = {
+      setFormData({
         responsable: document.getElementById("responsable").value,
         solicitante: document.getElementById("solicitante").value,
         correo: document.getElementById("correo").value,
@@ -37,21 +54,45 @@ export default function FormularioPlantilla() {
         asunto: document.getElementById("asunto").value,
         estatus: document.getElementById("estatus").value,
         fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
-      };
-
-      const response = await fetch("/api/solicitudes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        // Solicitud exitosa, puedes redirigir o hacer otra acción
-        alert("Solicitud enviada con éxito");
+      if (!params.id) {
+        const response = await fetch("/api/solicitudes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        if (response.ok) {
+          // Solicitud exitosa, puedes redirigir o hacer otra acción
+          alert("Solicitud enviada con éxito");
+          setFormData({
+            solicitante: "",
+            telefono: "",
+            asunto: "",
+            procedencia: "Procedencia 1",
+            correo: "",
+            responsable: "Responsable 1",
+            fechaVen: "",
+            estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
+          });
+        } else {
+          alert("Error al enviar la solicitud");
+        }
       } else {
-        alert("Error al enviar la solicitud");
+        const response = await fetch(`/api/solicitudes/${params.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        if (response.ok) {
+          alert("Solicitud actualizada con éxito");
+        } else {
+          alert("Error al actualizar la solicitud");
+        }
       }
     } catch (error) {
       console.error(error.message); // Manejar el error
@@ -59,23 +100,62 @@ export default function FormularioPlantilla() {
   };
 
   useEffect(() => {
-    flatpickrRef.current = flatpickr("#fechaInput", {
+    // Inicializar flatpickr una sola vez al montar el componente
+    flatpickrRef.current = flatpickr("#fechaInput", { 
       minDate: fechaMin,
       dateFormat: "Y-m-d",
       disableMobile: true,
+      // Configurar el manejador onChange para actualizar el estado
       onChange: function (selectedDates, dateStr, instance) {
-        const fechaSeleccionada = new Date(dateStr);
-        if (fechaSeleccionada < fechaMin) {
-          document.getElementById("date-error").textContent =
-            "La fecha no puede ser anterior a hoy.";
-          document.getElementById("date-error").classList.remove("d-none");
-        } else {
-          document.getElementById("date-error").classList.add("d-none");
-        }
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          fechaVen: dateStr,
+        }));
       },
       locale: Spanish,
     });
-  }, [fechaMin]); // Dependencia del useEffect
+  
+    // Si estamos editando, establecer la fecha inicial
+    if (params.id && formData.fechaVen) { 
+      flatpickrRef.current.setDate(formData.fechaVen.split('T')[0]);
+    }
+  
+    return () => {
+      flatpickrRef.current?.destroy(); // Limpiar al desmontar
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (params.id) {
+        const response = await fetch(`/api/solicitudes/${params.id}`);
+        const solicitudData = await response.json();
+        setFormData({
+          responsable: solicitudData.responsable,
+          solicitante: solicitudData.solicitante,
+          correo: solicitudData.correo,
+          telefono: solicitudData.telefono,
+          asunto: solicitudData.asunto,
+          estatus: solicitudData.estatus,
+          fechaVen: solicitudData.fechaVen ? solicitudData.fechaVen.split("T")[0] : "",// Obtener la fecha sin la hora
+          procedencia: solicitudData.procedencia,
+        });
+      } else {
+        // Restablecer formData si no hay params.id (nueva solicitud)
+        setFormData({
+          solicitante: "",
+          telefono: "",
+          asunto: "",
+          procedencia: "Procedencia 1",
+          correo: "",
+          responsable: "Responsable 1",
+          fechaVen: "",
+          estatus: "pendiente",
+        });
+      }
+    };
+    fetchData();
+  }, [params.id]); // Dependencia: params.id
 
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
@@ -92,7 +172,14 @@ export default function FormularioPlantilla() {
             <label htmlFor="asunto" className="fw-bold">
               Asunto:
             </label>
-            <input type="text" className="form-control" id="asunto" required />
+            <input
+              type="text"
+              className="form-control"
+              id="asunto"
+              onChange={handleChange}
+              value={formData.asunto}
+              required
+            />
           </div>
         </div>
         <div className="row">
@@ -105,6 +192,8 @@ export default function FormularioPlantilla() {
                 type="text"
                 className="form-control"
                 id="solicitante"
+                onChange={handleChange}
+                value={formData.solicitante}
                 required
               />
             </div>
@@ -114,7 +203,13 @@ export default function FormularioPlantilla() {
               <label htmlFor="procedencia" className="fw-bold">
                 Procedencia:
               </label>
-              <select className="form-control" id="procedencia" required>
+              <select
+                className="form-control"
+                id="procedencia"
+                onChange={handleChange}
+                value={formData.procedencia}
+                required
+              >
                 <option value="Procedencia 1">Oficio</option>
                 <option value="Procedencia 2">Correo</option>
                 <option value="Procedencia 3">Teléfono</option>
@@ -126,7 +221,13 @@ export default function FormularioPlantilla() {
               <label htmlFor="fechaInput" className="fw-bold">
                 Fecha de vencimiento:
               </label>
-              <input type="text" className="form-control" id="fechaInput" />
+              <input
+                type="text"
+                className="form-control"
+                id="fechaInput"
+                onChange={handleChange}
+                value={formData.fechaVen}
+              />
               <div id="date-error" className="invalid-feedback d-none"></div>
             </div>
           </div>
@@ -141,6 +242,8 @@ export default function FormularioPlantilla() {
                 id="telefono"
                 pattern="[0-9]{10}"
                 title="Debe contener 10 dígitos"
+                onChange={handleChange}
+                value={formData.telefono}
               />
             </div>
           </div>
@@ -149,7 +252,13 @@ export default function FormularioPlantilla() {
               <label htmlFor="correo" className="fw-bold">
                 Correo:
               </label>
-              <input type="email" className="form-control" id="correo" />
+              <input
+                type="email"
+                className="form-control"
+                id="correo"
+                onChange={handleChange}
+                value={formData.correo}
+              />
             </div>
           </div>
           <div className="col-md-6">
@@ -157,7 +266,13 @@ export default function FormularioPlantilla() {
               <label htmlFor="responsable" className="fw-bold">
                 Responsable:
               </label>
-              <select className="form-control" id="responsable" required>
+              <select
+                className="form-control"
+                id="responsable"
+                onChange={handleChange}
+                value={formData.responsable}
+                required
+              >
                 <option value="Responsable 1">Responsable 1</option>
                 <option value="Responsable 2">Responsable 2</option>
                 <option value="Responsable 3">Responsable 3</option>
@@ -169,7 +284,12 @@ export default function FormularioPlantilla() {
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="estatus">Estatus:</label>
-              <select className="form-control" id="estatus">
+              <select
+                className="form-control"
+                id="estatus"
+                value={formData.estatus}
+                onChange={handleChange}
+              >
                 <option value="pendiente">Pendiente</option>
                 <option value="realizado">Realizado</option>
                 <option value="rechazado">Rechazado</option>
@@ -183,11 +303,15 @@ export default function FormularioPlantilla() {
               Cerrar
             </button>
           </Link>
-          <button
-            type="button"
-            className="btn btn-primary me-2"
-            onClick={handleDelete}
-          >Borrar</button>
+          {params.id && ( // Mostrar botón solo si params.id existe
+            <button
+              type="button"
+              className="btn btn-primary me-2"
+              onClick={handleDelete}
+            >
+              Borrar
+            </button>
+          )}
           <button type="submit" className="btn btn-primary">
             {params.id ? "Actualizar Solicitud" : "Crear Solicitud"}
           </button>
