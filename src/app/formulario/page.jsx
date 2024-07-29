@@ -33,6 +33,20 @@ export default function FormularioPlantilla() {
     });
   };
 
+<<<<<<< Updated upstream
+=======
+  const handleClearDate = () => {
+    // Borrar la fecha en flatpickr
+    flatpickrRef.current?.clear();
+
+    // Borrar la fecha en el estado formData
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      fechaVen: "",
+    }));
+  };
+
+>>>>>>> Stashed changes
   const handleDelete = async () => {
     if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
@@ -273,11 +287,55 @@ export default function FormularioPlantilla() {
                 value={formData.responsable}
                 required
               >
-                <option value="Responsable 1">Responsable 1</option>
-                <option value="Responsable 2">Responsable 2</option>
-                <option value="Responsable 3">Responsable 3</option>
-                <option value="Responsable 4">Responsable 4</option>
-                <option value="Responsable 5">Responsable 5</option>
+                <option value="Dirección de Administración">
+                  Dirección de Administración
+                </option>
+                <option value="Dirección de Cultura">
+                  Dirección de Cultura
+                </option>
+                <option value="Dirección de Desarrollo Económico, Turístico y Artesanal">
+                  Dirección de Desarrollo Económico, Turístico y Artesanal
+                </option>
+                <option value="Dirección de Desarrollo Social y Asuntos Indígenas">
+                  Dirección de Desarrollo Social y Asuntos Indígenas
+                </option>
+                <option value="Dirección de Desarrollo Urbano y Metropolitano">
+                  Dirección de Desarrollo Urbano y Metropolitano
+                </option>
+                <option value="Dirección de Educación">
+                  Dirección de Educación
+                </option>
+                <option value="Dirección de la Gerencia de la Ciudad">
+                  Dirección de la Gerencia de la Ciudad
+                </option>
+                <option value="Dirección de Gobernación">
+                  Dirección de Gobernación
+                </option>
+                <option value="Dirección de Gobierno Digital y Electrónico">
+                  Dirección de Gobierno Digital y Electrónico
+                </option>
+                <option value="Dirección de Gobierno por Resultados">
+                  Dirección de Gobierno por Resultados
+                </option>
+                <option value="Dirección de Igualdad de Género">
+                  Dirección de Igualdad de Género
+                </option>
+                <option value="Dirección de Medio Ambiente">
+                  Dirección de Medio Ambiente
+                </option>
+                <option value="Dirección de Obras Públicas">
+                  Dirección de Obras Públicas
+                </option>
+                <option value="Dirección de Seguridad Pública">
+                  Dirección de Seguridad Pública
+                </option>
+                <option
+                  value="Dirección de Servicios Públicos">
+                  Dirección de Servicios Públicos
+                </option>
+                <option value="Dirección de Transparencia y Gobierno Abierto">
+                  Dirección de Transparencia y Gobierno Abierto
+                </option>
               </select>
             </div>
           </div>
