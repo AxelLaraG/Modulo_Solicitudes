@@ -71,7 +71,7 @@ export default function Principal() {
         onChange: (selectedDates) => {
           if (selectedDates.length > 0) {
             const fechaSeleccionada = selectedDates[0];
-            setFiltroValor(fechaSeleccionada.toISOString().split("T")[0]); 
+            setFiltroValor(fechaSeleccionada.toISOString().split("T")[0]);
             cargarSolicitudes();
           }
         },
@@ -232,7 +232,7 @@ export default function Principal() {
             <option value="responsable">Responsable</option>
             <option value="estatus">Estatus</option>
             <option value="solicitante">Solicitante</option>
-            <option value="fecha">Fecha</option>
+            <option value="fecha">Fecha de Vencimiento</option>
           </select>
         </div>
         <div className="col-md-9" id="contenedorFiltroValor">
@@ -255,6 +255,76 @@ export default function Principal() {
               value={filtroValor}
               onChange={handleFiltroValorChangeD}
             />
+          ) : filtroCriterio === "responsable" ? (
+            <select
+              className="form-control"
+              id="filtroValor"
+              value={filtroValor}
+              onChange={handleFiltroValorChange}
+            >
+              <option value="">Todos los responsables</option>
+              <option value="Dirección de Administración">
+                  Dirección de Administración
+                </option>
+                <option value="Dirección de Cultura">
+                  Dirección de Cultura
+                </option>
+                <option value="Dirección de Desarrollo Económico, Turístico y Artesanal">
+                  Dirección de Desarrollo Económico, Turístico y Artesanal
+                </option>
+                <option value="Dirección de Desarrollo Social y Asuntos Indígenas">
+                  Dirección de Desarrollo Social y Asuntos Indígenas
+                </option>
+                <option value="Dirección de Desarrollo Urbano y Metropolitano">
+                  Dirección de Desarrollo Urbano y Metropolitano
+                </option>
+                <option value="Dirección de Educación">
+                  Dirección de Educación
+                </option>
+                <option value="Dirección de la Gerencia de la Ciudad">
+                  Dirección de la Gerencia de la Ciudad
+                </option>
+                <option value="Dirección de Gobernación">
+                  Dirección de Gobernación
+                </option>
+                <option value="Dirección de Gobierno Digital y Electrónico">
+                  Dirección de Gobierno Digital y Electrónico
+                </option>
+                <option value="Dirección de Gobierno por Resultados">
+                  Dirección de Gobierno por Resultados
+                </option>
+                <option value="Dirección de Igualdad de Género">
+                  Dirección de Igualdad de Género
+                </option>
+                <option value="Dirección de Medio Ambiente">
+                  Dirección de Medio Ambiente
+                </option>
+                <option value="Dirección de Obras Públicas">
+                  Dirección de Obras Públicas
+                </option>
+                <option value="Dirección de Seguridad Pública">
+                  Dirección de Seguridad Pública
+                </option>
+                <option
+                  value="Dirección de Servicios Públicos">
+                  Dirección de Servicios Públicos
+                </option>
+                <option value="Dirección de Transparencia y Gobierno Abierto">
+                  Dirección de Transparencia y Gobierno Abierto
+                </option>
+                <option value="Subdirección de Vinculacion">
+                  Subdirección de Vinculacion
+                </option>
+                <option value="Subdirección de Delegaciones">
+                  Subdirección de Delegaciones
+                </option>
+                <option value="Subdirección de Política Sectorial">
+                  Subdirección de Política Sectorial
+                </option>
+                <option value="Subdirección de Programas municipales">
+                  Subdirección de Programas municipales
+                </option>
+            </select>
           ) : (
             <input
               type="text"
