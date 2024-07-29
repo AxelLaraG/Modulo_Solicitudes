@@ -44,6 +44,7 @@ export default function FormularioPlantilla() {
     }));
   };
 
+
   const handleDelete = async () => {
     if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
@@ -113,6 +114,7 @@ export default function FormularioPlantilla() {
 
   useEffect(() => {
     // Inicializar flatpickr una sola vez al montar el componente
+
     flatpickrRef.current = flatpickr("#fechaInput", {
       minDate: fechaMin,
       dateFormat: "Y-m-d",
@@ -126,12 +128,10 @@ export default function FormularioPlantilla() {
       },
       locale: Spanish,
     });
-
     // Si estamos editando, establecer la fecha inicial
     if (params.id && formData.fechaVen) {
       flatpickrRef.current.setDate(formData.fechaVen.split("T")[0]);
     }
-
     return () => {
       flatpickrRef.current?.destroy(); // Limpiar al desmontar
     };
