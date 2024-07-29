@@ -312,6 +312,18 @@ export default function Principal() {
                 <option value="Dirección de Transparencia y Gobierno Abierto">
                   Dirección de Transparencia y Gobierno Abierto
                 </option>
+                <option value="Subdirección de Vinculacion">
+                  Subdirección de Vinculacion
+                </option>
+                <option value="Subdirección de Delegaciones">
+                  Subdirección de Delegaciones
+                </option>
+                <option value="Subdirección de Política Sectorial">
+                  Subdirección de Política Sectorial
+                </option>
+                <option value="Subdirección de Programas municipales">
+                  Subdirección de Programas municipales
+                </option>
             </select>
           ) : (
             <input

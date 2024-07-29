@@ -328,12 +328,23 @@ export default function FormularioPlantilla() {
                 <option value="Dirección de Seguridad Pública">
                   Dirección de Seguridad Pública
                 </option>
-                <option
-                  value="Dirección de Servicios Públicos">
+                <option value="Dirección de Servicios Públicos">
                   Dirección de Servicios Públicos
                 </option>
                 <option value="Dirección de Transparencia y Gobierno Abierto">
                   Dirección de Transparencia y Gobierno Abierto
+                </option>
+                <option value="Subdirección de Vinculacion">
+                  Subdirección de Vinculacion
+                </option>
+                <option value="Subdirección de Delegaciones">
+                  Subdirección de Delegaciones
+                </option>
+                <option value="Subdirección de Política Sectorial">
+                  Subdirección de Política Sectorial
+                </option>
+                <option value="Subdirección de Programas municipales">
+                  Subdirección de Programas municipales
                 </option>
               </select>
             </div>
