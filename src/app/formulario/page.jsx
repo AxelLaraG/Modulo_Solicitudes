@@ -61,6 +61,7 @@ export default function FormularioPlantilla() {
       setFormData({
         responsable: document.getElementById("responsable").value,
         solicitante: document.getElementById("solicitante").value,
+        procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
         telefono: document.getElementById("telefono").value,
         asunto: document.getElementById("asunto").value,
