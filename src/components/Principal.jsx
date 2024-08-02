@@ -255,7 +255,7 @@ export default function Principal() {
             <option value="responsable">Responsable</option>
             <option value="estatus">Estatus</option>
             <option value="solicitante">Solicitante</option>
-            <option value="fecha">Fecha</option>
+            <option value="fecha">Fecha de Vencimiento</option>
           </select>
         </div>
         <div className="col-md-9" id="contenedorFiltroValor">
