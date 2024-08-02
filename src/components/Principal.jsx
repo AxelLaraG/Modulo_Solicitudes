@@ -16,6 +16,8 @@ export default function Principal() {
   const [filtroValor, setFiltroValor] = useState("");
   const tablaSolicitudesRef = useRef(null);
   const rendimientoContainerRef = useRef(null);
+  const [filtroValorOtro, setFiltroValorOtro] = useState("");
+  const [filtroValorOtroBusqueda, setFiltroValorOtroBusqueda] = useState("");
 
   const router = useRouter(); // Inicializa useRouter
 
@@ -82,17 +84,17 @@ export default function Principal() {
     }
   }, [filtroCriterio]);
 
-  const filterData = (data, criterio, valorFiltro) => {
+  const filterData = (data, criterio, valorFiltro, valorFiltroOtroBusqueda) => {
     if (criterio === "todos" || valorFiltro === "") {
       return data;
     } else if (criterio === "estatus") {
       return data.filter((solicitud) => solicitud.estatus === valorFiltro);
     } else if (criterio === "fecha") {
       const fechaFiltro = new Date(valorFiltro);
-      fechaFiltro.setHours(23, 59, 59, 999); // Final del día seleccionado
+      fechaFiltro.setHours(23, 59, 59, 999);
 
       const fechaActual = new Date();
-      fechaActual.setHours(0, 0, 0, 0); // Inicio del día actual
+      fechaActual.setHours(0, 0, 0, 0);
 
       return data.filter((solicitud) => {
         const fechaSolicitud = new Date(solicitud.fechaVen);
@@ -101,6 +103,15 @@ export default function Principal() {
           fechaSolicitud.getTime() <= fechaFiltro.getTime()
         );
       });
+    } else if (criterio === "responsable") {
+      const valorComparacion = 
+          valorFiltro === "otro" && valorFiltroOtroBusqueda // Usamos el valor de búsqueda
+              ? valorFiltroOtroBusqueda.toLowerCase()     
+              : valorFiltro.toLowerCase();
+
+      return data.filter((solicitud) =>
+        solicitud[criterio].toLowerCase().includes(valorComparacion)
+      );
     } else {
       const valorFiltroLower = valorFiltro.toLowerCase();
       return data.filter((solicitud) =>
@@ -108,11 +119,14 @@ export default function Principal() {
       );
     }
   };
+
   const cargarSolicitudes = () => {
     const solicitudesAMostrar = filterData(
       solicitudesData,
       filtroCriterio,
-      filtroValor
+      filtroValor,
+      filtroValorOtro,
+      filtroValorOtroBusqueda // Incluimos el valor de búsqueda
     );
 
     if (tablaSolicitudesRef.current) {
@@ -152,7 +166,7 @@ export default function Principal() {
 
   useEffect(() => {
     cargarSolicitudes();
-  }, [solicitudesData, filtroCriterio, filtroValor]); // Actualizamos cuando cambien los datos o filtros
+  }, [solicitudesData, filtroCriterio, filtroValor, filtroValorOtro]); // Actualizamos cuando cambien los datos o filtros
 
   // Función para manejar el cambio del filtroCriterio
   const handleFiltroCriterioChange = (event) => {
@@ -162,7 +176,17 @@ export default function Principal() {
 
   // Función para manejar el cambio del filtroValor
   const handleFiltroValorChange = (event) => {
-    setFiltroValor(event.target.value);
+    const nuevoValor = event.target.value;
+    setFiltroValor(nuevoValor);
+
+    // Limpiar filtroValorOtro solo si se selecciona una opción diferente de "otro"
+    if (nuevoValor !== "otro") {
+      setFiltroValorOtro("");
+    }
+  };
+
+  const handleFiltroValorOtroChange = (event) => {
+    setFiltroValorOtro(event.target.value);
   };
 
   const handleFiltroValorChangeD = (selectedDates) => {
@@ -209,7 +233,6 @@ export default function Principal() {
       </div>
     );
   }
-
   return (
     <div className="container mt-5">
       <h2 className="display-4">Registros de Solicitudes</h2>
@@ -256,14 +279,15 @@ export default function Principal() {
               onChange={handleFiltroValorChangeD}
             />
           ) : filtroCriterio === "responsable" ? (
-            <select
-              className="form-control"
-              id="filtroValor"
-              value={filtroValor}
-              onChange={handleFiltroValorChange}
-            >
-              <option value="">Todos los responsables</option>
-              <option value="Dirección de Administración">
+            <div>
+              <select
+                className="form-control"
+                id="filtroValor"
+                value={filtroValor}
+                onChange={handleFiltroValorChange}
+              >
+                <option value="">Todos los responsables</option>
+                <option value="Dirección de Administración">
                   Dirección de Administración
                 </option>
                 <option value="Dirección de Cultura">
@@ -305,8 +329,7 @@ export default function Principal() {
                 <option value="Dirección de Seguridad Pública">
                   Dirección de Seguridad Pública
                 </option>
-                <option
-                  value="Dirección de Servicios Públicos">
+                <option value="Dirección de Servicios Públicos">
                   Dirección de Servicios Públicos
                 </option>
                 <option value="Dirección de Transparencia y Gobierno Abierto">
@@ -324,7 +347,21 @@ export default function Principal() {
                 <option value="Subdirección de Programas municipales">
                   Subdirección de Programas municipales
                 </option>
-            </select>
+                <option value="otro">Otro</option>
+              </select>
+              {filtroValor === "otro" && (
+                <input
+                type="text"
+                className="form-control mt-2"
+                placeholder="Escribe el responsable"
+                value={filtroValorOtroBusqueda} // Conectamos al estado de búsqueda
+                onChange={(e) => {
+                  setFiltroValorOtroBusqueda(e.target.value); 
+                  handleFiltroValorOtroChange(e);  // Actualizamos ambos estados
+                }}
+              />
+              )}
+            </div>
           ) : (
             <input
               type="text"
@@ -332,7 +369,7 @@ export default function Principal() {
               id="filtroValor"
               placeholder="Buscar..."
               value={filtroValor}
-              onChange={handleFiltroValorChange}
+              onChange={handleFiltroValorOtroChange}
             />
           )}
         </div>
