@@ -26,6 +26,9 @@ export default function FormularioPlantilla() {
     estatus: "pendiente",
   });
 
+  const [otroResponsable, setOtroResponsable] = useState("");
+  const [showOtroInput, setShowOtroInput] = useState(false); 
+
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -170,6 +173,47 @@ export default function FormularioPlantilla() {
     fetchData();
   }, [params.id]); // Dependencia: params.id
 
+  useEffect(() => {
+    const opcionesResponsables = [
+      "Dirección de Administración",
+      "Dirección de Cultura",
+      "Dirección de Desarrollo Económico, Turístico y Artesanal",
+      "Dirección de Desarrollo Social y Asuntos Indígenas",
+      "Dirección de Desarrollo Urbano y Metropolitano",
+      "Dirección de Educación",
+      "Dirección de la Gerencia de la Ciudad",
+      "Dirección de Gobernación",
+      "Dirección de Gobierno Digital y Electrónico",
+      "Dirección de Gobierno por Resultados",
+      "Dirección de Igualdad de Género",
+      "Dirección de Medio Ambiente",
+      "Dirección de Obras Públicas",
+      "Dirección de Seguridad Pública",
+      "Dirección de Servicios Públicos",
+      "Dirección de Transparencia y Gobierno Abierto",
+      "Subdirección de Vinculacion",
+      "Subdirección de Delegaciones",
+      "Subdirección de Política Sectorial",
+      "Subdirección de Programas municipales",
+    ];
+    if (
+      params.id &&
+      formData.responsable &&
+      !opcionesResponsables.includes(formData.responsable)
+    ) {
+      setShowOtroInput(true);
+    }
+  }, [params.id, formData.responsable]);
+
+  const handleResponsableChange = (e) => {
+    const nuevoResponsable = e.target.value;
+    setFormData({ ...formData, responsable: nuevoResponsable });
+    setShowOtroInput(nuevoResponsable === "Otro");
+    if (nuevoResponsable !== "Otro") {
+      setOtroResponsable("");
+    }
+  };
+
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
       <div className="header-container">
@@ -246,13 +290,58 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
+              <label htmlFor="estatus">Estatus:</label>
+              <select
+                className="form-control"
+                id="estatus"
+                value={formData.estatus}
+                onChange={handleChange}
+              >
+                <option value="pendiente">Pendiente</option>
+                <option value="realizado">Realizado</option>
+                <option value="rechazado">Rechazado</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="telefono" className="fw-bold">
+                Teléfono:
+              </label>
+              <input
+                type="tel"
+                className="form-control"
+                id="telefono"
+                pattern="[0-9]{10}"
+                title="Debe contener 10 dígitos"
+                onChange={handleChange}
+                value={formData.telefono}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="correo" className="fw-bold">
+                Correo:
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="correo"
+                onChange={handleChange}
+                value={formData.correo}
+              />
+            </div>
+          </div>
+          <div className="col-md-12">
+            <div className="form-group">
               <label htmlFor="responsable" className="fw-bold">
                 Responsable:
               </label>
               <select
                 className="form-control"
                 id="responsable"
-                onChange={handleChange}
+                onChange={handleResponsableChange}
                 value={formData.responsable}
                 required
               >
@@ -316,68 +405,23 @@ export default function FormularioPlantilla() {
                 <option value="Subdirección de Programas municipales">
                   Subdirección de Programas municipales
                 </option>
-                <option value="">Otro</option>
+                <option value="Otro">Otro</option>
               </select>
-              {formData.responsable === "" && (
+              {showOtroInput && ( // Show the input only when "Otro" is selected
                 <input
                   type="text"
                   className="form-control mt-2"
-                  placeholder="Escriba el nombre del responsable"
-                  onChange={(e) =>
-                    setFormData({ ...formData, responsable: e.target.value })
-                  }
-                  required // Asegura que se ingrese un nombre si se selecciona "Otro"
+                  placeholder="Escribe el responsable"
+                  value={otroResponsable} // Use the state variable for the input
+                  onChange={(e) => setOtroResponsable(e.target.value)} // Update the state variable
+                  required
                 />
               )}
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="telefono" className="fw-bold">
-                Teléfono:
-              </label>
-              <input
-                type="tel"
-                className="form-control"
-                id="telefono"
-                pattern="[0-9]{10}"
-                title="Debe contener 10 dígitos"
-                onChange={handleChange}
-                value={formData.telefono}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="correo" className="fw-bold">
-                Correo:
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="correo"
-                onChange={handleChange}
-                value={formData.correo}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="estatus">Estatus:</label>
-              <select
-                className="form-control"
-                id="estatus"
-                value={formData.estatus}
-                onChange={handleChange}
-              >
-                <option value="pendiente">Pendiente</option>
-                <option value="realizado">Realizado</option>
-                <option value="rechazado">Rechazado</option>
-              </select>
-            </div>
-          </div>
+          
         </div>
-        <div className="mt-3">
+        <div className="mt-3 text-center">
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
