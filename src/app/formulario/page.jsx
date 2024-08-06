@@ -19,9 +19,9 @@ export default function FormularioPlantilla() {
     solicitante: "",
     telefono: "",
     asunto: "",
-    procedencia: "Procedencia 1",
+    procedencia: "",
     correo: "",
-    responsable: "Responsable 1",
+    responsable: "",
     fechaVen: "",
     estatus: "pendiente",
   });
