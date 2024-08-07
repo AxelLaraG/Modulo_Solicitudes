@@ -304,6 +304,9 @@ export default function FormularioPlantilla() {
                 <option value="Dirección de Transparencia y Gobierno Abierto">
                   Dirección de Transparencia y Gobierno Abierto
                 </option>
+                <option value="Tesorería Municipal">
+                  Tesorería Municipal
+                </option>
                 <option value="Subdirección de Vinculacion">
                   Subdirección de Vinculacion
                 </option>
