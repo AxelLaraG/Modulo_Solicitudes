@@ -287,6 +287,9 @@ export default function Principal() {
                 onChange={handleFiltroValorChange}
               >
                 <option value="">Todos los responsables</option>
+                <option value="Tesorería Municipal">
+                  Tesorería Municipal
+                </option>
                 <option value="Dirección de Administración">
                   Dirección de Administración
                 </option>
