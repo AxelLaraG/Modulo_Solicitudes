@@ -110,7 +110,7 @@ export default function Principal() {
               : valorFiltro.toLowerCase();
 
       return data.filter((solicitud) =>
-        solicitud[criterio].toLowerCase().includes(valorComparacion)
+        String(solicitud[criterio]).toLowerCase().includes(valorComparacion)
       );
     } else {
       const valorFiltroLower = valorFiltro.toLowerCase();

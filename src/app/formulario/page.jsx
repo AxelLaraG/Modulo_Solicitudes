@@ -19,9 +19,9 @@ export default function FormularioPlantilla() {
     solicitante: "",
     telefono: "",
     asunto: "",
-    procedencia: "Procedencia 1",
+    procedencia: "Oficio",
     correo: "",
-    responsable: "Responsable 1",
+    responsable: "Dirección de Administración",
     fechaVen: "",
     estatus: "pendiente",
   });
@@ -83,9 +83,9 @@ export default function FormularioPlantilla() {
             solicitante: "",
             telefono: "",
             asunto: "",
-            procedencia: "Procedencia 1",
+            procedencia: "Oficio",
             correo: "",
-            responsable: "Responsable 1",
+            responsable: "Dirección de Administración",
             fechaVen: "",
             estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
           });
@@ -159,9 +159,9 @@ export default function FormularioPlantilla() {
           solicitante: "",
           telefono: "",
           asunto: "",
-          procedencia: "Procedencia 1",
+          procedencia: "Oficio",
           correo: "",
-          responsable: "Responsable 1",
+          responsable: "Dirección de Administración",
           fechaVen: "",
           estatus: "pendiente",
         });
@@ -223,9 +223,9 @@ export default function FormularioPlantilla() {
                 value={formData.procedencia}
                 required
               >
-                <option value="Procedencia 1">Oficio</option>
-                <option value="Procedencia 2">Correo</option>
-                <option value="Procedencia 3">Teléfono</option>
+                <option value="Oficio">Oficio</option>
+                <option value="Correo">Correo</option>
+                <option value="Teléfono">Teléfono</option>
               </select>
             </div>
           </div>
