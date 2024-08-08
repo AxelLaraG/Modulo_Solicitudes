@@ -9,6 +9,7 @@ import { Spanish } from "flatpickr/dist/l10n/es.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from "next/link";
+import solicitud from "@/models/solicitud";
 
 export default function FormularioPlantilla() {
   const flatpickrRef = useRef(null);
@@ -21,7 +22,7 @@ export default function FormularioPlantilla() {
     asunto: "",
     procedencia: "",
     correo: "",
-    responsable: "",
+    responsable: [""],
     delegacion: "",
     fechaVen: "",
     estatus: "pendiente",
@@ -29,6 +30,7 @@ export default function FormularioPlantilla() {
 
   const [otroResponsable, setOtroResponsable] = useState("");
   const [showOtroInput, setShowOtroInput] = useState(false);
+  const [responsables, setResponsables] = useState([]);
 
   const handleDelegacionChange = (event) => {
     setFormData({
@@ -69,7 +71,7 @@ export default function FormularioPlantilla() {
 
     try {
       // Obtener los valores de todos los campos del formulario
-      const responsableSeleccionado = document.getElementById("responsable").value;
+      const responsables = document.getElementById("responsable").value;
       const solicitante = document.getElementById("solicitante").value;
       const procedencia = document.getElementById("procedencia").value;
       const correo = document.getElementById("correo").value;
@@ -81,8 +83,8 @@ export default function FormularioPlantilla() {
 
       // Actualizar formData con el valor de otroResponsable si es necesario
       const responsableFinal = showOtroInput
-        ? otroResponsable
-        : formData.responsable;
+        ? [...responsables, otroResponsable] // Incluir "Otro" si está activo
+        : responsables;
       setFormData({
         responsable: responsableFinal,
         delegacion,
@@ -255,12 +257,20 @@ export default function FormularioPlantilla() {
 
   const handleResponsableChange = (e) => {
     const nuevoResponsable = e.target.value;
-    setFormData({ ...formData, responsable: nuevoResponsable }); // Actualizar formData directamente
     setShowOtroInput(nuevoResponsable === "Otro");
 
-    // Restablecer otroResponsable si no se selecciona "Otro"
-    if (nuevoResponsable !== "Otro") {
-      setOtroResponsable("");
+    if (nuevoResponsable === "Otro") {
+      setResponsables([...responsables, otroResponsable]); // Agregar el responsable "Otro"
+      setOtroResponsable(""); // Limpiar el input de "Otro"
+    } else {
+      setResponsables([...responsables, nuevoResponsable]); // Agregar el responsable seleccionado
+    }
+  };
+  const handleEliminarResponsable = (index) => {
+    setResponsables(responsables.filter((_, i) => i !== index));
+    // Si se elimina el último responsable y "Otro" estaba activo, desactivarlo
+    if (responsables.length === 1 && showOtroInput) {
+      setShowOtroInput(false);
     }
   };
 
@@ -549,14 +559,13 @@ export default function FormularioPlantilla() {
           <div className="col-md-12">
             <div className="form-group">
               <label htmlFor="responsable" className="fw-bold">
-                Responsable:
+                Responsable(s):
               </label>
               <select
                 className="form-control"
                 id="responsable"
                 onChange={handleResponsableChange}
-                value={formData.responsable}
-                required
+                value={formData.responsable} // No seleccionar ningún valor por defecto
               >
                 <option value="Dirección de Administración">
                   Dirección de Administración
@@ -620,9 +629,9 @@ export default function FormularioPlantilla() {
                 </option>
                 <option>Otro</option>
               </select>
-              {showOtroInput && ( 
+              {showOtroInput && (
                 <input
-                  id="responsable"
+                  id="otroResponsable"
                   type="text"
                   className="form-control mt-2"
                   placeholder="Escribe el responsable"
@@ -631,6 +640,31 @@ export default function FormularioPlantilla() {
                   required
                 />
               )}
+            </div>
+            <div
+              style={{
+                maxHeight: "100px",
+                overflowY: "auto",
+                marginTop: "12px",
+              }}
+            >
+              <ul className="list-group">
+                {responsables.map((responsable, index) => (
+                  <li
+                    key={index}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    {responsable}
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleEliminarResponsable(index)}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
