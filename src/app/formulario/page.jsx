@@ -22,12 +22,21 @@ export default function FormularioPlantilla() {
     procedencia: "",
     correo: "",
     responsable: "",
+    delegacion: "",
     fechaVen: "",
     estatus: "pendiente",
   });
 
   const [otroResponsable, setOtroResponsable] = useState("");
   const [showOtroInput, setShowOtroInput] = useState(false);
+  const [delegacion, setDelegacion] = useState("");
+
+  const handleDelegacionChange = (event) => {
+    setFormData({
+      ...formData,
+      delegacion: event.target.value,
+    });
+  };
 
   const handleChange = (event) => {
     setFormData({
@@ -69,12 +78,16 @@ export default function FormularioPlantilla() {
       const telefono = document.getElementById("telefono").value;
       const asunto = document.getElementById("asunto").value;
       const estatus = document.getElementById("estatus").value;
-      const fechaVen = document.getElementById("fechaInput").value; // Obtener la fecha seleccionada
+      const fechaVen = document.getElementById("fechaInput").value;
+      const delegacion = document.getElementById("delegacion").value;
 
       // Actualizar formData con el valor de otroResponsable si es necesario
-      const responsableFinal = showOtroInput ? otroResponsable : formData.responsable;
+      const responsableFinal = showOtroInput
+        ? otroResponsable
+        : formData.responsable;
       setFormData({
         responsable: responsableFinal,
+        delegacion,
         solicitante,
         procedencia,
         correo,
@@ -107,6 +120,7 @@ export default function FormularioPlantilla() {
             procedencia: "",
             correo: "",
             responsable: "",
+            delegacion: "",
             fechaVen: "",
             estatus: "pendiente",
           });
@@ -170,13 +184,17 @@ export default function FormularioPlantilla() {
       if (params.id) {
         const response = await fetch(`/api/solicitudes/${params.id}`);
         const solicitudData = await response.json();
-  
+
         // Verificar si el responsable es "Otro" y si hay un valor para otroResponsable
         const esOtroResponsable = solicitudData.responsable === "Otro";
         const tieneOtroResponsable = !!solicitudData.otroResponsable;
-  
+
         setFormData({
-          responsable: esOtroResponsable && tieneOtroResponsable ? solicitudData.otroResponsable : solicitudData.responsable,
+          responsable:
+            esOtroResponsable && tieneOtroResponsable
+              ? solicitudData.otroResponsable
+              : solicitudData.responsable,
+          delegacion: solicitudData.delegacion,
           solicitante: solicitudData.solicitante,
           correo: solicitudData.correo,
           telefono: solicitudData.telefono,
@@ -187,20 +205,23 @@ export default function FormularioPlantilla() {
             : "",
           procedencia: solicitudData.procedencia,
         });
-  
+
         // Mostrar el campo de entrada "Otro" si es necesario
         setShowOtroInput(esOtroResponsable && tieneOtroResponsable);
-  
+
         // Establecer el valor de otroResponsable si existe
-        setOtroResponsable(esOtroResponsable && tieneOtroResponsable ? solicitudData.otroResponsable : "");
+        setOtroResponsable(
+          esOtroResponsable && tieneOtroResponsable
+            ? solicitudData.otroResponsable
+            : ""
+        );
       } else {
         // ... (Restablecer formData si no hay params.id)
       }
     };
-  
+
     fetchData();
   }, [params.id]); // Dependencia: params.id
-  
 
   useEffect(() => {
     const opcionesResponsables = [
@@ -238,12 +259,13 @@ export default function FormularioPlantilla() {
     const nuevoResponsable = e.target.value;
     setFormData({ ...formData, responsable: nuevoResponsable }); // Actualizar formData directamente
     setShowOtroInput(nuevoResponsable === "Otro");
-  
+
     // Restablecer otroResponsable si no se selecciona "Otro"
     if (nuevoResponsable !== "Otro") {
-      setOtroResponsable(""); 
+      setOtroResponsable("");
     }
   };
+
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
       <div className="header-container">
@@ -361,6 +383,169 @@ export default function FormularioPlantilla() {
                 onChange={handleChange}
                 value={formData.correo}
               />
+            </div>
+          </div>
+          <div className="col-md-12">
+            <div className="form-group">
+              <label htmlFor="responsable" className="fw-bold">
+                Delegacion:
+              </label>
+              <select
+                className="form-control"
+                id="delegacion"
+                onChange={handleDelegacionChange}
+                value={formData.delegacion}
+                required
+              >
+                <option value="Barrio de Coaxustenco">
+                  Barrio de Coaxustenco
+                </option>
+                <option value="Barrio de San Mateo">Barrio de San Mateo</option>
+                <option value="Barrio de San Miguel">
+                  Barrio de San Miguel
+                </option>
+                <option value="Barrio de Santa Cruz">
+                  Barrio de Santa Cruz
+                </option>
+                <option value="Barrio de Santa Cruz Ocotitlán">
+                  Barrio de Santa Cruz Ocotitlán
+                </option>
+                <option value="Barrio de Santiaguito">
+                  Barrio de Santiaguito
+                </option>
+                <option value="Barrio del Espíritu Santo">
+                  Barrio del Espíritu Santo
+                </option>
+                <option value="Colonia Agrícola Alvaro Obregón">
+                  Colonia Agrícola Alvaro Obregón
+                </option>
+                <option value="Colonia Agrícola Bellavista">
+                  Colonia Agrícola Bellavista
+                </option>
+                <option value="Colonia Agrícola Francisco I. Madero">
+                  Colonia Agrícola Francisco I. Madero
+                </option>
+                <option value="Colonia Agrícola Lázaro Cárdenas">
+                  Colonia Agrícola Lázaro Cárdenas
+                </option>
+                <option value="Colonia Dr. Jorge Jiménez Cantu">
+                  Colonia Dr. Jorge Jiménez Cantu
+                </option>
+                <option value="Colonia El Hípico">Colonia El Hípico</option>
+                <option value="Colonia La Michoacana">
+                  Colonia La Michoacana
+                </option>
+                <option value="Colonia La Providencia">
+                  Colonia La Providencia
+                </option>
+                <option value="Colonia Luisa Isabel Campos de Jiménez Cantú">
+                  Colonia Luisa Isabel Campos de Jiménez Cantú
+                </option>
+                <option value="Col. La Municipal">Col. La Municipal</option>
+                <option value="Colonia La Unión">Colonia La Unión</option>
+                <option value="Condominio Agripin García Estrada">
+                  Condominio Agripin García Estrada
+                </option>
+                <option value="Fraccionamiento Casa Blanca">
+                  Fraccionamiento Casa Blanca
+                </option>
+                <option value="Fraccionamiento Fuentes de San Gabriel">
+                  Fraccionamiento Fuentes de San Gabriel
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc I">
+                  Fraccionamiento Izcalli Cuauhtémoc I
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc II">
+                  Fraccionamiento Izcalli Cuauhtémoc II
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc III">
+                  Fraccionamiento Izcalli Cuauhtémoc III
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc IV">
+                  Fraccionamiento Izcalli Cuauhtémoc IV
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc V">
+                  Fraccionamiento Izcalli Cuauhtémoc V
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc VI">
+                  Fraccionamiento Izcalli Cuauhtémoc VI
+                </option>
+                <option value="Fraccionamiento Jesús Jiménez Gallardo">
+                  Fraccionamiento Jesús Jiménez Gallardo
+                </option>
+                <option value="Fraccionamiento Las Haciendas">
+                  Fraccionamiento Las Haciendas
+                </option>
+                <option value="Fraccionamiento Las Margaritas">
+                  Fraccionamiento Las Margaritas
+                </option>
+                <option value="Fraccionamiento Las Marinas">
+                  Fraccionamiento Las Marinas
+                </option>
+                <option value="Fraccionamiento Licenciado Juan Fernández Albarrán">
+                  Fraccionamiento Licenciado Juan Fernández Albarrán
+                </option>
+                <option value="Fraccionamiento Los Pilares">
+                  Fraccionamiento Los Pilares
+                </option>
+                <option value="Fraccionamiento Rancho San Francisco">
+                  Fraccionamiento Rancho San Francisco
+                </option>
+                <option value="Fraccionamiento Rancho San Lucas">
+                  Fraccionamiento Rancho San Lucas
+                </option>
+                <option value="Fraccionamiento San Javier">
+                  Fraccionamiento San Javier
+                </option>
+                <option value="Fraccionamiento San José La Pila">
+                  Fraccionamiento San José La Pila
+                </option>
+                <option value="Fraccionamiento Xinantecátl">
+                  Fraccionamiento Xinantecátl
+                </option>
+                <option value="Pueblo de San Bartolomé Tlaltelulco">
+                  Pueblo de San Bartolomé Tlaltelulco
+                </option>
+                <option value="Pueblo de San Francisco Coaxusco">
+                  Pueblo de San Francisco Coaxusco
+                </option>
+                <option value="Pueblo de San Gaspar Tlalhuelilpan">
+                  Pueblo de San Gaspar Tlalhuelilpan
+                </option>
+                <option value="Pueblo de San Jerónimo Chicahualco">
+                  Pueblo de San Jerónimo Chicahualco
+                </option>
+                <option value="Pueblo de San Jorge Pueblo Nuevo">
+                  Pueblo de San Jorge Pueblo Nuevo
+                </option>
+                <option value="Pueblo de San Lorenzo Coacalco">
+                  Pueblo de San Lorenzo Coacalco
+                </option>
+                <option value="Pueblo de San Lucas Tunco">
+                  Pueblo de San Lucas Tunco
+                </option>
+                <option value="Pueblo de San Miguel Totocuitlapilco">
+                  Pueblo de San Miguel Totocuitlapilco
+                </option>
+                <option value="Pueblo de San Salvador Tizatlali">
+                  Pueblo de San Salvador Tizatlali
+                </option>
+                <option value="Pueblo de San Sebastian">
+                  Pueblo de San Sebastian
+                </option>
+                <option value="Pueblo de Santa María Magdalena Ocotitlán">
+                  Pueblo de Santa María Magdalena Ocotitlán
+                </option>
+                <option value="Unidad Habitacional Andrés Molina Enríquez">
+                  Unidad Habitacional Andrés Molina Enríquez
+                </option>
+                <option value="Unidad Habitacional Lázaro Cardenas">
+                  Unidad Habitacional Lázaro Cardenas
+                </option>
+                <option value="Unidad Habitacional Tollocan II">
+                  Unidad Habitacional Tollocan II
+                </option>
+              </select>
             </div>
           </div>
           <div className="col-md-12">

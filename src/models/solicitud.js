@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
     responsable: {
+        type: [String],
+        required: true
+    },
+    delegacion: {
         type: String,
         required: true
     },
