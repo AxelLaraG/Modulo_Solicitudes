@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema({
     responsable: {
         type: [String],
-        required: true
-    },
+        required:true
+    },
     delegacion: {
-        type: String,
-        required: true
+        type:String,
+        required:true
     },
     fecha: {
         type: Date,

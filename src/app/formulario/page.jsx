@@ -387,7 +387,7 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-12">
             <div className="form-group">
-              <label htmlFor="responsable" className="fw-bold">
+              <label htmlFor="delegacion" className="fw-bold">
                 Delegacion:
               </label>
               <select
