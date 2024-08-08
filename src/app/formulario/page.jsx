@@ -27,7 +27,7 @@ export default function FormularioPlantilla() {
   });
 
   const [otroResponsable, setOtroResponsable] = useState("");
-  const [showOtroInput, setShowOtroInput] = useState(false); 
+  const [showOtroInput, setShowOtroInput] = useState(false);
 
   const handleChange = (event) => {
     setFormData({
@@ -60,18 +60,33 @@ export default function FormularioPlantilla() {
     event.preventDefault(); // Evita el envío tradicional del formulario
 
     try {
+      // Obtener los valores de todos los campos del formulario
+      const responsableSeleccionado =
+        document.getElementById("responsable").value;
+      const solicitante = document.getElementById("solicitante").value;
+      const procedencia = document.getElementById("procedencia").value;
+      const correo = document.getElementById("correo").value;
+      const telefono = document.getElementById("telefono").value;
+      const asunto = document.getElementById("asunto").value;
+      const estatus = document.getElementById("estatus").value;
+      const fechaVen = document.getElementById("fechaInput").value; // Obtener la fecha seleccionada
+
+      // Actualizar formData con el valor de otroResponsable si es necesario
+      const responsableFinal = showOtroInput ? otroResponsable : formData.responsable;
       setFormData({
-        responsable: document.getElementById("responsable").value,
-        solicitante: document.getElementById("solicitante").value,
-        procedencia: document.getElementById("procedencia").value,
-        correo: document.getElementById("correo").value,
-        telefono: document.getElementById("telefono").value,
-        asunto: document.getElementById("asunto").value,
-        estatus: document.getElementById("estatus").value,
-        fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
+        responsable: responsableFinal,
+        solicitante,
+        procedencia,
+        correo,
+        telefono,
+        asunto,
+        estatus,
+        fechaVen,
       });
 
+      // Verificar si estamos creando una nueva solicitud (no hay params.id) o editando una existente
       if (!params.id) {
+        // Crear una nueva solicitud
         const response = await fetch("/api/solicitudes", {
           method: "POST",
           headers: {
@@ -79,23 +94,31 @@ export default function FormularioPlantilla() {
           },
           body: JSON.stringify(formData),
         });
+
         if (response.ok) {
-          // Solicitud exitosa, puedes redirigir o hacer otra acción
+          // Solicitud creada con éxito
           alert("Solicitud enviada con éxito");
+
+          // Restablecer el formulario para una nueva solicitud
           setFormData({
             solicitante: "",
             telefono: "",
             asunto: "",
-            procedencia: "Procedencia 1",
+            procedencia: "",
             correo: "",
-            responsable: "Responsable 1",
+            responsable: "",
             fechaVen: "",
-            estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
+            estatus: "pendiente",
           });
+
+          // Opcional: Redirigir a otra página después de crear la solicitud
+          // router.push("/ruta-de-redireccion");
         } else {
+          // Error al crear la solicitud
           alert("Error al enviar la solicitud");
         }
       } else {
+        // Actualizar una solicitud existente
         const response = await fetch(`/api/solicitudes/${params.id}`, {
           method: "PUT",
           headers: {
@@ -103,9 +126,12 @@ export default function FormularioPlantilla() {
           },
           body: JSON.stringify(formData),
         });
+
         if (response.ok) {
+          // Solicitud actualizada con éxito
           alert("Solicitud actualizada con éxito");
         } else {
+          // Error al actualizar la solicitud
           alert("Error al actualizar la solicitud");
         }
       }
@@ -144,8 +170,13 @@ export default function FormularioPlantilla() {
       if (params.id) {
         const response = await fetch(`/api/solicitudes/${params.id}`);
         const solicitudData = await response.json();
+  
+        // Verificar si el responsable es "Otro" y si hay un valor para otroResponsable
+        const esOtroResponsable = solicitudData.responsable === "Otro";
+        const tieneOtroResponsable = !!solicitudData.otroResponsable;
+  
         setFormData({
-          responsable: solicitudData.responsable,
+          responsable: esOtroResponsable && tieneOtroResponsable ? solicitudData.otroResponsable : solicitudData.responsable,
           solicitante: solicitudData.solicitante,
           correo: solicitudData.correo,
           telefono: solicitudData.telefono,
@@ -153,25 +184,23 @@ export default function FormularioPlantilla() {
           estatus: solicitudData.estatus,
           fechaVen: solicitudData.fechaVen
             ? solicitudData.fechaVen.split("T")[0]
-            : "", // Obtener la fecha sin la hora
+            : "",
           procedencia: solicitudData.procedencia,
         });
+  
+        // Mostrar el campo de entrada "Otro" si es necesario
+        setShowOtroInput(esOtroResponsable && tieneOtroResponsable);
+  
+        // Establecer el valor de otroResponsable si existe
+        setOtroResponsable(esOtroResponsable && tieneOtroResponsable ? solicitudData.otroResponsable : "");
       } else {
-        // Restablecer formData si no hay params.id (nueva solicitud)
-        setFormData({
-          solicitante: "",
-          telefono: "",
-          asunto: "",
-          procedencia: "Procedencia 1",
-          correo: "",
-          responsable: "Responsable 1",
-          fechaVen: "",
-          estatus: "pendiente",
-        });
+        // ... (Restablecer formData si no hay params.id)
       }
     };
+  
     fetchData();
   }, [params.id]); // Dependencia: params.id
+  
 
   useEffect(() => {
     const opcionesResponsables = [
@@ -207,13 +236,14 @@ export default function FormularioPlantilla() {
 
   const handleResponsableChange = (e) => {
     const nuevoResponsable = e.target.value;
-    setFormData({ ...formData, responsable: nuevoResponsable });
+    setFormData({ ...formData, responsable: nuevoResponsable }); // Actualizar formData directamente
     setShowOtroInput(nuevoResponsable === "Otro");
+  
+    // Restablecer otroResponsable si no se selecciona "Otro"
     if (nuevoResponsable !== "Otro") {
-      setOtroResponsable("");
+      setOtroResponsable(""); 
     }
   };
-
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
       <div className="header-container">
@@ -405,10 +435,11 @@ export default function FormularioPlantilla() {
                 <option value="Subdirección de Programas municipales">
                   Subdirección de Programas municipales
                 </option>
-                <option value="Otro">Otro</option>
+                <option>Otro</option>
               </select>
               {showOtroInput && ( // Show the input only when "Otro" is selected
                 <input
+                  id="responsable"
                   type="text"
                   className="form-control mt-2"
                   placeholder="Escribe el responsable"
@@ -419,7 +450,6 @@ export default function FormularioPlantilla() {
               )}
             </div>
           </div>
-          
         </div>
         <div className="mt-3 text-center">
           <Link href="/">
