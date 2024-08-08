@@ -29,7 +29,6 @@ export default function FormularioPlantilla() {
 
   const [otroResponsable, setOtroResponsable] = useState("");
   const [showOtroInput, setShowOtroInput] = useState(false);
-  const [delegacion, setDelegacion] = useState("");
 
   const handleDelegacionChange = (event) => {
     setFormData({
@@ -70,8 +69,7 @@ export default function FormularioPlantilla() {
 
     try {
       // Obtener los valores de todos los campos del formulario
-      const responsableSeleccionado =
-        document.getElementById("responsable").value;
+      const responsableSeleccionado = document.getElementById("responsable").value;
       const solicitante = document.getElementById("solicitante").value;
       const procedencia = document.getElementById("procedencia").value;
       const correo = document.getElementById("correo").value;
@@ -622,14 +620,14 @@ export default function FormularioPlantilla() {
                 </option>
                 <option>Otro</option>
               </select>
-              {showOtroInput && ( // Show the input only when "Otro" is selected
+              {showOtroInput && ( 
                 <input
                   id="responsable"
                   type="text"
                   className="form-control mt-2"
                   placeholder="Escribe el responsable"
-                  value={otroResponsable} // Use the state variable for the input
-                  onChange={(e) => setOtroResponsable(e.target.value)} // Update the state variable
+                  value={otroResponsable}
+                  onChange={(e) => setOtroResponsable(e.target.value)}
                   required
                 />
               )}

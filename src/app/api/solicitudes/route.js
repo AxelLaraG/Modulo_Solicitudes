@@ -16,6 +16,7 @@ export async function POST(request) {
   const fechaHoraServidor = new Date().toISOString();
   const newDocument = {
     responsable: formData.responsable,
+    delegacion: formData.delegacion,
     fecha: fechaHoraServidor, // Usar la fecha y hora del servidor
     solicitante: formData.solicitante,
     procedencia: formData.procedencia,

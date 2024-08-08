@@ -142,7 +142,7 @@ export default function Principal() {
           solicitud.asunto.length > 5
             ? solicitud.asunto.slice(0, 5) + "..."
             : solicitud.asunto,
-          solicitud.delegacion,
+          solicitud.responsable,
           solicitud.estatus === "realizado"
             ? '<i class="bi bi-check-circle-fill text-success"></i>'
             : solicitud.estatus === "pendiente"
