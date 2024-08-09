@@ -20,9 +20,7 @@ export default function FormularioPlantilla() {
     solicitante: "",
     telefono: "",
     asunto: "",
-    procedencia: "Procedencia 1",
     correo: "",
-    responsable: "Responsable 1",
     fechaVen: "",
     estatus: "pendiente",
   });
@@ -84,9 +82,7 @@ export default function FormularioPlantilla() {
             solicitante: "",
             telefono: "",
             asunto: "",
-            procedencia: "Procedencia 1",
             correo: "",
-            responsable: "Responsable 1",
             fechaVen: "",
             estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
           });
@@ -160,9 +156,7 @@ export default function FormularioPlantilla() {
           solicitante: "",
           telefono: "",
           asunto: "",
-          procedencia: "Procedencia 1",
           correo: "",
-          responsable: "Responsable 1",
           fechaVen: "",
           estatus: "pendiente",
         });
@@ -224,9 +218,6 @@ export default function FormularioPlantilla() {
                 value={formData.procedencia}
                 required
               >
-                <option value="Procedencia 1">Oficio</option>
-                <option value="Procedencia 2">Correo</option>
-                <option value="Procedencia 3">Teléfono</option>
               </select>
             </div>
           </div>
@@ -515,6 +506,9 @@ export default function FormularioPlantilla() {
                 <option value="Dirección de Transparencia y Gobierno Abierto">
                   Dirección de Transparencia y Gobierno Abierto
                 </option>
+                <option value="Tesorería Municipal">
+                  Tesorería Municipal
+                </option>
                 <option value="Subdirección de Vinculacion">
                   Subdirección de Vinculacion
                 </option>
@@ -527,7 +521,49 @@ export default function FormularioPlantilla() {
                 <option value="Subdirección de Programas municipales">
                   Subdirección de Programas municipales
                 </option>
+                <option value="">Otro</option>
               </select>
+              {formData.responsable === "" && (
+                <input
+                  type="text"
+                  className="form-control mt-2"
+                  placeholder="Escriba el nombre del responsable"
+                  onChange={(e) =>
+                    setFormData({ ...formData, responsable: e.target.value })
+                  }
+                  required // Asegura que se ingrese un nombre si se selecciona "Otro"
+                />
+              )}
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="telefono" className="fw-bold">
+                Teléfono:
+              </label>
+              <input
+                type="tel"
+                className="form-control"
+                id="telefono"
+                pattern="[0-9]{10}"
+                title="Debe contener 10 dígitos"
+                onChange={handleChange}
+                value={formData.telefono}
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="correo" className="fw-bold">
+                Correo:
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="correo"
+                onChange={handleChange}
+                value={formData.correo}
+              />
             </div>
           </div>
         </div>
