@@ -523,7 +523,7 @@ export default function FormularioPlantilla() {
                 <option value="Tesorería Municipal">
                   Tesorería Municipal
                 </option>
-                <option value="Subdirección de Vinculacion">
+                <option value="Subdirección de Vinculación">
                   Subdirección de Vinculacion
                 </option>
                 <option value="Subdirección de Delegaciones">

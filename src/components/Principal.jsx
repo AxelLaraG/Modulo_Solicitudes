@@ -409,6 +409,7 @@ export default function Principal() {
               filtroCriterio,
               filtroValor
             );
+            
             if (datosFiltrados.length > 0) {
               exportToExcel(datosFiltrados, "solicitudes.xlsx");
             } else {
