@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
+import "../../../public/Styles/styles.css";
 import { Spanish } from "flatpickr/dist/l10n/es.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -172,8 +173,8 @@ export default function FormularioPlantilla() {
 
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
+      <h2 className="display-4 text-center">Solicitud</h2>
       <div className="header-container">
-        <h2 className="text-center">Solicitud</h2>
         <br />
       </div>
 
@@ -276,6 +277,183 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
+              <label htmlFor="estatus">Estatus:</label>
+              <select
+                className="form-control"
+                id="estatus"
+                value={formData.estatus}
+                onChange={handleChange}
+              >
+                <option value="pendiente">Pendiente</option>
+                <option value="realizado">Realizado</option>
+                <option value="rechazado">Rechazado</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-12">
+            <div className="form-group">
+              <label htmlFor="delegacion" className="fw-bold">
+                Delegacion:
+              </label>
+              <select
+                className="form-control"
+                id="delegacion"
+                value={formData.delegacion}
+                required
+              >
+                <option value="Barrio de Coaxustenco">
+                  Barrio de Coaxustenco
+                </option>
+                <option value="Barrio de San Mateo">Barrio de San Mateo</option>
+                <option value="Barrio de San Miguel">
+                  Barrio de San Miguel
+                </option>
+                <option value="Barrio de Santa Cruz">
+                  Barrio de Santa Cruz
+                </option>
+                <option value="Barrio de Santa Cruz Ocotitlán">
+                  Barrio de Santa Cruz Ocotitlán
+                </option>
+                <option value="Barrio de Santiaguito">
+                  Barrio de Santiaguito
+                </option>
+                <option value="Barrio del Espíritu Santo">
+                  Barrio del Espíritu Santo
+                </option>
+                <option value="Colonia Agrícola Alvaro Obregón">
+                  Colonia Agrícola Alvaro Obregón
+                </option>
+                <option value="Colonia Agrícola Bellavista">
+                  Colonia Agrícola Bellavista
+                </option>
+                <option value="Colonia Agrícola Francisco I. Madero">
+                  Colonia Agrícola Francisco I. Madero
+                </option>
+                <option value="Colonia Agrícola Lázaro Cárdenas">
+                  Colonia Agrícola Lázaro Cárdenas
+                </option>
+                <option value="Colonia Dr. Jorge Jiménez Cantu">
+                  Colonia Dr. Jorge Jiménez Cantu
+                </option>
+                <option value="Colonia El Hípico">Colonia El Hípico</option>
+                <option value="Colonia La Michoacana">
+                  Colonia La Michoacana
+                </option>
+                <option value="Colonia La Providencia">
+                  Colonia La Providencia
+                </option>
+                <option value="Colonia Luisa Isabel Campos de Jiménez Cantú">
+                  Colonia Luisa Isabel Campos de Jiménez Cantú
+                </option>
+                <option value="Col. La Municipal">Col. La Municipal</option>
+                <option value="Colonia La Unión">Colonia La Unión</option>
+                <option value="Condominio Agripin García Estrada">
+                  Condominio Agripin García Estrada
+                </option>
+                <option value="Fraccionamiento Casa Blanca">
+                  Fraccionamiento Casa Blanca
+                </option>
+                <option value="Fraccionamiento Fuentes de San Gabriel">
+                  Fraccionamiento Fuentes de San Gabriel
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc I">
+                  Fraccionamiento Izcalli Cuauhtémoc I
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc II">
+                  Fraccionamiento Izcalli Cuauhtémoc II
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc III">
+                  Fraccionamiento Izcalli Cuauhtémoc III
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc IV">
+                  Fraccionamiento Izcalli Cuauhtémoc IV
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc V">
+                  Fraccionamiento Izcalli Cuauhtémoc V
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc VI">
+                  Fraccionamiento Izcalli Cuauhtémoc VI
+                </option>
+                <option value="Fraccionamiento Jesús Jiménez Gallardo">
+                  Fraccionamiento Jesús Jiménez Gallardo
+                </option>
+                <option value="Fraccionamiento Las Haciendas">
+                  Fraccionamiento Las Haciendas
+                </option>
+                <option value="Fraccionamiento Las Margaritas">
+                  Fraccionamiento Las Margaritas
+                </option>
+                <option value="Fraccionamiento Las Marinas">
+                  Fraccionamiento Las Marinas
+                </option>
+                <option value="Fraccionamiento Licenciado Juan Fernández Albarrán">
+                  Fraccionamiento Licenciado Juan Fernández Albarrán
+                </option>
+                <option value="Fraccionamiento Los Pilares">
+                  Fraccionamiento Los Pilares
+                </option>
+                <option value="Fraccionamiento Rancho San Francisco">
+                  Fraccionamiento Rancho San Francisco
+                </option>
+                <option value="Fraccionamiento Rancho San Lucas">
+                  Fraccionamiento Rancho San Lucas
+                </option>
+                <option value="Fraccionamiento San Javier">
+                  Fraccionamiento San Javier
+                </option>
+                <option value="Fraccionamiento San José La Pila">
+                  Fraccionamiento San José La Pila
+                </option>
+                <option value="Fraccionamiento Xinantecátl">
+                  Fraccionamiento Xinantecátl
+                </option>
+                <option value="Pueblo de San Bartolomé Tlaltelulco">
+                  Pueblo de San Bartolomé Tlaltelulco
+                </option>
+                <option value="Pueblo de San Francisco Coaxusco">
+                  Pueblo de San Francisco Coaxusco
+                </option>
+                <option value="Pueblo de San Gaspar Tlalhuelilpan">
+                  Pueblo de San Gaspar Tlalhuelilpan
+                </option>
+                <option value="Pueblo de San Jerónimo Chicahualco">
+                  Pueblo de San Jerónimo Chicahualco
+                </option>
+                <option value="Pueblo de San Jorge Pueblo Nuevo">
+                  Pueblo de San Jorge Pueblo Nuevo
+                </option>
+                <option value="Pueblo de San Lorenzo Coacalco">
+                  Pueblo de San Lorenzo Coacalco
+                </option>
+                <option value="Pueblo de San Lucas Tunco">
+                  Pueblo de San Lucas Tunco
+                </option>
+                <option value="Pueblo de San Miguel Totocuitlapilco">
+                  Pueblo de San Miguel Totocuitlapilco
+                </option>
+                <option value="Pueblo de San Salvador Tizatlali">
+                  Pueblo de San Salvador Tizatlali
+                </option>
+                <option value="Pueblo de San Sebastian">
+                  Pueblo de San Sebastian
+                </option>
+                <option value="Pueblo de Santa María Magdalena Ocotitlán">
+                  Pueblo de Santa María Magdalena Ocotitlán
+                </option>
+                <option value="Unidad Habitacional Andrés Molina Enríquez">
+                  Unidad Habitacional Andrés Molina Enríquez
+                </option>
+                <option value="Unidad Habitacional Lázaro Cardenas">
+                  Unidad Habitacional Lázaro Cardenas
+                </option>
+                <option value="Unidad Habitacional Tollocan II">
+                  Unidad Habitacional Tollocan II
+                </option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-12">
+            <div className="form-group">
               <label htmlFor="responsable" className="fw-bold">
                 Responsable:
               </label>
@@ -313,6 +491,9 @@ export default function FormularioPlantilla() {
                 <option value="Dirección de Gobierno Digital y Electrónico">
                   Dirección de Gobierno Digital y Electrónico
                 </option>
+                <option value="Dirección de Tesoreria">
+                  Dirección de Tesoreria
+                </option>
                 <option value="Dirección de Gobierno por Resultados">
                   Dirección de Gobierno por Resultados
                 </option>
@@ -349,23 +530,8 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="estatus">Estatus:</label>
-              <select
-                className="form-control"
-                id="estatus"
-                value={formData.estatus}
-                onChange={handleChange}
-              >
-                <option value="pendiente">Pendiente</option>
-                <option value="realizado">Realizado</option>
-                <option value="rechazado">Rechazado</option>
-              </select>
-            </div>
-          </div>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 text-center">
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
