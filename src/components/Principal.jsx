@@ -305,12 +305,14 @@ export default function Principal() {
                 <option value="Dirección de Seguridad Pública">
                   Dirección de Seguridad Pública
                 </option>
-                <option
-                  value="Dirección de Servicios Públicos">
+                <option value="Dirección de Servicios Públicos">
                   Dirección de Servicios Públicos
                 </option>
                 <option value="Dirección de Transparencia y Gobierno Abierto">
                   Dirección de Transparencia y Gobierno Abierto
+                </option>
+                <option value="Tesorería Municipal">
+                  Tesorería Municipal
                 </option>
                 <option value="Subdirección de Vinculacion">
                   Subdirección de Vinculacion
@@ -324,7 +326,21 @@ export default function Principal() {
                 <option value="Subdirección de Programas municipales">
                   Subdirección de Programas municipales
                 </option>
-            </select>
+                <option value="otro">Otro</option>
+              </select>
+              {filtroValor === "otro" && (
+                <input
+                type="text"
+                className="form-control mt-2"
+                placeholder="Escribe el responsable"
+                value={filtroValorOtroBusqueda} // Conectamos al estado de búsqueda
+                onChange={(e) => {
+                  setFiltroValorOtroBusqueda(e.target.value); 
+                  handleFiltroValorOtroChange(e);  // Actualizamos ambos estados
+                }}
+              />
+              )}
+            </div>
           ) : (
             <input
               type="text"
@@ -332,7 +348,7 @@ export default function Principal() {
               id="filtroValor"
               placeholder="Buscar..."
               value={filtroValor}
-              onChange={handleFiltroValorChange}
+              onChange={handleFiltroValorOtroChange}
             />
           )}
         </div>
