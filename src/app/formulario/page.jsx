@@ -23,6 +23,7 @@ export default function FormularioPlantilla() {
     procedencia: "Oficio",
     correo: "",
     responsable: "Dirección de Administración",
+    delegacion: "Barrio de Coaxustenco",
     fechaVen: "",
     estatus: "pendiente",
   });
@@ -66,6 +67,7 @@ export default function FormularioPlantilla() {
         telefono: document.getElementById("telefono").value,
         asunto: document.getElementById("asunto").value,
         estatus: document.getElementById("estatus").value,
+        delegacion: document.getElementById("delegacion").value,
         fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
       });
 
@@ -86,6 +88,7 @@ export default function FormularioPlantilla() {
             asunto: "",
             procedencia: "Oficio",
             correo: "",
+            delegacion: "Barrio de Coaxustenco",
             responsable: "Dirección de Administración",
             fechaVen: "",
             estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
@@ -149,6 +152,7 @@ export default function FormularioPlantilla() {
           telefono: solicitudData.telefono,
           asunto: solicitudData.asunto,
           estatus: solicitudData.estatus,
+          delegacion: solicitudData.delegacion,
           fechaVen: solicitudData.fechaVen
             ? solicitudData.fechaVen.split("T")[0]
             : "", // Obtener la fecha sin la hora
@@ -298,6 +302,7 @@ export default function FormularioPlantilla() {
               <select
                 className="form-control"
                 id="delegacion"
+                onChange={handleChange}
                 value={formData.delegacion}
                 required
               >
@@ -543,36 +548,6 @@ export default function FormularioPlantilla() {
                   required // Asegura que se ingrese un nombre si se selecciona "Otro"
                 />
               )}
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="telefono" className="fw-bold">
-                Teléfono:
-              </label>
-              <input
-                type="tel"
-                className="form-control"
-                id="telefono"
-                pattern="[0-9]{10}"
-                title="Debe contener 10 dígitos"
-                onChange={handleChange}
-                value={formData.telefono}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="correo" className="fw-bold">
-                Correo:
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="correo"
-                onChange={handleChange}
-                value={formData.correo}
-              />
             </div>
           </div>
         </div>
