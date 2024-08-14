@@ -190,17 +190,19 @@ export default function FormularioPlantilla() {
     ).map(checkbox => checkbox.value);
 
     try {
-      setFormData({
-        responsable: responsablesSeleccionados.join(", "),
+      const updatedFormData = {
+        ...formData,
+        responsable: responsablesSeleccionados.join(", "), // Unir los responsables en una cadena separada por comas
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
         telefono: document.getElementById("telefono").value,
-        asunto: document.getElementById("asunto").value,
+        asunto: document.getElementById("asunto").value,   
+  
         estatus: document.getElementById("estatus").value,
         delegacion: document.getElementById("delegacion").value,
-        fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
-      });
+        fechaVen: document.getElementById("fechaInput").value, 
+      };
 
       if (!params.id) {
         const response = await fetch("/api/solicitudes", {
@@ -208,7 +210,7 @@ export default function FormularioPlantilla() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updatedFormData),
         });
         if (response.ok) {
           // Solicitud exitosa, puedes redirigir o hacer otra acción
@@ -236,7 +238,7 @@ export default function FormularioPlantilla() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updatedFormData),
         });
         if (response.ok) {
           alert("Solicitud actualizada con éxito");
