@@ -138,8 +138,8 @@ export default function FormularioPlantilla() {
     asunto: "",
     procedencia: "Oficio",
     correo: "",
-    responsable: "Dirección de Administración",
-    delegacion: "",
+    responsable: "",
+    delegacion: "Barrio de Coaxustenco",
     fechaVen: "",
     estatus: "pendiente",
   });
@@ -183,6 +183,11 @@ export default function FormularioPlantilla() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Evita el envío tradicional del formulario
+
+    // Obtener los responsables seleccionados de la lista de verificación
+    const responsablesSeleccionados = Array.from(
+      document.querySelectorAll('input[type="checkbox"][id^="responsable-"]:checked')
+    ).map(checkbox => checkbox.value);
 
     try {
       setFormData({
