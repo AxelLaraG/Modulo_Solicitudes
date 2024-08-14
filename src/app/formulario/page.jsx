@@ -313,7 +313,7 @@ export default function FormularioPlantilla() {
 
         <div className="col-md-12">
           <div className="form-group">
-            <label htmlFor="asunto" className="fw-bold">
+            <label htmlFor="asunto" className="fw-bold py-4">
               Asunto:
             </label>
             <input
@@ -362,7 +362,7 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="fechaInput" className="fw-bold">
+              <label htmlFor="fechaInput" className="fw-bold pb-4">
                 Fecha de vencimiento:
               </label>
               <input
@@ -407,7 +407,7 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="estatus">Estatus:</label>
+              <label htmlFor="estatus" className="fw-bold">Estatus:</label>
               <select
                 className="form-control"
                 id="estatus"
@@ -583,14 +583,12 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-12">
-            <div className="form-group">
-              <label htmlFor="responsable" className="fw-bold">
+          <div className="col-md-12 pt-4">
+            <div className="form-group2">
+              <label htmlFor="responsable" className="fw-bold pb-4">
                 Responsable:
               </label>
               <div>
-                {" "}
-                {/* Contenedor para las opciones de la checklist */}
                 {opcionesResponsables.map((opcion) => (
                   <div key={opcion.value} className="form-check">
                     <input
