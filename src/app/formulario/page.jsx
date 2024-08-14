@@ -186,22 +186,23 @@ export default function FormularioPlantilla() {
 
     // Obtener los responsables seleccionados de la lista de verificación
     const responsablesSeleccionados = Array.from(
-      document.querySelectorAll('input[type="checkbox"][id^="responsable-"]:checked')
-    ).map(checkbox => checkbox.value);
+      document.querySelectorAll(
+        'input[type="checkbox"][id^="responsable-"]:checked'
+      )
+    ).map((checkbox) => checkbox.value);
 
     try {
       const updatedFormData = {
         ...formData,
-        responsable: responsablesSeleccionados.join(", "), // Unir los responsables en una cadena separada por comas
+        responsable: responsablesSeleccionados, // Enviar como array
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
         telefono: document.getElementById("telefono").value,
-        asunto: document.getElementById("asunto").value,   
-  
+        asunto: document.getElementById("asunto").value,
         estatus: document.getElementById("estatus").value,
         delegacion: document.getElementById("delegacion").value,
-        fechaVen: document.getElementById("fechaInput").value, 
+        fechaVen: document.getElementById("fechaInput").value,
       };
 
       if (!params.id) {
@@ -228,7 +229,6 @@ export default function FormularioPlantilla() {
           });
 
           setResponsablesSeleccionados([]);
-          
         } else {
           alert("Error al enviar la solicitud");
         }
@@ -281,8 +281,12 @@ export default function FormularioPlantilla() {
       if (params.id) {
         const response = await fetch(`/api/solicitudes/${params.id}`);
         const solicitudData = await response.json();
+
+        const responsables = solicitudData.responsable || []; // Asignar directamente el array o un array vacío si es null/undefined
+        console.log("Responsables:", responsables);
+
         setFormData({
-          responsable: solicitudData.responsable,
+          responsable: responsables.join(", "),
           solicitante: solicitudData.solicitante,
           correo: solicitudData.correo,
           telefono: solicitudData.telefono,
@@ -294,6 +298,8 @@ export default function FormularioPlantilla() {
             : "", // Obtener la fecha sin la hora
           procedencia: solicitudData.procedencia,
         });
+
+        setResponsablesSeleccionados(responsables);
       } else {
         // Restablecer formData si no hay params.id (nueva solicitud)
         setFormData({
