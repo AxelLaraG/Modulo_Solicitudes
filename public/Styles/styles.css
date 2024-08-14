@@ -162,3 +162,147 @@ td:nth-child(5) {
   border: 1px solid #ccc; /* Add a gray border */
   padding: 10px;
 }
+form {
+	max-width: 100%;
+	margin: 0 auto;
+}
+.content {
+	width: 100%;
+	padding: 1em;
+	box-sizing: border-box;
+	float: center;
+}
+
+fieldset {
+	padding: 2em;
+	border-color: #d4d4d4;
+	border-style: solid;
+	border-width: 2px;
+	background: #fff;
+    position: relative; 
+}
+
+legend {
+	color: #bfbfbf;
+	padding: 0.3em 0.6em;
+	background: #fff;
+	font-size: 1.3em;
+    position: relative;
+    padding-right: 30px; /* Espacio para el checkbox "Todas" */
+}
+
+.container ul {
+	margin-top: 0;
+	padding-left: 0em;
+}
+.container ul li {
+	list-style-type: none;
+}
+.container ul + ul {
+	margin-bottom: 0;
+}
+.container ul + ul > li + li label {
+	margin-bottom: 0;
+}
+
+/*** Styling Radio & Checkbox Input Fields (start here) ***/
+label {
+	font-weight: 600;
+	color: #777777;
+	margin-bottom: 11px;
+	width: 100%;
+	float: left;
+	cursor: pointer;
+	padding: 0 0.6em;
+	box-sizing: border-box;
+	background: #e6e6e6;
+	transition: all 0.7s ease 0s;
+}
+input[type="checkbox"] + label:hover {
+    background-color: #d8bfbf; /* Change background on hover */
+}
+label.todas {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.3em 0.6em;
+    margin-top: 0.7em;
+    margin-right: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.6s ease;
+    font-size: 0.9em;
+    width: auto;
+    background: #ffffff;
+}
+
+
+input[type="checkbox"] {
+	display: none;
+}
+
+input[type="checkbox"] + label {
+	line-height: 3em;
+}
+
+input[type="checkbox"]:disabled + label {
+	color: #ccc !important;
+	cursor: not-allowed;
+}
+input[type="checkbox"]:checked:disabled + label:after {
+	border-color: #ccc;
+}
+
+input[type="checkbox"] + label:before {
+	content: "";
+	width: 20px;
+	height: 20px;
+	float: left;
+	margin-right: 0.5em;
+	border: 2px solid #ccc;
+	background: #fff;
+	margin-top: 0.9em;
+}
+input[type="checkbox"]:checked + label {
+	background: #c1eec2;
+}
+
+input[type="checkbox"]:checked + label:before {
+	border-color: #59be5b;
+    background: #7dd27e;
+}
+
+input[type="checkbox"]:checked:disabled + label {
+	background: #ccc;
+	color: #fff !important;
+}
+
+input[type="checkbox"]:checked:disabled + label:before {
+	border-color: #bdbdbd;
+}
+
+@media (max-width: 650px) {
+	.content {
+		width: 100%;
+	}
+}
+#checkboxTodas {
+    position: absolute;
+    top: 0.5em;
+    right: 5px; 
+    width: auto; 
+}
+label.todas:hover,
+label.todas:focus {
+    background: #d9d9d9;
+}
+
+
+.gen {
+	max-height: 17vw;
+}
+
+.opcionesContainer {
+    max-height: 200px; /* Ajusta la altura según tus necesidades */
+    overflow-y: auto;
+}

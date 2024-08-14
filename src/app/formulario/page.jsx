@@ -6,7 +6,6 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
 import "../../../public/Styles/styles.css";
-import "../../../public/Styles/stylesChecklist.css";
 import { Spanish } from "flatpickr/dist/l10n/es.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
