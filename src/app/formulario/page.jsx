@@ -224,6 +224,9 @@ export default function FormularioPlantilla() {
             fechaVen: "",
             estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
           });
+
+          setResponsablesSeleccionados([]);
+          
         } else {
           alert("Error al enviar la solicitud");
         }
