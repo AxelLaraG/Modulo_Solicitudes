@@ -303,7 +303,6 @@ export default function FormularioPlantilla() {
 
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
-      <h2 className="display-4 text-center">Solicitud</h2>
       <h2 className="display-4">Solicitud</h2>
       <div className="header-container">
         <br />
