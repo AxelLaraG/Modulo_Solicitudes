@@ -18,7 +18,7 @@ export default function FormularioPlantilla() {
   const [responsablesSeleccionados, setResponsablesSeleccionados] = useState(
     []
   );
-  const opcionesResponsables = [
+  const [opcionesResponsables, setOpcionesResponsables] = useState([
     {
       value: "Dirección de Administración",
       label: "Dirección de Administración",
@@ -130,8 +130,10 @@ export default function FormularioPlantilla() {
       checked: false,
     },
     { value: "Otro", label: "Otro", checked: false },
-  ];
+  ]);
   const [fechaMin, setFechaMin] = useState(new Date());
+  const [mostrarOtroInput, setMostrarOtroInput] = useState(false);
+  const [otroResponsable, setOtroResponsable] = useState(""); // Estado para almacenar el valor del input "Otro"
   const [formData, setFormData] = useState({
     solicitante: "",
     telefono: "",
@@ -144,16 +146,25 @@ export default function FormularioPlantilla() {
     estatus: "pendiente",
   });
 
+  //Actualizador de selección en CheckList
   const handleCheckResponsable = (value) => {
     if (responsablesSeleccionados.includes(value)) {
       setResponsablesSeleccionados(
         responsablesSeleccionados.filter((item) => item !== value)
       );
+      if (value === "Otro") {
+        setMostrarOtroInput(false);
+        setOtroResponsable("");
+      }
     } else {
       setResponsablesSeleccionados([...responsablesSeleccionados, value]);
+      if (value === "Otro") {
+        setMostrarOtroInput(true);
+      }
     }
   };
 
+  //Actualización de datos cada cambio de datos
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -161,6 +172,7 @@ export default function FormularioPlantilla() {
     });
   };
 
+  //Manejador de borrar fecha
   const handleClearDate = () => {
     // Borrar la fecha en flatpickr
     flatpickrRef.current?.clear();
@@ -172,6 +184,7 @@ export default function FormularioPlantilla() {
     }));
   };
 
+  //Manejador de evento delete
   const handleDelete = async () => {
     if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
@@ -181,6 +194,7 @@ export default function FormularioPlantilla() {
     }
   };
 
+  //Manejador de creación o actualización
   const handleSubmit = async (event) => {
     event.preventDefault(); // Evita el envío tradicional del formulario
 
@@ -194,7 +208,13 @@ export default function FormularioPlantilla() {
     try {
       const updatedFormData = {
         ...formData,
-        responsable: responsablesSeleccionados, // Enviar como array
+        responsable:
+          responsablesSeleccionados.includes("Otro") && otroResponsable
+            ? [
+                ...responsablesSeleccionados.filter((item) => item !== "Otro"), // Excluir "Otro"
+                ...otroResponsable.split(",").map((opcion) => opcion.trim()), // Incluir solo las direcciones agregadas
+              ]
+            : responsablesSeleccionados,
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
@@ -229,6 +249,7 @@ export default function FormularioPlantilla() {
           });
 
           setResponsablesSeleccionados([]);
+          setMostrarOtroInput(false);
         } else {
           alert("Error al enviar la solicitud");
         }
@@ -251,6 +272,7 @@ export default function FormularioPlantilla() {
     }
   };
 
+  //Manejador de Fecha
   useEffect(() => {
     // Inicializar flatpickr una sola vez al montar el componente
 
@@ -276,6 +298,7 @@ export default function FormularioPlantilla() {
     };
   }, []);
 
+  //Llenado de datos al crear o modificar solicitud
   useEffect(() => {
     const fetchData = async () => {
       if (params.id) {
@@ -283,7 +306,18 @@ export default function FormularioPlantilla() {
         const solicitudData = await response.json();
 
         const responsables = solicitudData.responsable || []; // Asignar directamente el array o un array vacío si es null/undefined
-        console.log("Responsables:", responsables);
+
+        const responsablesNoExistentes = responsables.filter(
+          (responsable) =>
+            !opcionesResponsables.some((opcion) => opcion.value === responsable)
+        );
+
+        if (responsablesNoExistentes.length > 0) {
+          responsables.push("Otro")
+
+          setMostrarOtroInput(true);
+          setOtroResponsable(responsablesNoExistentes.join(", "));
+        }
 
         setFormData({
           responsable: responsables.join(", "),
@@ -300,6 +334,7 @@ export default function FormularioPlantilla() {
         });
 
         setResponsablesSeleccionados(responsables);
+
       } else {
         // Restablecer formData si no hay params.id (nueva solicitud)
         setFormData({
@@ -629,21 +664,22 @@ export default function FormularioPlantilla() {
                     </div>
                   ))}
                 </div>
-                {responsablesSeleccionados.includes("Otro") && (
-                  <input
-                    type="text"
-                    className="form-control mt-2"
-                    placeholder="Escriba el nombre del responsable"
-                    onChange={(e) =>
-                      setResponsablesSeleccionados([
-                        ...responsablesSeleccionados.filter(
-                          (item) => item !== "Otro"
-                        ),
-                        e.target.value,
-                      ])
-                    }
-                    required
-                  />
+                {mostrarOtroInput && (
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label htmlFor="otroResponsable" className="fw-bold">
+                        Otro(s) Responsable(s):
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="otroResponsable"
+                        value={otroResponsable}
+                        placeholder="Otro 1, Otro 2,..."
+                        onChange={(e) => setOtroResponsable(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
