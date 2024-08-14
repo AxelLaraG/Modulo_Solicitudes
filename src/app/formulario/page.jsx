@@ -191,7 +191,7 @@ export default function FormularioPlantilla() {
 
     try {
       setFormData({
-        responsable: responsablesSeleccionados.join(', '),
+        responsable: responsablesSeleccionados.join(", "),
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
@@ -308,7 +308,7 @@ export default function FormularioPlantilla() {
 
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
-      <h2 className="display-4 text-center">Solicitud</h2>
+      <h2 className="display-4">Solicitud</h2>
       <div className="header-container">
         <br />
       </div>
@@ -412,7 +412,9 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="estatus">Estatus:</label>
+              <label htmlFor="estatus" className="fw-bold">
+                Estatus:
+              </label>
               <select
                 className="form-control"
                 id="estatus"
@@ -588,53 +590,55 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-12">
+          <div className="col-md-12 pt-4">
             <div className="form-group">
               <label htmlFor="responsable" className="fw-bold">
-                Responsable:
+                Responsable(s):
               </label>
-              <div>
-                {" "}
-                {/* Contenedor para las opciones de la checklist */}
-                {opcionesResponsables.map((opcion) => (
-                  <div key={opcion.value} className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value={opcion.value}
-                      id={`responsable-${opcion.value}`}
-                      checked={responsablesSeleccionados.includes(opcion.value)}
-                      onChange={() => handleCheckResponsable(opcion.value)}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor={`responsable-${opcion.value}`}
-                    >
-                      {opcion.label}
-                    </label>
-                  </div>
-                ))}
+              <div className="options-container">
+                <div className="form-group2">
+                  {opcionesResponsables.map((opcion) => (
+                    <div key={opcion.value} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={opcion.value}
+                        id={`responsable-${opcion.value}`}
+                        checked={responsablesSeleccionados.includes(
+                          opcion.value
+                        )}
+                        onChange={() => handleCheckResponsable(opcion.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`responsable-${opcion.value}`}
+                      >
+                        {opcion.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {responsablesSeleccionados.includes("Otro") && (
+                  <input
+                    type="text"
+                    className="form-control mt-2"
+                    placeholder="Escriba el nombre del responsable"
+                    onChange={(e) =>
+                      setResponsablesSeleccionados([
+                        ...responsablesSeleccionados.filter(
+                          (item) => item !== "Otro"
+                        ),
+                        e.target.value,
+                      ])
+                    }
+                    required
+                  />
+                )}
               </div>
-              {responsablesSeleccionados.includes("Otro") && (
-                <input
-                  type="text"
-                  className="form-control mt-2"
-                  placeholder="Escriba el nombre del responsable"
-                  onChange={(e) =>
-                    setResponsablesSeleccionados([
-                      ...responsablesSeleccionados.filter(
-                        (item) => item !== "Otro"
-                      ),
-                      e.target.value,
-                    ])
-                  }
-                  required
-                />
-              )}
             </div>
           </div>
         </div>
-        <div className="mt-3 text-center">
+        <div className="mt-3 text-center pb-4">
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
