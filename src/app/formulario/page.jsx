@@ -15,6 +15,122 @@ export default function FormularioPlantilla() {
   const flatpickrRef = useRef(null);
   const params = useParams();
   const router = useRouter();
+  const [responsablesSeleccionados, setResponsablesSeleccionados] = useState(
+    []
+  );
+  const opcionesResponsables = [
+    {
+      value: "Dirección de Administración",
+      label: "Dirección de Administración",
+      checked: false,
+    },
+    {
+      value: "Dirección de Cultura",
+      label: "Dirección de Cultura",
+      checked: false,
+    },
+    {
+      value: "Dirección de Desarrollo Económico, Turístico y Artesanal",
+      label: "Dirección de Desarrollo Económico, Turístico y Artesanal",
+      checked: false,
+    },
+    {
+      value: "Dirección de Desarrollo Social y Asuntos Indígenas",
+      label: "Dirección de Desarrollo Social y Asuntos Indígenas",
+      checked: false,
+    },
+    {
+      value: "Dirección de Desarrollo Urbano y Metropolitano",
+      label: "Dirección de Desarrollo Urbano y Metropolitano",
+      checked: false,
+    },
+    {
+      value: "Dirección de Educación",
+      label: "Dirección de Educación",
+      checked: false,
+    },
+    {
+      value: "Dirección de la Gerencia de la Ciudad",
+      label: "Dirección de la Gerencia de la Ciudad",
+      checked: false,
+    },
+    {
+      value: "Dirección de Gobernación",
+      label: "Dirección de Gobernación",
+      checked: false,
+    },
+    {
+      value: "Dirección de Gobierno Digital y Electrónico",
+      label: "Dirección de Gobierno Digital y Electrónico",
+      checked: false,
+    },
+    {
+      value: "Dirección de Tesoreria",
+      label: "Dirección de Tesoreria",
+      checked: false,
+    },
+    {
+      value: "Dirección de Gobierno por Resultados",
+      label: "Dirección de Gobierno por Resultados",
+      checked: false,
+    },
+    {
+      value: "Dirección de Igualdad de Género",
+      label: "Dirección de Igualdad de Género",
+      checked: false,
+    },
+    {
+      value: "Dirección de Medio Ambiente",
+      label: "Dirección de Medio Ambiente",
+      checked: false,
+    },
+    {
+      value: "Dirección de Obras Públicas",
+      label: "Dirección de Obras Públicas",
+      checked: false,
+    },
+    {
+      value: "Dirección de Seguridad Pública",
+      label: "Dirección de Seguridad Pública",
+      checked: false,
+    },
+    {
+      value: "Dirección de Servicios Públicos",
+      label: "Dirección de Servicios Públicos",
+      checked: false,
+    },
+    {
+      value: "Dirección de Transparencia y Gobierno Abierto",
+      label: "Dirección de Transparencia y Gobierno Abierto",
+      checked: false,
+    },
+    {
+      value: "Tesorería Municipal",
+      label: "Tesorería Municipal",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Vinculación",
+      label: "Subdirección de Vinculacion",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Delegaciones",
+      label: "Subdirección de Delegaciones",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Política Sectorial",
+      label: "Subdirección de Política Sectorial",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Programas municipales",
+      label: "Subdirección de Programas municipales",
+      checked: false,
+    },
+    { value: "Otro", label: "Otro", checked: false },
+  ];
   const [fechaMin, setFechaMin] = useState(new Date());
   const [formData, setFormData] = useState({
     solicitante: "",
@@ -23,10 +139,20 @@ export default function FormularioPlantilla() {
     procedencia: "Oficio",
     correo: "",
     responsable: "Dirección de Administración",
-    delegacion: "Barrio de Coaxustenco",
+    delegacion: "",
     fechaVen: "",
     estatus: "pendiente",
   });
+
+  const handleCheckResponsable = (value) => {
+    if (responsablesSeleccionados.includes(value)) {
+      setResponsablesSeleccionados(
+        responsablesSeleccionados.filter((item) => item !== value)
+      );
+    } else {
+      setResponsablesSeleccionados([...responsablesSeleccionados, value]);
+    }
+  };
 
   const handleChange = (event) => {
     setFormData({
@@ -60,7 +186,7 @@ export default function FormularioPlantilla() {
 
     try {
       setFormData({
-        responsable: document.getElementById("responsable").value,
+        responsable: responsablesSeleccionados.join(', '),
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
@@ -89,7 +215,7 @@ export default function FormularioPlantilla() {
             procedencia: "Oficio",
             correo: "",
             delegacion: "Barrio de Coaxustenco",
-            responsable: "Dirección de Administración",
+            responsable: "",
             fechaVen: "",
             estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
           });
@@ -166,7 +292,7 @@ export default function FormularioPlantilla() {
           asunto: "",
           procedencia: "Oficio",
           correo: "",
-          responsable: "Dirección de Administración",
+          responsable: "",
           fechaVen: "",
           estatus: "pendiente",
         });
@@ -462,90 +588,42 @@ export default function FormularioPlantilla() {
               <label htmlFor="responsable" className="fw-bold">
                 Responsable:
               </label>
-              <select
-                className="form-control"
-                id="responsable"
-                onChange={handleChange}
-                value={formData.responsable}
-                required
-              >
-                <option value="Dirección de Administración">
-                  Dirección de Administración
-                </option>
-                <option value="Dirección de Cultura">
-                  Dirección de Cultura
-                </option>
-                <option value="Dirección de Desarrollo Económico, Turístico y Artesanal">
-                  Dirección de Desarrollo Económico, Turístico y Artesanal
-                </option>
-                <option value="Dirección de Desarrollo Social y Asuntos Indígenas">
-                  Dirección de Desarrollo Social y Asuntos Indígenas
-                </option>
-                <option value="Dirección de Desarrollo Urbano y Metropolitano">
-                  Dirección de Desarrollo Urbano y Metropolitano
-                </option>
-                <option value="Dirección de Educación">
-                  Dirección de Educación
-                </option>
-                <option value="Dirección de la Gerencia de la Ciudad">
-                  Dirección de la Gerencia de la Ciudad
-                </option>
-                <option value="Dirección de Gobernación">
-                  Dirección de Gobernación
-                </option>
-                <option value="Dirección de Gobierno Digital y Electrónico">
-                  Dirección de Gobierno Digital y Electrónico
-                </option>
-                <option value="Dirección de Tesoreria">
-                  Dirección de Tesoreria
-                </option>
-                <option value="Dirección de Gobierno por Resultados">
-                  Dirección de Gobierno por Resultados
-                </option>
-                <option value="Dirección de Igualdad de Género">
-                  Dirección de Igualdad de Género
-                </option>
-                <option value="Dirección de Medio Ambiente">
-                  Dirección de Medio Ambiente
-                </option>
-                <option value="Dirección de Obras Públicas">
-                  Dirección de Obras Públicas
-                </option>
-                <option value="Dirección de Seguridad Pública">
-                  Dirección de Seguridad Pública
-                </option>
-                <option value="Dirección de Servicios Públicos">
-                  Dirección de Servicios Públicos
-                </option>
-                <option value="Dirección de Transparencia y Gobierno Abierto">
-                  Dirección de Transparencia y Gobierno Abierto
-                </option>
-                <option value="Tesorería Municipal">
-                  Tesorería Municipal
-                </option>
-                <option value="Subdirección de Vinculación">
-                  Subdirección de Vinculacion
-                </option>
-                <option value="Subdirección de Delegaciones">
-                  Subdirección de Delegaciones
-                </option>
-                <option value="Subdirección de Política Sectorial">
-                  Subdirección de Política Sectorial
-                </option>
-                <option value="Subdirección de Programas municipales">
-                  Subdirección de Programas municipales
-                </option>
-                <option value="">Otro</option>
-              </select>
-              {formData.responsable === "" && (
+              <div>
+                {" "}
+                {/* Contenedor para las opciones de la checklist */}
+                {opcionesResponsables.map((opcion) => (
+                  <div key={opcion.value} className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value={opcion.value}
+                      id={`responsable-${opcion.value}`}
+                      checked={responsablesSeleccionados.includes(opcion.value)}
+                      onChange={() => handleCheckResponsable(opcion.value)}
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor={`responsable-${opcion.value}`}
+                    >
+                      {opcion.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              {responsablesSeleccionados.includes("Otro") && (
                 <input
                   type="text"
                   className="form-control mt-2"
                   placeholder="Escriba el nombre del responsable"
                   onChange={(e) =>
-                    setFormData({ ...formData, responsable: e.target.value })
+                    setResponsablesSeleccionados([
+                      ...responsablesSeleccionados.filter(
+                        (item) => item !== "Otro"
+                      ),
+                      e.target.value,
+                    ])
                   }
-                  required // Asegura que se ingrese un nombre si se selecciona "Otro"
+                  required
                 />
               )}
             </div>
