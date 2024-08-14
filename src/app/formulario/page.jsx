@@ -6,6 +6,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
 import "../../../public/Styles/styles.css";
+import "../../../public/Styles/stylesChecklist.css";
 import { Spanish } from "flatpickr/dist/l10n/es.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -186,7 +187,7 @@ export default function FormularioPlantilla() {
 
     try {
       setFormData({
-        responsable: responsablesSeleccionados.join(', '),
+        responsable: responsablesSeleccionados.join(", "),
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
@@ -313,7 +314,7 @@ export default function FormularioPlantilla() {
 
         <div className="col-md-12">
           <div className="form-group">
-            <label htmlFor="asunto" className="fw-bold py-4">
+            <label htmlFor="asunto" className="fw-bold">
               Asunto:
             </label>
             <input
@@ -362,7 +363,7 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="fechaInput" className="fw-bold pb-4">
+              <label htmlFor="fechaInput" className="fw-bold">
                 Fecha de vencimiento:
               </label>
               <input
@@ -407,7 +408,9 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="estatus" className="fw-bold">Estatus:</label>
+              <label htmlFor="estatus" className="fw-bold">
+                Estatus:
+              </label>
               <select
                 className="form-control"
                 id="estatus"
@@ -584,50 +587,54 @@ export default function FormularioPlantilla() {
             </div>
           </div>
           <div className="col-md-12 pt-4">
-            <div className="form-group2">
-              <label htmlFor="responsable" className="fw-bold pb-4">
-                Responsable:
+            <div className="form-group">
+              <label htmlFor="responsable" className="fw-bold">
+                Responsable(s):
               </label>
-              <div>
-                {opcionesResponsables.map((opcion) => (
-                  <div key={opcion.value} className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value={opcion.value}
-                      id={`responsable-${opcion.value}`}
-                      checked={responsablesSeleccionados.includes(opcion.value)}
-                      onChange={() => handleCheckResponsable(opcion.value)}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor={`responsable-${opcion.value}`}
-                    >
-                      {opcion.label}
-                    </label>
-                  </div>
-                ))}
+              <div className="options-container">
+                <div className="form-group2">
+                  {opcionesResponsables.map((opcion) => (
+                    <div key={opcion.value} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={opcion.value}
+                        id={`responsable-${opcion.value}`}
+                        checked={responsablesSeleccionados.includes(
+                          opcion.value
+                        )}
+                        onChange={() => handleCheckResponsable(opcion.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`responsable-${opcion.value}`}
+                      >
+                        {opcion.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {responsablesSeleccionados.includes("Otro") && (
+                  <input
+                    type="text"
+                    className="form-control mt-2"
+                    placeholder="Escriba el nombre del responsable"
+                    onChange={(e) =>
+                      setResponsablesSeleccionados([
+                        ...responsablesSeleccionados.filter(
+                          (item) => item !== "Otro"
+                        ),
+                        e.target.value,
+                      ])
+                    }
+                    required
+                  />
+                )}
               </div>
-              {responsablesSeleccionados.includes("Otro") && (
-                <input
-                  type="text"
-                  className="form-control mt-2"
-                  placeholder="Escriba el nombre del responsable"
-                  onChange={(e) =>
-                    setResponsablesSeleccionados([
-                      ...responsablesSeleccionados.filter(
-                        (item) => item !== "Otro"
-                      ),
-                      e.target.value,
-                    ])
-                  }
-                  required
-                />
-              )}
             </div>
           </div>
         </div>
-        <div className="mt-3 text-center">
+        <div className="mt-3 text-center pb-4">
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
