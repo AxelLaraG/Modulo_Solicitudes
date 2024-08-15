@@ -142,7 +142,8 @@ export default function Principal() {
           solicitud.asunto.length > 5
             ? solicitud.asunto.slice(0, 5) + "..."
             : solicitud.asunto,
-          solicitud.responsable,
+            solicitud.responsable[0].split(",")[0] + 
+            (solicitud.responsable[0].includes(",") ? ",..." : ""),
           solicitud.estatus === "realizado"
             ? '<i class="bi bi-check-circle-fill text-success"></i>'
             : solicitud.estatus === "pendiente"
@@ -409,6 +410,7 @@ export default function Principal() {
               filtroCriterio,
               filtroValor
             );
+            
             if (datosFiltrados.length > 0) {
               exportToExcel(datosFiltrados, "solicitudes.xlsx");
             } else {

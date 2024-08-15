@@ -34,6 +34,10 @@ const schema = new mongoose.Schema({
     },
     fechaVen: {
         type: Date
+    },
+    delegacion: {
+        type: String,
+        required: true
     }
 })
 

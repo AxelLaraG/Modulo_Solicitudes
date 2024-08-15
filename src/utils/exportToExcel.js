@@ -2,7 +2,21 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
 function exportToExcel(data, filename) {
-  const ws = XLSX.utils.json_to_sheet(data);
+  // Seleccionamos solo las columnas deseadas
+  const dataForExcel = data.map(item => ({
+    Asunto: item.asunto,
+    Responsable: item.responsable.join(", "),
+    Fecha_Creación: item.fecha.slice(0, 10),
+    Fecha_Vencimiento: item.fechaVen.slice(0, 10),
+    Solicitante: item.estatus,
+    Procedencia: item.procedencia,
+    Estatus: item.estatus,
+    Teléfono: item.telefono,
+    Correo: item.correo,
+    Delegación: item.delegacion,
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(dataForExcel);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Solicitudes");
 
@@ -15,3 +29,4 @@ function exportToExcel(data, filename) {
 }
 
 export { exportToExcel };
+

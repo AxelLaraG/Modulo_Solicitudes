@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
 import "flatpickr/dist/flatpickr.min.css";
+import "../../../public/Styles/styles.css";
 import { Spanish } from "flatpickr/dist/l10n/es.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -14,18 +15,156 @@ export default function FormularioPlantilla() {
   const flatpickrRef = useRef(null);
   const params = useParams();
   const router = useRouter();
+  const [responsablesSeleccionados, setResponsablesSeleccionados] = useState(
+    []
+  );
+  const [opcionesResponsables, setOpcionesResponsables] = useState([
+    {
+      value: "Dirección de Administración",
+      label: "Dirección de Administración",
+      checked: false,
+    },
+    {
+      value: "Dirección de Cultura",
+      label: "Dirección de Cultura",
+      checked: false,
+    },
+    {
+      value: "Dirección de Desarrollo Económico, Turístico y Artesanal",
+      label: "Dirección de Desarrollo Económico, Turístico y Artesanal",
+      checked: false,
+    },
+    {
+      value: "Dirección de Desarrollo Social y Asuntos Indígenas",
+      label: "Dirección de Desarrollo Social y Asuntos Indígenas",
+      checked: false,
+    },
+    {
+      value: "Dirección de Desarrollo Urbano y Metropolitano",
+      label: "Dirección de Desarrollo Urbano y Metropolitano",
+      checked: false,
+    },
+    {
+      value: "Dirección de Educación",
+      label: "Dirección de Educación",
+      checked: false,
+    },
+    {
+      value: "Dirección de la Gerencia de la Ciudad",
+      label: "Dirección de la Gerencia de la Ciudad",
+      checked: false,
+    },
+    {
+      value: "Dirección de Gobernación",
+      label: "Dirección de Gobernación",
+      checked: false,
+    },
+    {
+      value: "Dirección de Gobierno Digital y Electrónico",
+      label: "Dirección de Gobierno Digital y Electrónico",
+      checked: false,
+    },
+    {
+      value: "Dirección de Tesoreria",
+      label: "Dirección de Tesoreria",
+      checked: false,
+    },
+    {
+      value: "Dirección de Gobierno por Resultados",
+      label: "Dirección de Gobierno por Resultados",
+      checked: false,
+    },
+    {
+      value: "Dirección de Igualdad de Género",
+      label: "Dirección de Igualdad de Género",
+      checked: false,
+    },
+    {
+      value: "Dirección de Medio Ambiente",
+      label: "Dirección de Medio Ambiente",
+      checked: false,
+    },
+    {
+      value: "Dirección de Obras Públicas",
+      label: "Dirección de Obras Públicas",
+      checked: false,
+    },
+    {
+      value: "Dirección de Seguridad Pública",
+      label: "Dirección de Seguridad Pública",
+      checked: false,
+    },
+    {
+      value: "Dirección de Servicios Públicos",
+      label: "Dirección de Servicios Públicos",
+      checked: false,
+    },
+    {
+      value: "Dirección de Transparencia y Gobierno Abierto",
+      label: "Dirección de Transparencia y Gobierno Abierto",
+      checked: false,
+    },
+    {
+      value: "Tesorería Municipal",
+      label: "Tesorería Municipal",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Vinculación",
+      label: "Subdirección de Vinculacion",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Delegaciones",
+      label: "Subdirección de Delegaciones",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Política Sectorial",
+      label: "Subdirección de Política Sectorial",
+      checked: false,
+    },
+    {
+      value: "Subdirección de Programas municipales",
+      label: "Subdirección de Programas municipales",
+      checked: false,
+    },
+    { value: "Otro", label: "Otro", checked: false },
+  ]);
   const [fechaMin, setFechaMin] = useState(new Date());
+  const [mostrarOtroInput, setMostrarOtroInput] = useState(false);
+  const [otroResponsable, setOtroResponsable] = useState(""); // Estado para almacenar el valor del input "Otro"
   const [formData, setFormData] = useState({
     solicitante: "",
     telefono: "",
     asunto: "",
     procedencia: "Oficio",
     correo: "",
-    responsable: "Dirección de Administración",
+    responsable: "",
+    delegacion: "Barrio de Coaxustenco",
     fechaVen: "",
     estatus: "pendiente",
   });
 
+  //Actualizador de selección en CheckList
+  const handleCheckResponsable = (value) => {
+    if (responsablesSeleccionados.includes(value)) {
+      setResponsablesSeleccionados(
+        responsablesSeleccionados.filter((item) => item !== value)
+      );
+      if (value === "Otro") {
+        setMostrarOtroInput(false);
+        setOtroResponsable("");
+      }
+    } else {
+      setResponsablesSeleccionados([...responsablesSeleccionados, value]);
+      if (value === "Otro") {
+        setMostrarOtroInput(true);
+      }
+    }
+  };
+
+  //Actualización de datos cada cambio de datos
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -33,6 +172,7 @@ export default function FormularioPlantilla() {
     });
   };
 
+  //Manejador de borrar fecha
   const handleClearDate = () => {
     // Borrar la fecha en flatpickr
     flatpickrRef.current?.clear();
@@ -44,6 +184,7 @@ export default function FormularioPlantilla() {
     }));
   };
 
+  //Manejador de evento delete
   const handleDelete = async () => {
     if (window.confirm("¿Está seguro de que quiere eliminar esta solicitud?")) {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
@@ -53,20 +194,36 @@ export default function FormularioPlantilla() {
     }
   };
 
+  //Manejador de creación o actualización
   const handleSubmit = async (event) => {
     event.preventDefault(); // Evita el envío tradicional del formulario
 
+    // Obtener los responsables seleccionados de la lista de verificación
+    const responsablesSeleccionados = Array.from(
+      document.querySelectorAll(
+        'input[type="checkbox"][id^="responsable-"]:checked'
+      )
+    ).map((checkbox) => checkbox.value);
+
     try {
-      setFormData({
-        responsable: document.getElementById("responsable").value,
+      const updatedFormData = {
+        ...formData,
+        responsable:
+          responsablesSeleccionados.includes("Otro") && otroResponsable
+            ? [
+                ...responsablesSeleccionados.filter((item) => item !== "Otro"), // Excluir "Otro"
+                ...otroResponsable.split(",").map((opcion) => opcion.trim()), // Incluir solo las direcciones agregadas
+              ]
+            : responsablesSeleccionados,
         solicitante: document.getElementById("solicitante").value,
         procedencia: document.getElementById("procedencia").value,
         correo: document.getElementById("correo").value,
         telefono: document.getElementById("telefono").value,
         asunto: document.getElementById("asunto").value,
         estatus: document.getElementById("estatus").value,
-        fechaVen: document.getElementById("fechaInput").value, // Obtener la fecha seleccionada
-      });
+        delegacion: document.getElementById("delegacion").value,
+        fechaVen: document.getElementById("fechaInput").value,
+      };
 
       if (!params.id) {
         const response = await fetch("/api/solicitudes", {
@@ -74,7 +231,7 @@ export default function FormularioPlantilla() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updatedFormData),
         });
         if (response.ok) {
           // Solicitud exitosa, puedes redirigir o hacer otra acción
@@ -85,10 +242,14 @@ export default function FormularioPlantilla() {
             asunto: "",
             procedencia: "Oficio",
             correo: "",
-            responsable: "Dirección de Administración",
+            delegacion: "Barrio de Coaxustenco",
+            responsable: "",
             fechaVen: "",
             estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
           });
+
+          setResponsablesSeleccionados([]);
+          setMostrarOtroInput(false);
         } else {
           alert("Error al enviar la solicitud");
         }
@@ -98,7 +259,7 @@ export default function FormularioPlantilla() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(updatedFormData),
         });
         if (response.ok) {
           alert("Solicitud actualizada con éxito");
@@ -111,6 +272,7 @@ export default function FormularioPlantilla() {
     }
   };
 
+  //Manejador de Fecha
   useEffect(() => {
     // Inicializar flatpickr una sola vez al montar el componente
 
@@ -136,23 +298,43 @@ export default function FormularioPlantilla() {
     };
   }, []);
 
+  //Llenado de datos al crear o modificar solicitud
   useEffect(() => {
     const fetchData = async () => {
       if (params.id) {
         const response = await fetch(`/api/solicitudes/${params.id}`);
         const solicitudData = await response.json();
+
+        const responsables = solicitudData.responsable || []; // Asignar directamente el array o un array vacío si es null/undefined
+
+        const responsablesNoExistentes = responsables.filter(
+          (responsable) =>
+            !opcionesResponsables.some((opcion) => opcion.value === responsable)
+        );
+
+        if (responsablesNoExistentes.length > 0) {
+          responsables.push("Otro")
+
+          setMostrarOtroInput(true);
+          setOtroResponsable(responsablesNoExistentes.join(", "));
+        }
+
         setFormData({
-          responsable: solicitudData.responsable,
+          responsable: responsables.join(", "),
           solicitante: solicitudData.solicitante,
           correo: solicitudData.correo,
           telefono: solicitudData.telefono,
           asunto: solicitudData.asunto,
           estatus: solicitudData.estatus,
+          delegacion: solicitudData.delegacion,
           fechaVen: solicitudData.fechaVen
             ? solicitudData.fechaVen.split("T")[0]
             : "", // Obtener la fecha sin la hora
           procedencia: solicitudData.procedencia,
         });
+
+        setResponsablesSeleccionados(responsables);
+
       } else {
         // Restablecer formData si no hay params.id (nueva solicitud)
         setFormData({
@@ -161,7 +343,7 @@ export default function FormularioPlantilla() {
           asunto: "",
           procedencia: "Oficio",
           correo: "",
-          responsable: "Dirección de Administración",
+          responsable: "",
           fechaVen: "",
           estatus: "pendiente",
         });
@@ -172,8 +354,8 @@ export default function FormularioPlantilla() {
 
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
+      <h2 className="display-4">Solicitud</h2>
       <div className="header-container">
-        <h2 className="text-center">Solicitud</h2>
         <br />
       </div>
 
@@ -246,96 +428,6 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="responsable" className="fw-bold">
-                Responsable:
-              </label>
-              <select
-                className="form-control"
-                id="responsable"
-                onChange={handleChange}
-                value={formData.responsable}
-                required
-              >
-                <option value="Dirección de Administración">
-                  Dirección de Administración
-                </option>
-                <option value="Dirección de Cultura">
-                  Dirección de Cultura
-                </option>
-                <option value="Dirección de Desarrollo Económico, Turístico y Artesanal">
-                  Dirección de Desarrollo Económico, Turístico y Artesanal
-                </option>
-                <option value="Dirección de Desarrollo Social y Asuntos Indígenas">
-                  Dirección de Desarrollo Social y Asuntos Indígenas
-                </option>
-                <option value="Dirección de Desarrollo Urbano y Metropolitano">
-                  Dirección de Desarrollo Urbano y Metropolitano
-                </option>
-                <option value="Dirección de Educación">
-                  Dirección de Educación
-                </option>
-                <option value="Dirección de la Gerencia de la Ciudad">
-                  Dirección de la Gerencia de la Ciudad
-                </option>
-                <option value="Dirección de Gobernación">
-                  Dirección de Gobernación
-                </option>
-                <option value="Dirección de Gobierno Digital y Electrónico">
-                  Dirección de Gobierno Digital y Electrónico
-                </option>
-                <option value="Dirección de Gobierno por Resultados">
-                  Dirección de Gobierno por Resultados
-                </option>
-                <option value="Dirección de Igualdad de Género">
-                  Dirección de Igualdad de Género
-                </option>
-                <option value="Dirección de Medio Ambiente">
-                  Dirección de Medio Ambiente
-                </option>
-                <option value="Dirección de Obras Públicas">
-                  Dirección de Obras Públicas
-                </option>
-                <option value="Dirección de Seguridad Pública">
-                  Dirección de Seguridad Pública
-                </option>
-                <option value="Dirección de Servicios Públicos">
-                  Dirección de Servicios Públicos
-                </option>
-                <option value="Dirección de Transparencia y Gobierno Abierto">
-                  Dirección de Transparencia y Gobierno Abierto
-                </option>
-                <option value="Tesorería Municipal">
-                  Tesorería Municipal
-                </option>
-                <option value="Subdirección de Vinculacion">
-                  Subdirección de Vinculacion
-                </option>
-                <option value="Subdirección de Delegaciones">
-                  Subdirección de Delegaciones
-                </option>
-                <option value="Subdirección de Política Sectorial">
-                  Subdirección de Política Sectorial
-                </option>
-                <option value="Subdirección de Programas municipales">
-                  Subdirección de Programas municipales
-                </option>
-                <option value="">Otro</option>
-              </select>
-              {formData.responsable === "" && (
-                <input
-                  type="text"
-                  className="form-control mt-2"
-                  placeholder="Escriba el nombre del responsable"
-                  onChange={(e) =>
-                    setFormData({ ...formData, responsable: e.target.value })
-                  }
-                  required // Asegura que se ingrese un nombre si se selecciona "Otro"
-                />
-              )}
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
               <label htmlFor="telefono" className="fw-bold">
                 Teléfono:
               </label>
@@ -366,7 +458,9 @@ export default function FormularioPlantilla() {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="estatus">Estatus:</label>
+              <label htmlFor="estatus" className="fw-bold">
+                Estatus:
+              </label>
               <select
                 className="form-control"
                 id="estatus"
@@ -379,8 +473,219 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
+          <div className="col-md-12">
+            <div className="form-group">
+              <label htmlFor="delegacion" className="fw-bold">
+                Delegacion:
+              </label>
+              <select
+                className="form-control"
+                id="delegacion"
+                onChange={handleChange}
+                value={formData.delegacion}
+                required
+              >
+                <option value="Barrio de Coaxustenco">
+                  Barrio de Coaxustenco
+                </option>
+                <option value="Barrio de San Mateo">Barrio de San Mateo</option>
+                <option value="Barrio de San Miguel">
+                  Barrio de San Miguel
+                </option>
+                <option value="Barrio de Santa Cruz">
+                  Barrio de Santa Cruz
+                </option>
+                <option value="Barrio de Santa Cruz Ocotitlán">
+                  Barrio de Santa Cruz Ocotitlán
+                </option>
+                <option value="Barrio de Santiaguito">
+                  Barrio de Santiaguito
+                </option>
+                <option value="Barrio del Espíritu Santo">
+                  Barrio del Espíritu Santo
+                </option>
+                <option value="Colonia Agrícola Alvaro Obregón">
+                  Colonia Agrícola Alvaro Obregón
+                </option>
+                <option value="Colonia Agrícola Bellavista">
+                  Colonia Agrícola Bellavista
+                </option>
+                <option value="Colonia Agrícola Francisco I. Madero">
+                  Colonia Agrícola Francisco I. Madero
+                </option>
+                <option value="Colonia Agrícola Lázaro Cárdenas">
+                  Colonia Agrícola Lázaro Cárdenas
+                </option>
+                <option value="Colonia Dr. Jorge Jiménez Cantu">
+                  Colonia Dr. Jorge Jiménez Cantu
+                </option>
+                <option value="Colonia El Hípico">Colonia El Hípico</option>
+                <option value="Colonia La Michoacana">
+                  Colonia La Michoacana
+                </option>
+                <option value="Colonia La Providencia">
+                  Colonia La Providencia
+                </option>
+                <option value="Colonia Luisa Isabel Campos de Jiménez Cantú">
+                  Colonia Luisa Isabel Campos de Jiménez Cantú
+                </option>
+                <option value="Col. La Municipal">Col. La Municipal</option>
+                <option value="Colonia La Unión">Colonia La Unión</option>
+                <option value="Condominio Agripin García Estrada">
+                  Condominio Agripin García Estrada
+                </option>
+                <option value="Fraccionamiento Casa Blanca">
+                  Fraccionamiento Casa Blanca
+                </option>
+                <option value="Fraccionamiento Fuentes de San Gabriel">
+                  Fraccionamiento Fuentes de San Gabriel
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc I">
+                  Fraccionamiento Izcalli Cuauhtémoc I
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc II">
+                  Fraccionamiento Izcalli Cuauhtémoc II
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc III">
+                  Fraccionamiento Izcalli Cuauhtémoc III
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc IV">
+                  Fraccionamiento Izcalli Cuauhtémoc IV
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc V">
+                  Fraccionamiento Izcalli Cuauhtémoc V
+                </option>
+                <option value="Fraccionamiento Izcalli Cuauhtémoc VI">
+                  Fraccionamiento Izcalli Cuauhtémoc VI
+                </option>
+                <option value="Fraccionamiento Jesús Jiménez Gallardo">
+                  Fraccionamiento Jesús Jiménez Gallardo
+                </option>
+                <option value="Fraccionamiento Las Haciendas">
+                  Fraccionamiento Las Haciendas
+                </option>
+                <option value="Fraccionamiento Las Margaritas">
+                  Fraccionamiento Las Margaritas
+                </option>
+                <option value="Fraccionamiento Las Marinas">
+                  Fraccionamiento Las Marinas
+                </option>
+                <option value="Fraccionamiento Licenciado Juan Fernández Albarrán">
+                  Fraccionamiento Licenciado Juan Fernández Albarrán
+                </option>
+                <option value="Fraccionamiento Los Pilares">
+                  Fraccionamiento Los Pilares
+                </option>
+                <option value="Fraccionamiento Rancho San Francisco">
+                  Fraccionamiento Rancho San Francisco
+                </option>
+                <option value="Fraccionamiento Rancho San Lucas">
+                  Fraccionamiento Rancho San Lucas
+                </option>
+                <option value="Fraccionamiento San Javier">
+                  Fraccionamiento San Javier
+                </option>
+                <option value="Fraccionamiento San José La Pila">
+                  Fraccionamiento San José La Pila
+                </option>
+                <option value="Fraccionamiento Xinantecátl">
+                  Fraccionamiento Xinantecátl
+                </option>
+                <option value="Pueblo de San Bartolomé Tlaltelulco">
+                  Pueblo de San Bartolomé Tlaltelulco
+                </option>
+                <option value="Pueblo de San Francisco Coaxusco">
+                  Pueblo de San Francisco Coaxusco
+                </option>
+                <option value="Pueblo de San Gaspar Tlalhuelilpan">
+                  Pueblo de San Gaspar Tlalhuelilpan
+                </option>
+                <option value="Pueblo de San Jerónimo Chicahualco">
+                  Pueblo de San Jerónimo Chicahualco
+                </option>
+                <option value="Pueblo de San Jorge Pueblo Nuevo">
+                  Pueblo de San Jorge Pueblo Nuevo
+                </option>
+                <option value="Pueblo de San Lorenzo Coacalco">
+                  Pueblo de San Lorenzo Coacalco
+                </option>
+                <option value="Pueblo de San Lucas Tunco">
+                  Pueblo de San Lucas Tunco
+                </option>
+                <option value="Pueblo de San Miguel Totocuitlapilco">
+                  Pueblo de San Miguel Totocuitlapilco
+                </option>
+                <option value="Pueblo de San Salvador Tizatlali">
+                  Pueblo de San Salvador Tizatlali
+                </option>
+                <option value="Pueblo de San Sebastian">
+                  Pueblo de San Sebastian
+                </option>
+                <option value="Pueblo de Santa María Magdalena Ocotitlán">
+                  Pueblo de Santa María Magdalena Ocotitlán
+                </option>
+                <option value="Unidad Habitacional Andrés Molina Enríquez">
+                  Unidad Habitacional Andrés Molina Enríquez
+                </option>
+                <option value="Unidad Habitacional Lázaro Cardenas">
+                  Unidad Habitacional Lázaro Cardenas
+                </option>
+                <option value="Unidad Habitacional Tollocan II">
+                  Unidad Habitacional Tollocan II
+                </option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-12 pt-4">
+            <div className="form-group">
+              <label htmlFor="responsable" className="fw-bold">
+                Responsable(s):
+              </label>
+              <div className="options-container">
+                <div className="form-group2">
+                  {opcionesResponsables.map((opcion) => (
+                    <div key={opcion.value} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={opcion.value}
+                        id={`responsable-${opcion.value}`}
+                        checked={responsablesSeleccionados.includes(
+                          opcion.value
+                        )}
+                        onChange={() => handleCheckResponsable(opcion.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`responsable-${opcion.value}`}
+                      >
+                        {opcion.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {mostrarOtroInput && (
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label htmlFor="otroResponsable" className="fw-bold">
+                        Otro(s) Responsable(s):
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="otroResponsable"
+                        value={otroResponsable}
+                        placeholder="Otro 1, Otro 2,..."
+                        onChange={(e) => setOtroResponsable(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 text-center pb-4">
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar

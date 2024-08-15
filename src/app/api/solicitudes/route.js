@@ -14,14 +14,19 @@ export async function POST(request) {
   const formData = await request.json(); // Obtener los datos del cuerpo de la solicitud
 
   const fechaHoraServidor = new Date().toISOString();
+  
+  console.log(formData.responsable);
+  console.log(formData.delegacion);
+
   const newDocument = {
     responsable: formData.responsable,
     fecha: fechaHoraServidor, // Usar la fecha y hora del servidor
     solicitante: formData.solicitante,
     procedencia: formData.procedencia,
-    estatus: formData.estatus, // Valor por defecto si no se envía
+    estatus: formData.estatus, 
     correo: formData.correo,
     telefono: formData.telefono,
+    delegacion: formData.delegacion,
     asunto: formData.asunto,
     fechaVen: formData.fechaVen,
   };
