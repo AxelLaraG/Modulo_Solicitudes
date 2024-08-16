@@ -483,7 +483,7 @@ export default function FormularioPlantilla() {
         ...formData,
         [event.target.name]: event.target.value,
       });
-    }else{
+    } else {
       setFormData({
         ...formData,
         [event.target.id]: event.target.value,
@@ -524,7 +524,6 @@ export default function FormularioPlantilla() {
     const telefono = document.getElementById("telefono").value;
     const asunto = document.getElementById("asunto").value;
     const estatus = document.getElementById("estatus").value;
-    const delegacion = document.getElementById("delegacion").value;
     const fechaVen = document.getElementById("fechaInput").value;
 
     // Obtener los responsables seleccionados de la lista de verificación
@@ -533,6 +532,18 @@ export default function FormularioPlantilla() {
         'input[type="checkbox"][id^="responsable-"]:checked'
       )
     ).map((checkbox) => checkbox.value);
+
+    //Consultar los radio buttons del grupo
+    const delegacionRadios = document.querySelectorAll(
+      'input[name="delegacion"]'
+    );
+
+    let delegacionSeleccionada = null;
+    delegacionRadios.forEach((radio) => {
+      if (radio.checked) {
+        delegacionSeleccionada = radio.value;
+      }
+    });
 
     try {
       // Construir el objeto updatedFormData de manera más clara
@@ -544,7 +555,7 @@ export default function FormularioPlantilla() {
         telefono,
         asunto,
         estatus,
-        delegacion,
+        delegacionSeleccionada,
         fechaVen,
         responsable:
           responsablesSeleccionados.includes("Otro") && otroResponsable
@@ -578,19 +589,21 @@ export default function FormularioPlantilla() {
 
         // Restablecer el formulario y otros estados después del éxito
         setFormData({
-          solicitante: "",
-          telefono: "",
-          asunto: "",
-          procedencia: "Oficio",
-          correo: "",
-          delegacion: "",
-          responsable: "",
-          fechaVen: "",
+          solicitante: params.id ? formData.solicitante : "",
+          telefono: params.id ? formData.telefono : "",
+          asunto: params.id ? formData.asunto : "",
+          procedencia: params.id ? formData.procedencia : "Oficio",
+          correo: params.id ? formData.correo : "",
+          delegacion: params.id ? formData.delegacion : "",
+          responsable: params.id ? formData.responsable : "",
+          fechaVen: params.id ? formData.fechaVen : "",
           estatus: params.id ? formData.estatus : "pendiente",
         });
 
-        setResponsablesSeleccionados([]);
-        setMostrarOtroInput(false);
+        if (!params.id) {
+          setResponsablesSeleccionados([]);
+          setMostrarOtroInput(false);
+        }
       } else {
         const errorMessage = params.id
           ? "Error al actualizar la solicitud"
@@ -687,7 +700,7 @@ export default function FormularioPlantilla() {
   return (
     <div className="container mt-4" onSubmit={handleSubmit}>
       <h2 className="display-4">
-        {params.id ? "Actualizar Slicitud" : "Registrar Solicitud"}
+        {params.id ? "Actualizar Solicitud" : "Registrar Solicitud"}
       </h2>
       <div className="header-container">
         <br />
@@ -885,11 +898,9 @@ export default function FormularioPlantilla() {
           </div>
         </div>
         <div className="mt-3 text-center pb-4">
-          <Link href="/">
-            <button type="button" className="btn btn-secondary me-2">
-              Cerrar
-            </button>
-          </Link>
+          <button type="submit" className="btn btn-primary me-2">
+            {params.id ? "Actualizar Solicitud" : "Crear Solicitud"}
+          </button>
           {params.id && ( // Mostrar botón solo si params.id existe
             <button
               type="button"
@@ -908,9 +919,12 @@ export default function FormularioPlantilla() {
               Borrar Fecha de Vencimiento
             </button>
           )}
-          <button type="submit" className="btn btn-primary">
-            {params.id ? "Actualizar Solicitud" : "Crear Solicitud"}
-          </button>
+
+          <Link href="/">
+            <button type="button" className="btn btn-secondary me-2">
+              Cerrar
+            </button>
+          </Link>
         </div>
       </form>
     </div>
