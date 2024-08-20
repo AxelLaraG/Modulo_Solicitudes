@@ -32,10 +32,17 @@ h2 {
 
 /* Estilos para el título colorido */
 h2.display-4 {
-  background: linear-gradient(to right, #ff7e5f, #4aa0ff, #1d60a8);
+  background: linear-gradient(to right, #f73302, #60aaf8, #0d5bb0);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.display-8 { 
+    background: linear-gradient(to right, #a12203, #f07575, #50a1f7, #0d5bb0);
+    -webkit-background-clip: text; 
+    background-clip: text;
+    color: transparent; 
+  }
 
 .display-5 {
   color: white;
@@ -156,11 +163,12 @@ td:nth-child(5) {
   color: red;
 }
 .options-container {
-  background-color: #a4a3a2;
+  background-color: #9b9d9d;
   max-height: 200px; /* Adjust as needed */
   overflow-y: auto;
   border: 1px solid #ccc; /* Add a gray border */
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 form {
 	max-width: 100%;
@@ -174,7 +182,7 @@ form {
 }
 
 fieldset {
-	padding: 2em;
+	padding: 1em;
 	border-color: #d4d4d4;
 	border-style: solid;
 	border-width: 2px;
@@ -188,7 +196,7 @@ legend {
 	background: #fff;
 	font-size: 1.3em;
     position: relative;
-    padding-right: 30px; /* Espacio para el checkbox "Todas" */
+    padding-right: 20px; /* Espacio para el checkbox "Todas" */
 }
 
 .container ul {
@@ -208,7 +216,8 @@ legend {
 /*** Styling Radio & Checkbox Input Fields (start here) ***/
 label {
 	font-weight: 600;
-	color: #777777;
+  text-align: left;
+	color: #7f7d7d;
 	margin-bottom: 11px;
 	width: 100%;
 	float: left;
@@ -219,13 +228,13 @@ label {
 	transition: all 0.7s ease 0s;
 }
 input[type="checkbox"] + label:hover {
-    background-color: #d8bfbf; /* Change background on hover */
+    background-color: #BFE7F8; /* Change background on hover */
 }
 label.todas {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 0.3em 0.6em;
+    padding: 0.2em 0.5em;
     margin-top: 0.7em;
     margin-right: 0.8em;
     font-weight: 600;
@@ -305,4 +314,22 @@ label.todas:focus {
 .opcionesContainer {
     max-height: 200px; /* Ajusta la altura según tus necesidades */
     overflow-y: auto;
+}
+
+/*estilos de la barra de desplazamiento*/
+::-webkit-scrollbar {
+  width: 13px; /* Barra un poco más ancha para resaltar */
+  background-color: #f0f0f0; /* Fondo sutil */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ff5733, #3498db); /* Gradiente llamativo */
+  border-radius: 6px; /* Bordes más redondeados */
+  border: 3px solid #f0f0f0; /* Borde sutil para separar del fondo */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra sutil para profundidad */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #ff4115, #2980b9); /* Gradiente más oscuro al pasar el mouse */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra más intensa al pasar el mouse */
 }

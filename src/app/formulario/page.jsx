@@ -353,8 +353,8 @@ export default function FormularioPlantilla() {
   }, [params.id]); // Dependencia: params.id
 
   return (
-    <div className="container mt-4" onSubmit={handleSubmit}>
-      <h2 className="display-4">Solicitud</h2>
+    <div className="container my-4" onSubmit={handleSubmit}>
+      <div className="display-8"><h2>{params.id ? "Modificar" : "Registrar"}</h2></div>
       <div className="header-container">
         <br />
       </div>
@@ -378,7 +378,7 @@ export default function FormularioPlantilla() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="solicitante" className="fw-bold">
                 Solicitante:
@@ -393,7 +393,7 @@ export default function FormularioPlantilla() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="procedencia" className="fw-bold">
                 Procedencia:
@@ -411,7 +411,7 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="fechaInput" className="fw-bold">
                 Fecha de vencimiento:
@@ -426,7 +426,7 @@ export default function FormularioPlantilla() {
               <div id="date-error" className="invalid-feedback d-none"></div>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="telefono" className="fw-bold">
                 Teléfono:
@@ -442,7 +442,7 @@ export default function FormularioPlantilla() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="correo" className="fw-bold">
                 Correo:
@@ -456,7 +456,7 @@ export default function FormularioPlantilla() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="estatus" className="fw-bold">
                 Estatus:
@@ -473,7 +473,55 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-12">
+          <div className="col-md-6 pt-4">
+            <div className="form-group">
+              <label htmlFor="responsable" className="fw-bold">
+                Responsable(s):
+              </label>
+              <div className="options-container">
+                <div className="form-group2">
+                  {opcionesResponsables.map((opcion) => (
+                    <div key={opcion.value} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={opcion.value}
+                        id={`responsable-${opcion.value}`}
+                        checked={responsablesSeleccionados.includes(
+                          opcion.value
+                        )}
+                        onChange={() => handleCheckResponsable(opcion.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`responsable-${opcion.value}`}
+                      >
+                        {opcion.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {mostrarOtroInput && (
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label htmlFor="otroResponsable" className="fw-bold">
+                        Otro(s) Responsable(s):
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="otroResponsable"
+                        value={otroResponsable}
+                        placeholder="Otro 1, Otro 2,..."
+                        onChange={(e) => setOtroResponsable(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 pt-4">
             <div className="form-group">
               <label htmlFor="delegacion" className="fw-bold">
                 Delegacion:
@@ -636,56 +684,12 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-12 pt-4">
-            <div className="form-group">
-              <label htmlFor="responsable" className="fw-bold">
-                Responsable(s):
-              </label>
-              <div className="options-container">
-                <div className="form-group2">
-                  {opcionesResponsables.map((opcion) => (
-                    <div key={opcion.value} className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value={opcion.value}
-                        id={`responsable-${opcion.value}`}
-                        checked={responsablesSeleccionados.includes(
-                          opcion.value
-                        )}
-                        onChange={() => handleCheckResponsable(opcion.value)}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor={`responsable-${opcion.value}`}
-                      >
-                        {opcion.label}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-                {mostrarOtroInput && (
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label htmlFor="otroResponsable" className="fw-bold">
-                        Otro(s) Responsable(s):
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="otroResponsable"
-                        value={otroResponsable}
-                        placeholder="Otro 1, Otro 2,..."
-                        onChange={(e) => setOtroResponsable(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          
         </div>
         <div className="mt-3 text-center pb-4">
+        <button type="submit" className="btn btn-primary me-2">
+            {params.id ? "Actualizar Solicitud" : "Guardar Solicitud"}
+          </button>
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
@@ -709,9 +713,6 @@ export default function FormularioPlantilla() {
               Borrar Fecha de Vencimiento
             </button>
           )}
-          <button type="submit" className="btn btn-primary">
-            {params.id ? "Actualizar Solicitud" : "Crear Solicitud"}
-          </button>
         </div>
       </form>
     </div>
