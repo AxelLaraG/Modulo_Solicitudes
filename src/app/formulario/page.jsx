@@ -813,6 +813,7 @@ export default function FormularioPlantilla() {
                 <option value="pendiente">Pendiente</option>
                 <option value="realizado">Realizado</option>
                 <option value="rechazado">Rechazado</option>
+                <option value="inviable">Inviable</option>
               </select>
             </div>
           </div>
