@@ -12,12 +12,16 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from "next/link";
 
 export default function FormularioPlantilla() {
+  //Inicialización de parámetros
   const flatpickrRef = useRef(null);
   const params = useParams();
   const router = useRouter();
+  //Arreglo para detectar los responsables seleccionados de la checkList
   const [responsablesSeleccionados, setResponsablesSeleccionados] = useState(
     []
   );
+
+  //Arreglo de opciones para el checkList de Responsables
   const [opcionesResponsables, setOpcionesResponsables] = useState([
     {
       value: "Dirección de Administración",
@@ -131,9 +135,316 @@ export default function FormularioPlantilla() {
     },
     { value: "Otro", label: "Otro", checked: false },
   ]);
+
+  //Arreglo de opciones para el select de Delegaciones
+  const [opcionesDelegaciones, setOpcionesDelegaciones] = useState([
+    {
+      value: "Barrio de Coaxustenco",
+      label: "Barrio de Coaxustenco",
+      checked: false,
+    },
+
+    {
+      value: "Barrio de San Mateo",
+      label: "Barrio de San Mateo",
+      checked: false,
+    },
+    {
+      value: "Barrio de San Miguel",
+      label: "Barrio de San Miguel",
+      checked: false,
+    },
+
+    {
+      value: "Barrio de Santa Cruz",
+      label: "Barrio de Santa Cruz",
+      checked: false,
+    },
+
+    {
+      value: "Barrio de Santa Cruz Ocotitlán",
+      label: "Barrio de Santa Cruz Ocotitlán",
+      checked: false,
+    },
+
+    {
+      value: "Barrio de Santiaguito",
+      label: "Barrio de Santiaguito",
+      checked: false,
+    },
+
+    {
+      value: "Barrio del Espíritu Santo",
+      label: "Barrio del Espíritu Santo",
+      checked: false,
+    },
+
+    {
+      value: "Colonia Agrícola Alvaro Obregón",
+      label: "Colonia Agrícola Alvaro Obregón",
+      checked: false,
+    },
+
+    {
+      value: "Colonia Agrícola Bellavista",
+      label: "Colonia Agrícola Bellavista",
+      checked: false,
+    },
+
+    {
+      value: "Colonia Agrícola Francisco I. Madero",
+      label: "Colonia Agrícola Francisco I. Madero",
+      checked: false,
+    },
+
+    {
+      value: "Colonia Agrícola Lázaro Cárdenas",
+      label: "Colonia Agrícola Lázaro Cárdenas",
+      checked: false,
+    },
+
+    {
+      value: "Colonia Dr. Jorge Jiménez Cantu",
+      label: "Colonia Dr. Jorge Jiménez Cantu",
+      checked: false,
+    },
+
+    { value: "Colonia El Hípico", label: "Colonia El Hípico", checked: false },
+    {
+      value: "Colonia La Michoacana",
+      label: "Colonia La Michoacana",
+      checked: false,
+    },
+
+    {
+      value: "Colonia La Providencia",
+      label: "Colonia La Providencia",
+      checked: false,
+    },
+
+    {
+      value: "Colonia Luisa Isabel Campos de Jiménez Cantú",
+      label: "Colonia Luisa Isabel Campos de Jiménez Cantú",
+      checked: false,
+    },
+
+    { value: "Col. La Municipal", label: "Col. La Municipal", checked: false },
+    { value: "Colonia La Unión", label: "Colonia La Unión", checked: false },
+    {
+      value: "Condominio Agripin García Estrada",
+      label: "Condominio Agripin García Estrada",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Casa Blanca",
+      label: "Fraccionamiento Casa Blanca",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Fuentes de San Gabriel",
+      label: "Fraccionamiento Fuentes de San Gabriel",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Izcalli Cuauhtémoc I",
+      label: "Fraccionamiento Izcalli Cuauhtémoc I",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Izcalli Cuauhtémoc II",
+      label: "Fraccionamiento Izcalli Cuauhtémoc II",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Izcalli Cuauhtémoc III",
+      label: "Fraccionamiento Izcalli Cuauhtémoc III",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Izcalli Cuauhtémoc IV",
+      label: "Fraccionamiento Izcalli Cuauhtémoc IV",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Izcalli Cuauhtémoc V",
+      label: "Fraccionamiento Izcalli Cuauhtémoc V",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Izcalli Cuauhtémoc VI",
+      label: "Fraccionamiento Izcalli Cuauhtémoc VI",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Jesús Jiménez Gallardo",
+      label: "Fraccionamiento Jesús Jiménez Gallardo",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Las Haciendas",
+      label: "Fraccionamiento Las Haciendas",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Las Margaritas",
+      label: "Fraccionamiento Las Margaritas",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Las Marinas",
+      label: "Fraccionamiento Las Marinas",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Licenciado Juan Fernández Albarrán",
+      label: "Fraccionamiento Licenciado Juan Fernández Albarrán",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Los Pilares",
+      label: "Fraccionamiento Los Pilares",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Rancho San Francisco",
+      label: "Fraccionamiento Rancho San Francisco",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Rancho San Lucas",
+      label: "Fraccionamiento Rancho San Lucas",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento San Javier",
+      label: "Fraccionamiento San Javier",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento San José La Pila",
+      label: "Fraccionamiento San José La Pila",
+      checked: false,
+    },
+
+    {
+      value: "Fraccionamiento Xinantecátl",
+      label: "Fraccionamiento Xinantecátl",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Bartolomé Tlaltelulco",
+      label: "Pueblo de San Bartolomé Tlaltelulco",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Francisco Coaxusco",
+      label: "Pueblo de San Francisco Coaxusco",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Gaspar Tlalhuelilpan",
+      label: "Pueblo de San Gaspar Tlalhuelilpan",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Jerónimo Chicahualco",
+      label: "Pueblo de San Jerónimo Chicahualco",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Jorge Pueblo Nuevo",
+      label: "Pueblo de San Jorge Pueblo Nuevo",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Lorenzo Coacalco",
+      label: "Pueblo de San Lorenzo Coacalco",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Lucas Tunco",
+      label: "Pueblo de San Lucas Tunco",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Miguel Totocuitlapilco",
+      label: "Pueblo de San Miguel Totocuitlapilco",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Salvador Tizatlali",
+      label: "Pueblo de San Salvador Tizatlali",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de San Sebastian",
+      label: "Pueblo de San Sebastian",
+      checked: false,
+    },
+
+    {
+      value: "Pueblo de Santa María Magdalena Ocotitlán",
+      label: "Pueblo de Santa María Magdalena Ocotitlán",
+      checked: false,
+    },
+
+    {
+      value: "Unidad Habitacional Andrés Molina Enríquez",
+      label: "Unidad Habitacional Andrés Molina Enríquez",
+      checked: false,
+    },
+
+    {
+      value: "Unidad Habitacional Lázaro Cardenas",
+      label: "Unidad Habitacional Lázaro Cardenas",
+      checked: false,
+    },
+
+    {
+      value: "Unidad Habitacional Tollocan II",
+      label: "Unidad Habitacional Tollocan II",
+      checked: false,
+    },
+  ]);
+
+  //Definición de fecha mínima
   const [fechaMin, setFechaMin] = useState(new Date());
+
+  //Bandera para determinar si mostrar o no el label input de Responsables
   const [mostrarOtroInput, setMostrarOtroInput] = useState(false);
-  const [otroResponsable, setOtroResponsable] = useState(""); // Estado para almacenar el valor del input "Otro"
+
+  // Estado para almacenar el valor del input "Otro"
+  const [otroResponsable, setOtroResponsable] = useState("");
+
+  // Almacenamiento y definición de la información del Formulario
   const [formData, setFormData] = useState({
     solicitante: "",
     telefono: "",
@@ -141,12 +452,12 @@ export default function FormularioPlantilla() {
     procedencia: "Oficio",
     correo: "",
     responsable: "",
-    delegacion: "Barrio de Coaxustenco",
+    delegacion: "",
     fechaVen: "",
     estatus: "pendiente",
   });
 
-  //Actualizador de selección en CheckList
+  //Manejador de cambios en el checkList de Responsables
   const handleCheckResponsable = (value) => {
     if (responsablesSeleccionados.includes(value)) {
       setResponsablesSeleccionados(
@@ -164,12 +475,20 @@ export default function FormularioPlantilla() {
     }
   };
 
-  //Actualización de datos cada cambio de datos
+  //Manejador de cambios en el formulario
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.id]: event.target.value,
-    });
+    console.log(event.target.name);
+    if (event.target.name === "delegacion") {
+      setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [event.target.id]: event.target.value,
+      });
+    }
   };
 
   //Manejador de borrar fecha
@@ -194,9 +513,18 @@ export default function FormularioPlantilla() {
     }
   };
 
-  //Manejador de creación o actualización
+  //Manejador de evento Create/Update
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Evita el envío tradicional del formulario
+    event.preventDefault();
+
+    // Extraer los valores de los elementos del formulario en variables con nombres descriptivos
+    const solicitante = document.getElementById("solicitante").value;
+    const procedencia = document.getElementById("procedencia").value;
+    const correo = document.getElementById("correo").value;
+    const telefono = document.getElementById("telefono").value;
+    const asunto = document.getElementById("asunto").value;
+    const estatus = document.getElementById("estatus").value;
+    const fechaVen = document.getElementById("fechaInput").value;
 
     // Obtener los responsables seleccionados de la lista de verificación
     const responsablesSeleccionados = Array.from(
@@ -205,70 +533,85 @@ export default function FormularioPlantilla() {
       )
     ).map((checkbox) => checkbox.value);
 
+    //Consultar los radio buttons del grupo
+    const delegacionRadios = document.querySelectorAll(
+      'input[name="delegacion"]'
+    );
+
+    let delegacionSeleccionada = null;
+    delegacionRadios.forEach((radio) => {
+      if (radio.checked) {
+        delegacionSeleccionada = radio.value;
+      }
+    });
+
     try {
+      // Construir el objeto updatedFormData de manera más clara
       const updatedFormData = {
         ...formData,
+        solicitante,
+        procedencia,
+        correo,
+        telefono,
+        asunto,
+        estatus,
+        delegacionSeleccionada,
+        fechaVen,
         responsable:
           responsablesSeleccionados.includes("Otro") && otroResponsable
             ? [
-                ...responsablesSeleccionados.filter((item) => item !== "Otro"), // Excluir "Otro"
-                ...otroResponsable.split(",").map((opcion) => opcion.trim()), // Incluir solo las direcciones agregadas
+                //Extracción de "Otro"
+                ...responsablesSeleccionados.filter((item) => item !== "Otro"),
+                //Incluir solo las direcciones Agregadas
+                ...otroResponsable.split(",").map((opcion) => opcion.trim()),
               ]
             : responsablesSeleccionados,
-        solicitante: document.getElementById("solicitante").value,
-        procedencia: document.getElementById("procedencia").value,
-        correo: document.getElementById("correo").value,
-        telefono: document.getElementById("telefono").value,
-        asunto: document.getElementById("asunto").value,
-        estatus: document.getElementById("estatus").value,
-        delegacion: document.getElementById("delegacion").value,
-        fechaVen: document.getElementById("fechaInput").value,
       };
 
-      if (!params.id) {
-        const response = await fetch("/api/solicitudes", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedFormData),
-        });
-        if (response.ok) {
-          // Solicitud exitosa, puedes redirigir o hacer otra acción
-          alert("Solicitud enviada con éxito");
-          setFormData({
-            solicitante: "",
-            telefono: "",
-            asunto: "",
-            procedencia: "Oficio",
-            correo: "",
-            delegacion: "Barrio de Coaxustenco",
-            responsable: "",
-            fechaVen: "",
-            estatus: idSolicitud ? formData.estatus : "pendiente", // Preserve existing status on edit
-          });
+      const method = params.id ? "PUT" : "POST";
+      const url = params.id
+        ? `/api/solicitudes/${params.id}`
+        : "/api/solicitudes";
 
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedFormData),
+      });
+
+      if (response.ok) {
+        const successMessage = params.id
+          ? "Solicitud actualizada con éxito"
+          : "Solicitud enviada con éxito";
+        alert(successMessage);
+
+        // Restablecer el formulario y otros estados después del éxito
+        setFormData({
+          solicitante: params.id ? formData.solicitante : "",
+          telefono: params.id ? formData.telefono : "",
+          asunto: params.id ? formData.asunto : "",
+          procedencia: params.id ? formData.procedencia : "Oficio",
+          correo: params.id ? formData.correo : "",
+          delegacion: params.id ? formData.delegacion : "",
+          responsable: params.id ? formData.responsable : "",
+          fechaVen: params.id ? formData.fechaVen : "",
+          estatus: params.id ? formData.estatus : "pendiente",
+        });
+
+        if (!params.id) {
           setResponsablesSeleccionados([]);
           setMostrarOtroInput(false);
-        } else {
-          alert("Error al enviar la solicitud");
         }
       } else {
-        const response = await fetch(`/api/solicitudes/${params.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedFormData),
-        });
-        if (response.ok) {
-          alert("Solicitud actualizada con éxito");
-        } else {
-          alert("Error al actualizar la solicitud");
-        }
+        const errorMessage = params.id
+          ? "Error al actualizar la solicitud"
+          : "Error al enviar la solicitud";
+        alert(errorMessage);
       }
     } catch (error) {
-      console.error(error.message); // Manejar el error
+      console.error(error.message);
     }
   };
 
@@ -305,15 +648,17 @@ export default function FormularioPlantilla() {
         const response = await fetch(`/api/solicitudes/${params.id}`);
         const solicitudData = await response.json();
 
-        const responsables = solicitudData.responsable || []; // Asignar directamente el array o un array vacío si es null/undefined
+        // Asignar directamente el array o un array vacío si es null/undefined
+        const responsables = solicitudData.responsable || [];
 
+        // Contabiliza los responsables Inexistentes
         const responsablesNoExistentes = responsables.filter(
           (responsable) =>
             !opcionesResponsables.some((opcion) => opcion.value === responsable)
         );
 
         if (responsablesNoExistentes.length > 0) {
-          responsables.push("Otro")
+          responsables.push("Otro");
 
           setMostrarOtroInput(true);
           setOtroResponsable(responsablesNoExistentes.join(", "));
@@ -334,7 +679,6 @@ export default function FormularioPlantilla() {
         });
 
         setResponsablesSeleccionados(responsables);
-
       } else {
         // Restablecer formData si no hay params.id (nueva solicitud)
         setFormData({
@@ -346,6 +690,7 @@ export default function FormularioPlantilla() {
           responsable: "",
           fechaVen: "",
           estatus: "pendiente",
+          delegacion: "",
         });
       }
     };
@@ -353,15 +698,13 @@ export default function FormularioPlantilla() {
   }, [params.id]); // Dependencia: params.id
 
   return (
-    <div className="container mt-4" onSubmit={handleSubmit}>
-      <h2 className="display-4">Solicitud</h2>
+    <div className="container my-4" onSubmit={handleSubmit}>
+      <div className="display-8"><h2>{params.id ? "Modificar" : "Registrar"}</h2></div>
       <div className="header-container">
         <br />
       </div>
 
       <form id="formularioSolicitud">
-        <input type="hidden" id="idSolicitud" />
-
         <div className="col-md-12">
           <div className="form-group">
             <label htmlFor="asunto" className="fw-bold">
@@ -378,7 +721,7 @@ export default function FormularioPlantilla() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="solicitante" className="fw-bold">
                 Solicitante:
@@ -393,7 +736,7 @@ export default function FormularioPlantilla() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="procedencia" className="fw-bold">
                 Procedencia:
@@ -411,7 +754,7 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="fechaInput" className="fw-bold">
                 Fecha de vencimiento:
@@ -426,7 +769,7 @@ export default function FormularioPlantilla() {
               <div id="date-error" className="invalid-feedback d-none"></div>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="telefono" className="fw-bold">
                 Teléfono:
@@ -442,7 +785,7 @@ export default function FormularioPlantilla() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="correo" className="fw-bold">
                 Correo:
@@ -456,7 +799,7 @@ export default function FormularioPlantilla() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 mt-4">
             <div className="form-group">
               <label htmlFor="estatus" className="fw-bold">
                 Estatus:
@@ -470,10 +813,59 @@ export default function FormularioPlantilla() {
                 <option value="pendiente">Pendiente</option>
                 <option value="realizado">Realizado</option>
                 <option value="rechazado">Rechazado</option>
+                <option value="inviable">Inviable</option>
               </select>
             </div>
           </div>
-          <div className="col-md-12">
+          <div className="col-md-6 pt-4">
+            <div className="form-group">
+              <label htmlFor="responsable" className="fw-bold">
+                Responsable(s):
+              </label>
+              <div className="options-container">
+                <div className="form-group2">
+                  {opcionesResponsables.map((opcion) => (
+                    <div key={opcion.value} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={opcion.value}
+                        id={`responsable-${opcion.value}`}
+                        checked={responsablesSeleccionados.includes(
+                          opcion.value
+                        )}
+                        onChange={() => handleCheckResponsable(opcion.value)}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`responsable-${opcion.value}`}
+                      >
+                        {opcion.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {mostrarOtroInput && (
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label htmlFor="otroResponsable" className="fw-bold">
+                        Otro(s) Responsable(s):
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="otroResponsable"
+                        value={otroResponsable}
+                        placeholder="Otro 1, Otro 2,..."
+                        onChange={(e) => setOtroResponsable(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 pt-4">
             <div className="form-group">
               <label htmlFor="delegacion" className="fw-bold">
                 Delegacion:
@@ -636,56 +1028,12 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          <div className="col-md-12 pt-4">
-            <div className="form-group">
-              <label htmlFor="responsable" className="fw-bold">
-                Responsable(s):
-              </label>
-              <div className="options-container">
-                <div className="form-group2">
-                  {opcionesResponsables.map((opcion) => (
-                    <div key={opcion.value} className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value={opcion.value}
-                        id={`responsable-${opcion.value}`}
-                        checked={responsablesSeleccionados.includes(
-                          opcion.value
-                        )}
-                        onChange={() => handleCheckResponsable(opcion.value)}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor={`responsable-${opcion.value}`}
-                      >
-                        {opcion.label}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-                {mostrarOtroInput && (
-                  <div className="col-md-12">
-                    <div className="form-group">
-                      <label htmlFor="otroResponsable" className="fw-bold">
-                        Otro(s) Responsable(s):
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="otroResponsable"
-                        value={otroResponsable}
-                        placeholder="Otro 1, Otro 2,..."
-                        onChange={(e) => setOtroResponsable(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          
         </div>
         <div className="mt-3 text-center pb-4">
+        <button type="submit" className="btn btn-primary me-2">
+            {params.id ? "Actualizar Solicitud" : "Guardar Solicitud"}
+          </button>
           <Link href="/">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
@@ -709,9 +1057,6 @@ export default function FormularioPlantilla() {
               Borrar Fecha de Vencimiento
             </button>
           )}
-          <button type="submit" className="btn btn-primary">
-            {params.id ? "Actualizar Solicitud" : "Crear Solicitud"}
-          </button>
         </div>
       </form>
     </div>
