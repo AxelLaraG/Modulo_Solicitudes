@@ -3,26 +3,27 @@ import User from '../../../models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-export default async function handler(req, res) {
+// Exporta una función con nombre para manejar el método POST
+export async function POST(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
   }
 
   await dbConnect();
 
-  const { username, password } = req.body;
+  const { username, password } = await req.json(); // Usa await req.json() para obtener el body en Next.js 13
 
   try {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(401).json({ message: 'Usuario no encontrado' });
+      return new Response(JSON.stringify({ message: 'Usuario no encontrado' }), { status: 401 });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Contraseña incorrecta' });
+      return new Response(JSON.stringify({ message: 'Contraseña incorrecta' }), { status: 401 });
     }
 
     const token = jwt.sign(
@@ -31,9 +32,9 @@ export default async function handler(req, res) {
       { expiresIn: '1h' }
     );
 
-    res.status(200).json({ token });
+    return new Response(JSON.stringify({ token }), { status: 200 });
   } catch (error) {
     console.error('Error en la API de login:', error);
-    res.status(500).json({ message: 'Error en el servidor' });
+    return new Response(JSON.stringify({ message: 'Error en el servidor' }), { status: 500 });
   }
 }
