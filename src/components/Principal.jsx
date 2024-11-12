@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import * as XLSX from "xlsx";
 import { exportToExcel } from "../utils/exportToExcel";
 import { useRouter } from "next/navigation";
 import "../../public/Styles/styles.css";

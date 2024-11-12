@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).send({ message: 'Método no permitido' });
+    return res.status(405).json({ message: 'Método no permitido' });
   }
 
   await dbConnect();
@@ -27,12 +27,13 @@ export default async function handler(req, res) {
 
     const token = jwt.sign(
       { userId: user._id, username: user.username },
-      'tuClaveSecreta',
+      process.env.JWT_SECRET || 'tuClaveSecreta',
       { expiresIn: '1h' }
     );
 
     res.status(200).json({ token });
   } catch (error) {
+    console.error('Error en la API de login:', error);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 }
