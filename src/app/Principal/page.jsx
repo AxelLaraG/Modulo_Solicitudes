@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { exportToExcel } from "../utils/exportToExcel";
+import { exportToExcel } from "../../utils/exportToExcel";
 import { useRouter } from "next/navigation";
-import "../../public/Styles/styles.css";
+import "../../../public/Styles/styles.css";
 import Link from "next/link";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/l10n/es.js";
@@ -103,10 +103,10 @@ export default function Principal() {
         );
       });
     } else if (criterio === "responsable") {
-      const valorComparacion = 
-          valorFiltro === "otro" && valorFiltroOtroBusqueda // Usamos el valor de búsqueda
-              ? valorFiltroOtroBusqueda.toLowerCase()     
-              : valorFiltro.toLowerCase();
+      const valorComparacion =
+        valorFiltro === "otro" && valorFiltroOtroBusqueda // Usamos el valor de búsqueda
+          ? valorFiltroOtroBusqueda.toLowerCase()
+          : valorFiltro.toLowerCase();
 
       return data.filter((solicitud) =>
         String(solicitud[criterio]).toLowerCase().includes(valorComparacion)
@@ -141,8 +141,8 @@ export default function Principal() {
           solicitud.asunto.length > 5
             ? solicitud.asunto.slice(0, 5) + "..."
             : solicitud.asunto,
-          solicitud.responsable && solicitud.responsable.length > 0 
-            ? solicitud.responsable[0].split(",")[0] + 
+          solicitud.responsable && solicitud.responsable.length > 0
+            ? solicitud.responsable[0].split(",")[0] +
               (solicitud.responsable[0].includes(",") ? ",..." : "")
             : "", // Valor vacío si no hay responsable
           solicitud.estatus === "realizado"
@@ -195,6 +195,13 @@ export default function Principal() {
     if (selectedDates.length > 0) {
       const fechaSeleccionada = selectedDates[0];
       setFiltroValor(fechaSeleccionada.toISOString().split("T")[0]);
+    }
+  };
+
+  const handleCerrarSesion = (event) => {
+    if (window.confirm("¿Está seguro de que quiere cerrar sesión?")) {
+      localStorage.removeItem("token"); // Eliminamos el token de localStorage
+      router.push("/");
     }
   };
 
@@ -337,9 +344,7 @@ export default function Principal() {
                 <option value="Dirección de Transparencia y Gobierno Abierto">
                   Dirección de Transparencia y Gobierno Abierto
                 </option>
-                <option value="Tesorería Municipal">
-                  Tesorería Municipal
-                </option>
+                <option value="Tesorería Municipal">Tesorería Municipal</option>
                 <option value="Subdirección de Vinculacion">
                   Subdirección de Vinculacion
                 </option>
@@ -356,15 +361,15 @@ export default function Principal() {
               </select>
               {filtroValor === "otro" && (
                 <input
-                type="text"
-                className="form-control mt-2"
-                placeholder="Escribe el responsable"
-                value={filtroValorOtroBusqueda} // Conectamos al estado de búsqueda
-                onChange={(e) => {
-                  setFiltroValorOtroBusqueda(e.target.value); 
-                  handleFiltroValorOtroChange(e);  // Actualizamos ambos estados
-                }}
-              />
+                  type="text"
+                  className="form-control mt-2"
+                  placeholder="Escribe el responsable"
+                  value={filtroValorOtroBusqueda} // Conectamos al estado de búsqueda
+                  onChange={(e) => {
+                    setFiltroValorOtroBusqueda(e.target.value);
+                    handleFiltroValorOtroChange(e); // Actualizamos ambos estados
+                  }}
+                />
               )}
             </div>
           ) : (
@@ -403,6 +408,14 @@ export default function Principal() {
         </Link>
 
         <button
+          onClick={handleCerrarSesion}
+          id="botonCerrar"
+          className="btn btn-primary me-2"
+        >
+          Cerrar Sesión
+        </button>
+
+        <button
           id="botonDescargar"
           className="btn btn-primary "
           onClick={() => {
@@ -411,7 +424,7 @@ export default function Principal() {
               filtroCriterio,
               filtroValor
             );
-            
+
             if (datosFiltrados.length > 0) {
               exportToExcel(datosFiltrados, "solicitudes.xlsx");
             } else {

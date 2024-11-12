@@ -1,19 +1,16 @@
 "use client";
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-export default function Login() {
+export default function CreateUser() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Estado de carga
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Activa el estado de carga
 
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,31 +18,25 @@ export default function Login() {
         body: JSON.stringify({ username, password }),
       });
 
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error('Error en la respuesta:', errorText);
-        throw new Error('Error en el inicio de sesión');
-      }
-
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('token', data.token);
-        alert('Login exitoso');
-        router.push('/Principal');
+        alert('Usuario creado exitosamente');
+        // Reiniciar los campos de entrada
+        setUsername('');
+        setPassword('');
       } else {
-        alert(data.message || 'Error en el inicio de sesión');
+        alert(data.message || 'Error al crear el usuario');
       }
     } catch (error) {
-      console.error('Error en el login:', error);
+      console.error('Error en la creación del usuario:', error);
       alert('Ocurrió un error al procesar la solicitud');
-    } finally {
-      setIsLoading(false); // Desactiva el estado de carga
     }
   };
 
   return (
     <div>
+      <h2>Crear usuario</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -61,11 +52,14 @@ export default function Login() {
           placeholder="Contraseña"
           required
         />
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Validando...' : 'Iniciar sesión'}
-        </button>
+        <button type="submit">Crear usuario</button>
       </form>
-      {isLoading && <p>Cargando...</p>} {/* Indicador de carga */}
+      <Link href="/">
+      <button style={{ marginTop: '10px' }}>
+        Regresar a Login
+      </button>
+      </Link>
     </div>
+    
   );
 }

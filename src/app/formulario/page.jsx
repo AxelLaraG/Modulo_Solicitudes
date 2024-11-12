@@ -210,7 +210,7 @@ export default function FormularioPlantilla() {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
         method: "DELETE",
       });
-      router.push("/");
+      router.push("/Pricipal");
     }
   };
 
@@ -735,7 +735,7 @@ export default function FormularioPlantilla() {
         <button type="submit" className="btn btn-primary me-2">
             {params.id ? "Actualizar Solicitud" : "Guardar Solicitud"}
           </button>
-          <Link href="/">
+          <Link href="/Principal">
             <button type="button" className="btn btn-secondary me-2">
               Cerrar
             </button>

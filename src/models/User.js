@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { collection: "Users" }
+  { collection: 'Users' } // Se asegura de que la colección sea "Users"
 );
 
-export default mongoose.models.User || mongoose.model("User", UserSchema);
+export default mongoose.models.User || mongoose.model('User', UserSchema);
