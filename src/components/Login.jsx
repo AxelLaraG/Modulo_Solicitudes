@@ -40,23 +40,34 @@ export default function Login() {
     }
   };
 
+  const handleCreateUser = () => {
+    alert('Redirigiendo a la página de creación de usuario...');
+    // Aquí podrías redirigir a una página de registro si la tienes configurada
+    window.location.href = '/register'; // Cambia la ruta según la ubicación de tu página de registro
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Usuario"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Contraseña"
-        required
-      />
-      <button type="submit">Iniciar sesión</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Usuario"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          required
+        />
+        <button type="submit">Iniciar sesión</button>
+      </form>
+      <button onClick={handleCreateUser} style={{ marginTop: '10px' }}>
+        Crear usuario
+      </button>
+    </div>
   );
 }
