@@ -210,7 +210,7 @@ export default function FormularioPlantilla() {
       const response = await fetch(`/api/solicitudes/${params.id}`, {
         method: "DELETE",
       });
-      router.push("/Pricipal");
+      router.push("/Principal");
     }
   };
 

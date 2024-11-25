@@ -5,15 +5,15 @@ function exportToExcel(data, filename) {
   // Seleccionamos solo las columnas deseadas
   const dataForExcel = data.map(item => ({
     Asunto: item.asunto,
-    Responsable: item.responsable.join(", "),
-    Fecha_Creación: item.fecha.slice(0, 10),
-    Fecha_Vencimiento: item.fechaVen.slice(0, 10),
-    Solicitante: item.estatus,
-    Procedencia: item.procedencia,
-    Estatus: item.estatus,
-    Teléfono: item.telefono,
-    Correo: item.correo,
-    Delegación: item.delegacion,
+    Responsable: item.responsable ? item.responsable.join(", ") : '',
+    Fecha_Creación: item.fecha ? item.fecha.slice(0, 10) : 'N/A',
+    Fecha_Vencimiento: item.fechaVen ? item.fechaVen.slice(0, 10) : 'N/A',
+    Solicitante: item.solicitante || 'N/A',
+    Procedencia: item.procedencia || 'N/A',
+    Estatus: item.estatus || 'N/A',
+    Teléfono: item.telefono || 'N/A',
+    Correo: item.correo || 'N/A',
+    Delegación: item.delegacion || 'N/A',
   }));
 
   const ws = XLSX.utils.json_to_sheet(dataForExcel);
@@ -29,4 +29,3 @@ function exportToExcel(data, filename) {
 }
 
 export { exportToExcel };
-
