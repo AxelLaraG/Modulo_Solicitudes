@@ -37,7 +37,6 @@ export default function Login() {
       localStorage.setItem("token", data.token);
       router.push("/Principal");
     } catch (error) {
-      console.error("Error en el login:", error);
       setAlertMessage("Error en el servidor. Inténtalo más tarde.");
       setShowAlert(true);
     } finally {
