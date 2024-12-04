@@ -158,6 +158,16 @@ export default function FormularioPlantilla() {
     estatus: "pendiente",
   });
 
+  // Verificación del token
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+
+  //   if (!token) {
+  //     // Si no hay token, redirige al login
+  //     router.push("/");
+  //   }
+  // }, [router]);
+
   //Manejador de cambios en el checkList de Responsables
   const handleCheckResponsable = (value) => {
     if (responsablesSeleccionados.includes(value)) {
@@ -400,7 +410,9 @@ export default function FormularioPlantilla() {
 
   return (
     <div className="container my-4" onSubmit={handleSubmit}>
-      <div className="display-8"><h2>{params.id ? "Modificar" : "Registrar"}</h2></div>
+      <div className="display-8">
+        <h2>{params.id ? "Modificar" : "Registrar"}</h2>
+      </div>
       <div className="header-container">
         <br />
       </div>
@@ -729,10 +741,9 @@ export default function FormularioPlantilla() {
               </select>
             </div>
           </div>
-          
         </div>
         <div className="mt-3 text-center pb-4">
-        <button type="submit" className="btn btn-primary me-2">
+          <button type="submit" className="btn btn-primary me-2">
             {params.id ? "Actualizar Solicitud" : "Guardar Solicitud"}
           </button>
           <Link href="/Principal">

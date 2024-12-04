@@ -24,20 +24,16 @@ export default function Login() {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        // Establece el mensaje del error recibido del servidor
-        setAlertMessage(data.message || "Ocurrió un error desconocido");
+      if (res.ok) {
+        router.push("/Principal"); // Redirige a la página principal
+      } else {
+        const error = await res.json();
+        setAlertMessage(error.message || "Error desconocido");
         setShowAlert(true);
-        return;
       }
-
-      // Login exitoso
-      localStorage.setItem("token", data.token);
-      router.push("/Principal");
     } catch (error) {
-      setAlertMessage("Error en el servidor. Inténtalo más tarde.");
+      console.error("Error en el login:", error);
+      setAlertMessage("Ocurrió un error inesperado");
       setShowAlert(true);
     } finally {
       setIsLoading(false);

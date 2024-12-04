@@ -4,11 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 // Exporta una función con nombre para manejar el método POST
-export async function POST(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Método no permitido' });
-  }
-
+export async function POST(req) {
   await dbConnect();
 
   const { username, password } = await req.json(); // Usa await req.json() para obtener el body en Next.js 13
@@ -32,7 +28,13 @@ export async function POST(req, res) {
       { expiresIn: '1h' }
     );
 
-    return new Response(JSON.stringify({ token }), { status: 200 });
+    // Configura la cookie con el token
+    return new Response(JSON.stringify({ message: 'Inicio de sesión exitoso' }), {
+      status: 200,
+      headers: {
+        'Set-Cookie': `token=${token}; HttpOnly; Path=/; Max-Age=3600`, // Cookie válida por 1 hora
+      },
+    });
   } catch (error) {
     console.error('Error en la API de login:', error);
     return new Response(JSON.stringify({ message: 'Error en el servidor' }), { status: 500 });

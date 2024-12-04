@@ -21,14 +21,14 @@ export default function Principal() {
   const router = useRouter(); // Inicializa useRouter
 
   // Verificación del token
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
 
-    if (!token) {
-      // Si no hay token, redirige al login
-      router.push("/");
-    }
-  }, [router]);
+  //   if (!token) {
+  //     // Si no hay token, redirige al login
+  //     router.push("/");
+  //   }
+  // }, [router]);
 
   useEffect(() => {
     async function fetchData() {
